@@ -1,0 +1,291 @@
+package ca.sheridancollege.controllers;
+
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import ca.sheridancollege.DAO.DAO;
+import ca.sheridancollege.beans.Court;
+import ca.sheridancollege.beans.Facility;
+import ca.sheridancollege.beans.MyUserDetailsService;
+import ca.sheridancollege.beans.User;
+import ca.sheridancollege.beans.UserRole;
+
+@Controller //specify that this class is a controller
+@RequestMapping("/")
+public class HomeController {
+	
+	DAO dao = new DAO();
+	
+	@RequestMapping(value="/", method = RequestMethod.GET)
+	public String home (Model model) {
+		return "/index";
+	}
+	
+	@RequestMapping(value="/contactUs", method = RequestMethod.GET)
+	public String contactUs (Model model) {
+		System.out.println("in contact us");
+		return "contactUs";
+	}
+		
+	
+		
+	/*
+	 * CRUD can be operated only when user is logged in.
+	 */
+	@RequestMapping(value="/courts", method=RequestMethod.GET)  
+	public String courts(Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+		    String username = authentication.getName(); //grab the user currently authenticated
+
+			Facility facility=dao.getFacility(username);
+			model.addAttribute("facility",facility);
+			System.out.println("load facility page");
+		}
+		
+		return "courts";
+	}
+	
+	/*
+	 * Get all the bookings for a particular facility and courts
+	 */
+	@RequestMapping(value="/bookings", method=RequestMethod.GET)  
+	public String bookings(Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+		    String username = authentication.getName(); //grab the user currently authenticated
+
+			Facility facility=dao.getFacility(username);
+			model.addAttribute("facility",facility);
+			System.out.println("load facility page");
+		}
+		
+		return "bookings";
+	}
+	
+	/*
+	 * View selected court from courts
+	 * Comment cannot be added
+	 */
+	@RequestMapping(value="/courts/view/{id}", method=RequestMethod.GET)  
+	public String courtsView(Model model, @PathVariable int id) {
+		Court court=dao.getCourt(id);
+		model.addAttribute("court",court);
+		
+		return "viewCourt";	
+	}
+	
+	/*
+	 * Edit selected court from courts 
+	 * Comment cannot be added
+	 */
+	@RequestMapping(value="/courts/edit/{facilityId}/{courtNumber}", method=RequestMethod.GET)  
+	public String courtsEdit(Model model, @PathVariable int facilityId, @PathVariable int courtNumber) {
+		Court court=dao.getCourt(courtNumber);
+		model.addAttribute("facilityId", facilityId);
+		model.addAttribute("court",court);
+		return "createCourt";	
+	}
+	
+	/*
+	 * Delete selected court from courts
+	 *
+	 */
+	@RequestMapping(value="/courts/delete/{facilityId}/{courtNumber}", method=RequestMethod.GET)  
+	public String courtsDelete(Model model, @PathVariable int facilityId, @PathVariable int courtNumber) {
+		Court court=dao.getCourt(courtNumber);
+		//dao.deleteCourt(court);
+		
+		
+		
+		Facility facility=dao.getFacility(facilityId);
+		
+		facility.getCourts().remove(court);
+		dao.saveFacility(facility);
+		
+		model.addAttribute("facility",facility);
+		System.out.println("load facility page");
+		return "courts";
+	}
+	
+	/*
+	 * handle to login
+	 */
+	@RequestMapping(value="/login", method=RequestMethod.GET)  
+	public String loginForm(Model model) {
+		return "loginForm";	
+	}
+	
+	@RequestMapping(value="/createAccount", method=RequestMethod.GET)
+	public String createAccount(Model model) {
+	return "createAccount";
+	}
+	
+	@RequestMapping(value="/createFacility", method=RequestMethod.GET)
+	public String createFacility(Model model) {
+		Facility facility=new Facility();
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+		    String username = authentication.getName(); //grab the user currently authenticated
+		    facility.setUsername(username);
+			//model.addAttribute("username",username);
+	
+		}
+	
+	
+		
+		model.addAttribute("facility",facility);
+		System.out.println("load facility page");
+		
+		return "createFacility";
+	}
+	
+	/*
+	 * Retrieve all facilities and view them to facilities.jsp
+	 */
+	@RequestMapping(value="/facilities", method=RequestMethod.GET)  
+	public String facilities(Model model) {
+			List<Facility> facilities=dao.getFacilities();
+			model.addAttribute("facilities",facilities);
+			System.out.println("load facility page");
+		
+		return "facilities";
+	}
+	
+	/*
+	 * Retrieve all facilities and view them to facilities.jsp based on keyword search
+	 */
+	@RequestMapping(value="/search", method=RequestMethod.GET)  
+	public String facilities(Model model, @RequestParam String keyword) {
+			List<Facility> facilities=dao.searchFacilities(keyword);
+			model.addAttribute("facilities",facilities);
+			System.out.println("load facility page");
+			
+		
+		return "facilities";
+	}
+	
+	@RequestMapping(value="/createCourt/{facilityId}", method=RequestMethod.GET)
+	public String createCourt(Model model, @PathVariable int facilityId) {
+	
+		    Court court=new Court();
+		    model.addAttribute("facilityId", facilityId);
+			model.addAttribute("court",court);
+	
+	return "createCourt";
+	}
+	
+	/*
+	 * Method to handle when creating a new facility or updating a facility
+	 */
+	@RequestMapping(value="/saveCourt", method=RequestMethod.GET) 
+	public String saveCourt(Model model, @ModelAttribute("court") Court court, @RequestParam int facilityId) {
+
+
+		
+		System.out.println("Trying to save Court : " + court.getCourtName());
+		System.out.println("Trying to save facility id : " + facilityId);
+		Facility facilityToSave = dao.getFacility(facilityId);
+		court.setCreationDate(LocalDateTime.now());
+		
+		
+		
+		facilityToSave.getCourts().remove(court);
+		facilityToSave.getCourts().add(court);
+		
+		System.out.println("getcourt ");
+		dao.saveFacility(facilityToSave);  
+		System.out.println("save facility ");
+		
+		Facility facility=dao.getFacility(facilityId);
+		model.addAttribute("facility",facility);
+		System.out.println("load facility page");
+		return "courts";
+	}
+	
+	/*
+	 * Method to handle when creating a new facility or updating a facility
+	 */
+	@RequestMapping(value="/saveFacility", method=RequestMethod.GET) 
+	public String saveFacility(Model model, @ModelAttribute("facility") Facility facilityToSave) {
+
+
+		
+		System.out.println("Trying to save facility : " + facilityToSave.getFacilityName());
+		
+		facilityToSave.setCreationDate(LocalDateTime.now());
+		
+		dao.saveFacility(facilityToSave);  //create new or update
+		
+		System.out.println("im done resaving the user");
+		
+		Facility facility=dao.getFacilityJustRegistered(facilityToSave.getUsername());
+		model.addAttribute("facility",facility);
+		System.out.println("load facility page");
+		return "courts";
+	}
+	
+	@RequestMapping(value="/register", method=RequestMethod.POST)
+	public String register(Model model, @RequestParam String username, @RequestParam String password) {
+		String encryptedPassword = new BCryptPasswordEncoder().encode(password);
+		User user = new User(username, encryptedPassword, true);
+		UserRole userRole = new UserRole(user, "ROLE_USER");
+		user.getUserRole().add(userRole);
+		dao.createUser(user);
+		
+		System.out.println("New user created " + user.getUsername());
+		
+		//load the user to be logged in right after the registration
+		
+		/*
+		UserDetails userDetails = new MyUserDetailsService().loadUserByUsername(username);
+		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails,
+		encryptedPassword, userDetails.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(auth);
+		*/
+		
+		System.out.println("New user auto logged in " + user.getUsername());
+		
+		
+		model.addAttribute("accountCreated", true);
+		model.addAttribute("username",username);
+		
+		Facility  facility=new Facility();
+		facility.setUsername(username); //set facility username to the user
+		model.addAttribute("facility",facility);
+		
+		return "/createFacility";
+	}
+	
+	/*
+	 * handle to logout a user
+	 */
+	@RequestMapping(value="/logout", method = RequestMethod.GET)
+	public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+	    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+	    if (auth != null){    
+	        new SecurityContextLogoutHandler().logout(request, response, auth);
+	    }
+	    return "redirect:/"; //redirect to home
+	}
+}

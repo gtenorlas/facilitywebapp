@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<security:authentication-manager>
+		
+		<security:authentication-provider
+			user-service-ref="myUserDetailsService">
+			
+		
+		<security:password-encoder ref="passwordEncoder" />
+		</security:authentication-provider>
+	</security:authentication-manager>
+	<bean id="passwordEncoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+	</bean>
+	<security:http use-expressions="true">
+		<!-- isAuthenticated secure pages in the given value in the pattern -->
+		<security:intercept-url pattern="/createFacility" access="isAuthenticated()" />
+		<security:intercept-url pattern="/saveFacility" access="isAuthenticated()" />
+		<security:intercept-url pattern="/courts/**" access="isAuthenticated()" />
+		<security:intercept-url pattern="/bookings" access="isAuthenticated()" />
+		<security:intercept-url pattern="/createCourt/**" access="isAuthenticated()" />
+		<security:intercept-url pattern="/saveCourt" access="isAuthenticated()" />
+		
+		<security:intercept-url pattern="/api/**" access="permitAll" />
+		<security:intercept-url pattern="/bookingList/**" access="permitAll" />
+		<security:intercept-url pattern="/facilities" access="permitAll" />
+		<security:intercept-url pattern="/contactUs" access="permitAll" />
+		<security:intercept-url pattern="/search" access="permitAll" />
+		<security:intercept-url pattern="/css/**" access="permitAll" />
+		<security:intercept-url pattern="/scripts/**" access="permitAll" />
+		<security:intercept-url pattern="/images/**" access="permitAll" />
+		<security:intercept-url pattern="/" access="permitAll" />
+		<security:intercept-url pattern="/index" access="permitAll" />
+		<security:intercept-url pattern="/createAccount" access="permitAll" />
+		<security:intercept-url pattern="/register" access="permitAll" />
+		<security:intercept-url pattern="/login" access="permitAll" />
+		<security:intercept-url pattern="/logout" access="permitAll" />
+		<security:intercept-url pattern="/home" access="permitAll" />
+		<security:intercept-url pattern="/**" access="denyAll" /> <!-- deny must go to the end -->
+		<security:form-login login-page="/login" />
+	</security:http>
+	<bean id="myUserDetailsService"
+		class="ca.sheridancollege.beans.MyUserDetailsService">
+	</bean>
+</beans>
