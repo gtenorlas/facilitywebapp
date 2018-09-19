@@ -251,6 +251,11 @@ public class HomeController {
 		User user = new User(username, encryptedPassword, true);
 		UserRole userRole = new UserRole(user, "ROLE_USER");
 		user.getUserRole().add(userRole);
+		
+		//disable  the user first
+		//user.setEnabled(false);
+		
+		
 		dao.createUser(user);
 		
 		System.out.println("New user created " + user.getUsername());

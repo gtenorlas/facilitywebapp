@@ -5,9 +5,9 @@
 	<session-factory>
 		<!-- Database connection settings -->
 		<property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-		<property name="connection.url">jdbc:mysql://localhost:3306/hibernatedb?serverTimezone=America/Toronto</property>
-		<property name="connection.username">root</property>
-		<property name="connection.password">Nobody79!</property>
+		<property name="connection.url">jdbc:mysql://localhost:3306/hibernatedbex91?serverTimezone=America/Toronto</property>
+		<property name="connection.username">book2ball</property>
+		<property name="connection.password">Book2ball!</property>
 
 		<!-- Set the database dialect -->
 		<property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
