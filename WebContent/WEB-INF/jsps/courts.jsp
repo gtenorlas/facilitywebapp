@@ -37,7 +37,7 @@
 				<td><c:url value="/courts/edit/${facility.facilityId}/${item.courtNumber}" var="editUrl"/>
 				<a href="${editUrl }">Edit</a></td>
 				<td><c:url value="/courts/delete/${facility.facilityId}/${item.courtNumber}" var="deleteUrl" />
-				<a href="${deleteUrl}">Delete</a></td>
+				<a href="${deleteUrl}" onclick="return deleteFunction('/courts/delete/${facility.facilityId}/${item.courtNumber}')" id="deleteCourt">Delete</a></td>
 			</tr>
 			</c:forEach>
 
@@ -45,5 +45,6 @@
 
 		</table>
 		</div>
+		<script src="<c:url value="/scripts/script.js" />"></script>
     </jsp:body>
 </t:mainLayout>

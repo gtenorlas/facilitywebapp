@@ -39,3 +39,19 @@ function verifyWikiForm()
   
   return true;
 }
+
+/*
+ * Confirm delete court
+ */
+function deleteFunction(url) {
+	var r = confirm("Continue to delete the court?");
+	if (r == true) {
+	    txt = "You pressed OK!";
+	    //window.location.href = url;
+	    return true;
+	} else {
+	    txt = "You pressed Cancel!";
+	   // window.location.href = '/courts';
+	    return false;
+	}
+}
