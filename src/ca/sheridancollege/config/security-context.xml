@@ -21,11 +21,13 @@
 	<security:http use-expressions="true">
 		<!-- isAuthenticated secure pages in the given value in the pattern -->
 		<security:intercept-url pattern="/createFacility" access="isAuthenticated()" />
-		<security:intercept-url pattern="/saveFacility" access="isAuthenticated()" />
 		<security:intercept-url pattern="/courts/**" access="isAuthenticated()" />
 		<security:intercept-url pattern="/bookings" access="isAuthenticated()" />
 		<security:intercept-url pattern="/createCourt/**" access="isAuthenticated()" />
 		<security:intercept-url pattern="/saveCourt" access="isAuthenticated()" />
+		
+		<security:intercept-url pattern="/saveFacility" access="permitAll" />
+		
 		
 		<security:intercept-url pattern="/api/**" access="permitAll" />
 		<security:intercept-url pattern="/bookingList/**" access="permitAll" />
@@ -43,7 +45,10 @@
 		<security:intercept-url pattern="/logout" access="permitAll" />
 		<security:intercept-url pattern="/home" access="permitAll" />
 		<security:intercept-url pattern="/**" access="denyAll" /> <!-- deny must go to the end -->
-		<security:form-login login-page="/login" />
+		<security:form-login login-page="/login"
+			default-target-url="/courts" />
+
+
 	</security:http>
 	<bean id="myUserDetailsService"
 		class="ca.sheridancollege.beans.MyUserDetailsService">

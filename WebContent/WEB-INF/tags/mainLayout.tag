@@ -33,8 +33,11 @@
 			    <ul class="nav navbar-nav">
 				   
 			      <li><a href="${homeUrl }">Home</a></li>
-			      <c:url value="/facilities" var="facilitiesUrl" />
-			      <li><a href="${facilitiesUrl}">Our Facilities</a></li>
+			       <!-- check if user is not logged in -->
+					<c:if test="${empty pageContext.request.userPrincipal}">
+				      <c:url value="/facilities" var="facilitiesUrl" />
+				      <li><a href="${facilitiesUrl}">Our Facilities</a></li>
+			      </c:if>    
 			      <c:url value="/contactUs" var="contactUsUrl" />
 			      <li><a href="${contactUsUrl}">Contact Us</a></li>
 			      

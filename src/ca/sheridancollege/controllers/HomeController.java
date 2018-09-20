@@ -259,9 +259,11 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/register", method=RequestMethod.POST)
-	public String register(Model model, @RequestParam String username, @RequestParam String password) {
+	public String register(Model model, @RequestParam String username, @RequestParam String password, HttpServletRequest request, HttpServletResponse response) {
 		String encryptedPassword = new BCryptPasswordEncoder().encode(password);
 		User user = new User(username, encryptedPassword, true);
+		
+		
 		UserRole userRole = new UserRole(user, "ROLE_USER");
 		user.getUserRole().add(userRole);
 		
@@ -270,19 +272,27 @@ public class HomeController {
 		
 		
 		dao.createUser(user);
+		//dao.createUserRole(userRole);
 		
 		System.out.println("New user created " + user.getUsername());
 		
-		//load the user to be logged in right after the registration
 		
-		/*
-		UserDetails userDetails = new MyUserDetailsService().loadUserByUsername(username);
-		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails,
-		encryptedPassword, userDetails.getAuthorities());
-		SecurityContextHolder.getContext().setAuthentication(auth);
-		*/
-		
-		//System.out.println("New user auto logged in " + user.getUsername());
+//		//logout the user
+//	    Authentication authentic = SecurityContextHolder.getContext().getAuthentication();
+//	    if (authentic != null){    
+//	        new SecurityContextLogoutHandler().logout(request, response, authentic);
+//	    }
+//		
+//		//load the user to be logged in right after the registration
+//		
+//		
+//		UserDetails userDetails = new MyUserDetailsService().loadUserByUsername(username);
+//		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails,
+//		encryptedPassword, userDetails.getAuthorities());
+//		SecurityContextHolder.getContext().setAuthentication(auth);
+//		
+//		
+//		System.out.println("New user auto logged in " + user.getUsername());
 		
 		
 		model.addAttribute("accountCreated", true);

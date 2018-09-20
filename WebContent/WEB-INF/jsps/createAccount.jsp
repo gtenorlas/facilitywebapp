@@ -14,14 +14,14 @@
 				      <label for="username" class="col-md-12 col-form-label">Username*</label>
 				      <div class="col-md-12">
 				        <input type="text" class="form-control" name="username" required="true"
-							placeholder="Username">
+							placeholder="Username" maxlength="45">
 				      </div>
 				    </div>
 				    <div class="form-group row">
 				      <label for="password" class="col-md-12 col-form-label">Password*</label>
 				      <div class="col-md-12">
 				        <input type="password" class="form-control" name="password" required="true"
-							placeholder="Password">
+							placeholder="Password" maxlength="60">
 				      </div>
 				    </div>
 				    <div class="form-group row">

@@ -15,6 +15,7 @@ import ca.sheridancollege.beans.Booking;
 import ca.sheridancollege.beans.Court;
 import ca.sheridancollege.beans.Facility;
 import ca.sheridancollege.beans.User;
+import ca.sheridancollege.beans.UserRole;
 
 
 public class DAO {
@@ -31,10 +32,25 @@ public class DAO {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		session.save(user);
+		session.flush();
 		session.getTransaction().commit();
 		session.close();
 		
 		System.out.println("User is saved in dao " + user.getUsername());
+	}
+	
+	/*
+	 * save userRole
+	 */
+	public void createUserRole(UserRole userRole) {
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		session.save(userRole);
+		session.flush();
+		session.getTransaction().commit();
+		session.close();
+		
+		System.out.println("Role is saved in dao " + userRole.getRole());
 	}
 
 	/*
@@ -44,6 +60,7 @@ public class DAO {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		session.saveOrUpdate(facility);
+		session.flush();
 		session.getTransaction().commit();
 		session.close();
 	}
@@ -116,6 +133,37 @@ public class DAO {
 		
 	
 		return facility;
+	}
+	
+	
+	/*
+	 * Get userrole with role "ROLE_USER"
+	 */
+	public UserRole getUserRole(String role) {
+		System.out.println("role is " +role);
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+
+		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+		CriteriaQuery<UserRole> criteria = criteriaBuilder.createQuery(UserRole.class);
+		Root<UserRole> root = criteria.from(UserRole.class);
+		
+
+
+		criteria.select(root);
+
+		criteria.where(criteriaBuilder.equal(root.get("role"), role));
+		
+
+		criteria.select(root);
+
+		UserRole userRole = session.createQuery(criteria).getSingleResult();
+
+		session.getTransaction().commit();
+		session.close();
+		
+	
+		return userRole;
 	}
 	
 	/*
