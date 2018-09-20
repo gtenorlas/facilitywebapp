@@ -36,6 +36,8 @@ public class User implements Serializable {
 	private String password;
 	@Column(name = "enabled", nullable = false)
 	private boolean enabled;
+	@Column(name = "status", nullable = false)
+	private String status;
 	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL, mappedBy = "user")
 	private Set<UserRole> userRole = new HashSet<UserRole>(0);
 	
@@ -45,6 +47,7 @@ public class User implements Serializable {
 		this.username = username;
 		this.password = password;
 		this.enabled = enabled;
+		this.status = "pending";
 	}
 	
 	

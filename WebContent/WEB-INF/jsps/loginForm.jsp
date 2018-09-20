@@ -9,6 +9,8 @@
 		</c:if>
 		<c:url value="/login" var="loginUrl" />
 		
+		<c:if test="${accountCreated}"><div><h3>Facility created successfully! Please login to continue.</h3></div></c:if>
+		
 		<div class="container">
 			  <form method="post" action="${loginUrl}">
 				    <div class="form-group row">

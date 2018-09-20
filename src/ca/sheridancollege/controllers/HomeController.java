@@ -240,9 +240,22 @@ public class HomeController {
 		System.out.println("im done resaving the user");
 		
 		Facility facility=dao.getFacilityJustRegistered(facilityToSave.getUsername());
+		
 		model.addAttribute("facility",facility);
 		System.out.println("load facility page");
-		return "courts";
+		
+		//check if user  is logged on -- just added
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			System.out.println("logged in after saveFAcility");
+			return "courts";
+		}else {
+			System.out.println("NOt logged in after saveFAcility");
+			model.addAttribute("accountCreated", true);
+			return "loginForm";	
+		}
+		
+	
 	}
 	
 	@RequestMapping(value="/register", method=RequestMethod.POST)
@@ -269,7 +282,7 @@ public class HomeController {
 		SecurityContextHolder.getContext().setAuthentication(auth);
 		*/
 		
-		System.out.println("New user auto logged in " + user.getUsername());
+		//System.out.println("New user auto logged in " + user.getUsername());
 		
 		
 		model.addAttribute("accountCreated", true);

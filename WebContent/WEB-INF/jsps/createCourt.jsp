@@ -24,7 +24,7 @@
 				    </div>
 				    
 				    <div class="form-group row">
-				    	<form:label path="availability" class="col-md-12 col-form-label">Topic Category (select one)*:</form:label>
+				    	<form:label path="availability" class="col-md-12 col-form-label">Status (select one)*:</form:label>
 				       <div class="col-md-12">
 				      		<form:select path="availability" items="${ court.availabilityTypes()}" value="${court.availability }" class="form-control"/>	
 				       </div>

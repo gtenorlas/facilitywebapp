@@ -9,7 +9,7 @@
       <!-- Jumbotron Header -->
       <header class="jumbotron">
         <h1 class="display-3">Register Your Facility Now!</h1>
-        <p class="lead">Get more customers by registering your facility and be a part of Book2Ball family.</p>
+        <p class="lead">Get more customers by registering your facility and be a part of the Book2Ball family.</p>
         <!-- Have user to be able to login and create account -->
 		<c:url value="/createAccount" var="createUrl" />
         <a href="${createUrl}" class="btn btn-primary btn-lg">Register Now!</a>

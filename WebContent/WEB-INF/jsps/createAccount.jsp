@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <t:mainLayout>
 	<jsp:body>
-        <div id="error"></div>
+        <div id="error"></div><br/>
 		<c:url value="/register" var="url" />
 		
 		
@@ -13,14 +13,14 @@
 				    <div class="form-group row">
 				      <label for="username" class="col-md-12 col-form-label">Username*</label>
 				      <div class="col-md-12">
-				        <input type="text" class="form-control" name="username"
+				        <input type="text" class="form-control" name="username" required="true"
 							placeholder="Username">
 				      </div>
 				    </div>
 				    <div class="form-group row">
 				      <label for="password" class="col-md-12 col-form-label">Password*</label>
 				      <div class="col-md-12">
-				        <input type="password" class="form-control" name="password"
+				        <input type="password" class="form-control" name="password" required="true"
 							placeholder="Password">
 				      </div>
 				    </div>
@@ -28,7 +28,7 @@
 				      <label for="verifyPassword" class="col-md-12 col-form-label">Password*</label>
 				      <div class="col-md-12">
 				        <input type="password" class="form-control"
-							name="verifyPassword" placeholder="Re-enter Password">
+							name="verifyPassword" placeholder="Re-enter Password" required="true"> 
 				      </div>
 				    </div>
 				    	<input type="hidden" name="${_csrf.parameterName}"

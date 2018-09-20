@@ -6,7 +6,7 @@
 <t:mainLayout>
     <jsp:body>
     
-        <c:if test="${accountCreated}"><h3>Please Fill in the Facility Information.</h3></c:if>
+        <c:if test="${accountCreated}"><h3>Facility Administrator Account Created. Please Fill in the Facility Information.</h3></c:if>
     	
     
     
