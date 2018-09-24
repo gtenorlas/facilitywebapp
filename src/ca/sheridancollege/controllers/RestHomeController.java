@@ -10,14 +10,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import ca.sheridancollege.DAO.DAO;
+import ca.sheridancollege.DAO.BookingDAO;
+import ca.sheridancollege.DAO.CourtDAO;
+//import ca.sheridancollege.DAO.DAO;
 import ca.sheridancollege.beans.Booking;
 import ca.sheridancollege.beans.Court;
 
 @RestController // specify that this class is a controller
 @RequestMapping("/api")
 public class RestHomeController {
-	private DAO dao = new DAO();
+	//private DAO dao = new DAO();
+	CourtDAO courtDAO = new CourtDAO();
+	BookingDAO bookingDAO = new BookingDAO();
 
 	@RequestMapping(value = "/", method = RequestMethod.GET) // routing to home
 	public String home(Model model) {
@@ -28,12 +32,12 @@ public class RestHomeController {
 
 	@RequestMapping(value = "/bookingList", method = RequestMethod.GET)
 	public List<Booking> getBookingList() {
-		return dao.getAllBookings();
+		return bookingDAO.getAllBookings();
 	}
 
 	@RequestMapping(value = "/bookingList/{id}", method = RequestMethod.GET)
 	public Object getBookingList(@PathVariable int id) {
-		return dao.getBookingByID(id);
+		return bookingDAO.getBookingByID(id);
 	}
 	
 
@@ -56,10 +60,10 @@ public class RestHomeController {
 		
 		Booking booking = new Booking(customerName, bookingDate, bookingType, status, startDateTimeLocal, endDateTimeLocal);
 		
-		Court court = dao.getCourt(courtId);
+		Court court = courtDAO.getCourt(courtId);
 		court.getBookings().add(booking); //add the booking to the particular court
 		
-		dao.saveCourt(court);
+		courtDAO.saveCourt(court);
 		
 		return "Booking Saved";
 	}

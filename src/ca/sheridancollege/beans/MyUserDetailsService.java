@@ -12,14 +12,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import ca.sheridancollege.DAO.DAO;
+//import ca.sheridancollege.DAO.DAO;
+import ca.sheridancollege.DAO.UserDAO;
 
 public class MyUserDetailsService implements UserDetailsService {
- private DAO dao = new DAO();
+ //private DAO dao = new DAO();
+	UserDAO userDAO = new UserDAO();
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		ca.sheridancollege.beans.User user = dao.findByUserName(username);
+		ca.sheridancollege.beans.User user = userDAO.findByUserName(username);
 		List<GrantedAuthority> authorities = buildUserAuthority(user.getUserRole());
 		return buildUserForAuthentication(user, authorities);
 

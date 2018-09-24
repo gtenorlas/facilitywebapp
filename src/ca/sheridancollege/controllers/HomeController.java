@@ -22,7 +22,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import ca.sheridancollege.DAO.DAO;
+import ca.sheridancollege.DAO.BookingDAO;
+import ca.sheridancollege.DAO.CourtDAO;
+//import ca.sheridancollege.DAO.DAO;
+import ca.sheridancollege.DAO.FacilityDAO;
+import ca.sheridancollege.DAO.UserDAO;
 import ca.sheridancollege.beans.Court;
 import ca.sheridancollege.beans.Facility;
 import ca.sheridancollege.beans.MyUserDetailsService;
@@ -33,7 +37,11 @@ import ca.sheridancollege.beans.UserRole;
 @RequestMapping("/")
 public class HomeController {
 	
-	DAO dao = new DAO();
+	//DAO dao = new DAO();
+	FacilityDAO facilityDao = new FacilityDAO();
+	CourtDAO courtDAO = new CourtDAO();
+	BookingDAO bookingDAO = new BookingDAO();
+	UserDAO userDAO = new UserDAO();
 	
 	@RequestMapping(value="/", method = RequestMethod.GET)
 	public String home (Model model) {
@@ -57,7 +65,7 @@ public class HomeController {
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
 		    String username = authentication.getName(); //grab the user currently authenticated
 
-			Facility facility=dao.getFacility(username);
+			Facility facility=facilityDao.getFacility(username);
 			model.addAttribute("facility",facility);
 			System.out.println("load facility page");
 		}
@@ -74,7 +82,7 @@ public class HomeController {
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
 		    String username = authentication.getName(); //grab the user currently authenticated
 
-			Facility facility=dao.getFacility(username);
+			Facility facility=facilityDao.getFacility(username);
 			model.addAttribute("facility",facility);
 			System.out.println("load facility page");
 		}
@@ -88,7 +96,7 @@ public class HomeController {
 	 */
 	@RequestMapping(value="/courts/view/{id}", method=RequestMethod.GET)  
 	public String courtsView(Model model, @PathVariable int id) {
-		Court court=dao.getCourt(id);
+		Court court=courtDAO.getCourt(id);
 		model.addAttribute("court",court);
 		
 		return "viewCourt";	
@@ -100,7 +108,7 @@ public class HomeController {
 	 */
 	@RequestMapping(value="/courts/edit/{facilityId}/{courtNumber}", method=RequestMethod.GET)  
 	public String courtsEdit(Model model, @PathVariable int facilityId, @PathVariable int courtNumber) {
-		Court court=dao.getCourt(courtNumber);
+		Court court=courtDAO.getCourt(courtNumber);
 		model.addAttribute("facilityId", facilityId);
 		model.addAttribute("court",court);
 		return "createCourt";	
@@ -112,15 +120,17 @@ public class HomeController {
 	 */
 	@RequestMapping(value="/courts/delete/{facilityId}/{courtNumber}", method=RequestMethod.GET)  
 	public String courtsDelete(Model model, @PathVariable int facilityId, @PathVariable int courtNumber) {
-		Court court=dao.getCourt(courtNumber);
+		Court court=courtDAO.getCourt(courtNumber);
 		//dao.deleteCourt(court);
+		//courtDAO.setInactive(court);
+		court.setEndDate(LocalDateTime.now());
 		
 		
+		Facility facility=facilityDao.getFacility(facilityId);
 		
-		Facility facility=dao.getFacility(facilityId);
-		
-		facility.getCourts().remove(court);
-		dao.saveFacility(facility);
+		//facility.getCourts().remove(court);
+		facility.getCourts();
+		facilityDao.saveFacility(facility);
 		
 		model.addAttribute("facility",facility);
 		System.out.println("load facility page");
@@ -165,7 +175,7 @@ public class HomeController {
 	 */
 	@RequestMapping(value="/facilities", method=RequestMethod.GET)  
 	public String facilities(Model model) {
-			List<Facility> facilities=dao.getFacilities();
+			List<Facility> facilities=facilityDao.getFacilities();
 			model.addAttribute("facilities",facilities);
 			System.out.println("load facility page");
 		
@@ -177,7 +187,7 @@ public class HomeController {
 	 */
 	@RequestMapping(value="/search", method=RequestMethod.GET)  
 	public String facilities(Model model, @RequestParam String keyword) {
-			List<Facility> facilities=dao.searchFacilities(keyword);
+			List<Facility> facilities=facilityDao.searchFacilities(keyword);
 			model.addAttribute("facilities",facilities);
 			System.out.println("load facility page");
 			
@@ -205,7 +215,7 @@ public class HomeController {
 		
 		System.out.println("Trying to save Court : " + court.getCourtName());
 		System.out.println("Trying to save facility id : " + facilityId);
-		Facility facilityToSave = dao.getFacility(facilityId);
+		Facility facilityToSave = facilityDao.getFacility(facilityId);
 		court.setCreationDate(LocalDateTime.now());
 		
 		
@@ -214,10 +224,10 @@ public class HomeController {
 		facilityToSave.getCourts().add(court);
 		
 		System.out.println("getcourt ");
-		dao.saveFacility(facilityToSave);  
+		facilityDao.saveFacility(facilityToSave);  
 		System.out.println("save facility ");
 		
-		Facility facility=dao.getFacility(facilityId);
+		Facility facility=facilityDao.getFacility(facilityId);
 		model.addAttribute("facility",facility);
 		System.out.println("load facility page");
 		return "courts";
@@ -235,11 +245,11 @@ public class HomeController {
 		
 		facilityToSave.setCreationDate(LocalDateTime.now());
 		
-		dao.saveFacility(facilityToSave);  //create new or update
+		facilityDao.saveFacility(facilityToSave);  //create new or update
 		
 		System.out.println("im done resaving the user");
 		
-		Facility facility=dao.getFacilityJustRegistered(facilityToSave.getUsername());
+		Facility facility=facilityDao.getFacilityJustRegistered(facilityToSave.getUsername());
 		
 		model.addAttribute("facility",facility);
 		System.out.println("load facility page");
@@ -271,7 +281,7 @@ public class HomeController {
 		//user.setEnabled(false);
 		
 		
-		dao.createUser(user);
+		userDAO.createUser(user);
 		//dao.createUserRole(userRole);
 		
 		System.out.println("New user created " + user.getUsername());
