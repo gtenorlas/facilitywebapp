@@ -43,7 +43,7 @@ public class CourtDAO {
 		root.fetch("bookings", JoinType.LEFT); // include the bookings to fix the fetch lazy issue
 		criteria.select(root);
 		//Court court = null;
-		criteria.where(criteriaBuilder.equal(root.get("courtNumber"), id));
+		criteria.where(criteriaBuilder.and(criteriaBuilder.equal(root.get("courtNumber"), criteriaBuilder.isNull(root.get("endDate"))))) ;
 		//LocalDateTime endDate= court.getEndDate();
 		criteria.where(criteriaBuilder.equal(root.get("endDate"), null));
 
@@ -60,14 +60,36 @@ public class CourtDAO {
 	/*
 	 * Delete a single Court
 	 */
-	public void deleteCourt(Court court) {
+	public boolean deleteCourt(Court court) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
+		
+		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+		CriteriaQuery<Court> criteria = criteriaBuilder.createQuery(Court.class);
+		Root<Court> root = criteria.from(Court.class);
 
-		session.delete(court);
+		root.fetch("bookings", JoinType.LEFT); // include the bookings to fix the fetch lazy issue
+		criteria.select(root);
+		//Court court = null;
+		criteria.where(criteriaBuilder.isNull(root.get("startDateTime")));
+		//LocalDateTime endDate= court.getEndDate();
+		//criteria.where(criteriaBuilder.equal(root.get("endDate"), null));
 
+		Court retriveCourt = session.createQuery(criteria).getSingleResult();
+		
 		session.getTransaction().commit();
+		if (retriveCourt==null) {
+			court.setEndDate(LocalDateTime.now());
+			saveCourt(retriveCourt);
+			session.close();
+			return false;
+		}
+
+		//session.delete(court);
+
+		
 		session.close();
+		return false;
 
 	}
 	public void setInactive(Court court) {
