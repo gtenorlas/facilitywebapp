@@ -3,15 +3,14 @@ package ca.sheridancollege.controllers;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
@@ -29,7 +28,6 @@ import ca.sheridancollege.DAO.FacilityDAO;
 import ca.sheridancollege.DAO.UserDAO;
 import ca.sheridancollege.beans.Court;
 import ca.sheridancollege.beans.Facility;
-import ca.sheridancollege.beans.MyUserDetailsService;
 import ca.sheridancollege.beans.User;
 import ca.sheridancollege.beans.UserRole;
 
@@ -279,6 +277,9 @@ public class HomeController {
 		
 		//disable  the user first
 		//user.setEnabled(false);
+		
+		// Generate random 36-character string token for confirmation link
+	    user.setConfirmationToken(UUID.randomUUID().toString());
 		
 		
 		userDAO.createUser(user);

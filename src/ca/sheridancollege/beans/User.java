@@ -38,6 +38,8 @@ public class User implements Serializable {
 	private boolean enabled;
 	@Column(name = "status", nullable = false)
 	private String status;
+	@Column(name = "confirmationtoken", nullable = false)
+	private String confirmationToken;
 	@OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL, mappedBy = "user")
 	private Set<UserRole> userRole = new HashSet<UserRole>(0);
 	
@@ -48,6 +50,7 @@ public class User implements Serializable {
 		this.password = password;
 		this.enabled = enabled;
 		this.status = "pending";
+		this.confirmationToken="";
 	}
 	
 	
