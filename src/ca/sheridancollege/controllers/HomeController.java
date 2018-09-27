@@ -121,14 +121,14 @@ public class HomeController {
 		Court court=courtDAO.getCourt(courtNumber);
 		//dao.deleteCourt(court);
 		//courtDAO.setInactive(court);
-		court.setEndDate(LocalDateTime.now());
+		//court.setEndDate(LocalDateTime.now());
 		
 		
 		Facility facility=facilityDao.getFacility(facilityId);
 		
 		//facility.getCourts().remove(court);
-		facility.getCourts();
-		facilityDao.saveFacility(facility);
+		//facility.getCourts();
+		//facilityDao.saveFacility(facility);
 		
 		model.addAttribute("facility",facility);
 		System.out.println("load facility page");
