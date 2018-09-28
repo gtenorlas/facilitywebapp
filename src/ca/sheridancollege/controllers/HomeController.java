@@ -1,7 +1,9 @@
 package ca.sheridancollege.controllers;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -118,19 +120,29 @@ public class HomeController {
 	 */
 	@RequestMapping(value="/courts/delete/{facilityId}/{courtNumber}", method=RequestMethod.GET)  
 	public String courtsDelete(Model model, @PathVariable int facilityId, @PathVariable int courtNumber) {
-		Court court=courtDAO.getCourt(courtNumber);
-		//dao.deleteCourt(court);
-		//courtDAO.setInactive(court);
-		//court.setEndDate(LocalDateTime.now());
 		
+		Court court=courtDAO.getCourt(courtNumber);
+		//facility.getCourts().remove(court);
+		boolean check = courtDAO.deleteCourt(court);
+		//courtDAO.setInactive(court);
+		//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		//LocalDateTime joiningDate = LocalDateTime.parse("2014-04-01 00:00:00", formatter);
+		//court.setEndDate(LocalDateTime.now());
+		//court.setEndDate(joiningDate);
 		
 		Facility facility=facilityDao.getFacility(facilityId);
-		
+		if (check == true) {
+			courtDAO.getCourt(courtNumber);
+			facility.getCourts().remove(court);
+			model.addAttribute("courtDeleted",true);
+		}
+		//Facility facility=facilityDao.getFacility(facilityId);
 		//facility.getCourts().remove(court);
-		//facility.getCourts();
-		//facilityDao.saveFacility(facility);
+		facility.getCourts();
+		facilityDao.saveFacility(facility);
 		
 		model.addAttribute("facility",facility);
+		
 		System.out.println("load facility page");
 		return "courts";
 	}
