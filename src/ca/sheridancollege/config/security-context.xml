@@ -47,7 +47,10 @@
 		<security:intercept-url pattern="/**" access="denyAll" /> <!-- deny must go to the end -->
 		<security:form-login login-page="/login"
 			default-target-url="/courts" />
-
+		
+		<!-- Added to remove the csrf (cross-site forgery protection) which block restful services for POST PUT and DELETE -->
+		<!-- This should be set to false to make the site secured and instead use csrf token in the header when requesting a post -->
+		<security:csrf disabled="true"/>
 
 	</security:http>
 	<bean id="myUserDetailsService"
