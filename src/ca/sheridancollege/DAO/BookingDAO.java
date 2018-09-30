@@ -11,10 +11,23 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import ca.sheridancollege.beans.Booking;
+import ca.sheridancollege.beans.Facility;
 
 public class BookingDAO {
 	SessionFactory sessionFactory = new Configuration().configure("ca/sheridancollege/config/hibernate.cfg.xml")
 			.buildSessionFactory();
+	
+	/*
+	 * Save Booking
+	 */
+	public void saveBooking(Booking booking) {
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		session.saveOrUpdate(booking);
+		session.flush();
+		session.getTransaction().commit();
+		session.close();
+	}
 
 	/*
 	 * Get All bookings  to be viewed to be used in RestController

@@ -55,3 +55,23 @@ function deleteFunction(url) {
 	    return false;
 	}
 }
+
+/*
+ * Confirm cancel booking
+ */
+function cancelFunction(url) {
+	var r = propmt("Please provide the reason of cancalation");
+	if (r != null){
+		document.getElementById("reason").innerHTML = r;
+		return r;
+	}
+//	if (r == true) {
+//	    txt = "You pressed OK!";
+//	    //window.location.href = url;
+//	    return true;
+//	} else {
+//	    txt = "You pressed Cancel!";
+//	   // window.location.href = '/courts';
+//	    return false;
+//	}
+}

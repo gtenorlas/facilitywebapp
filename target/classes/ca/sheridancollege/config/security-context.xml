@@ -22,12 +22,12 @@
 		<!-- isAuthenticated secure pages in the given value in the pattern -->
 		<security:intercept-url pattern="/createFacility" access="isAuthenticated()" />
 		<security:intercept-url pattern="/courts/**" access="isAuthenticated()" />
-		<security:intercept-url pattern="/bookings" access="isAuthenticated()" />
+		<security:intercept-url pattern="/bookings/**" access="isAuthenticated()" />
 		<security:intercept-url pattern="/createCourt/**" access="isAuthenticated()" />
 		<security:intercept-url pattern="/saveCourt" access="isAuthenticated()" />
-		
+		<security:intercept-url pattern="/saveBooking" access="isAuthenticated()" />
 		<security:intercept-url pattern="/saveFacility" access="permitAll" />
-		
+		<security:intercept-url pattern="/updateBooking" access="permitAll" />
 		
 		<security:intercept-url pattern="/api/**" access="permitAll" />
 		<security:intercept-url pattern="/bookingList/**" access="permitAll" />

@@ -28,6 +28,7 @@ public class Booking implements Serializable {
 	private String status;
 	private LocalDateTime startDateTime;
 	private LocalDateTime endDateTime;
+	private String comment;
 	
 	public Booking (int bookingId) {
 		this.bookingId=bookingId;
@@ -42,6 +43,11 @@ public class Booking implements Serializable {
 		this.status = status;
 		this.startDateTime = startDateTime;
 		this.endDateTime = endDateTime;
+		this.comment = null;
+	}
+	
+	public static String[] status(){
+		return new String[] {"Active","Cancel"};
 	}
 
 	@Override

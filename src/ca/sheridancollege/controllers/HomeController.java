@@ -1,9 +1,7 @@
 package ca.sheridancollege.controllers;
 
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +26,7 @@ import ca.sheridancollege.DAO.CourtDAO;
 //import ca.sheridancollege.DAO.DAO;
 import ca.sheridancollege.DAO.FacilityDAO;
 import ca.sheridancollege.DAO.UserDAO;
+import ca.sheridancollege.beans.Booking;
 import ca.sheridancollege.beans.Court;
 import ca.sheridancollege.beans.Facility;
 import ca.sheridancollege.beans.User;
@@ -100,6 +99,18 @@ public class HomeController {
 		model.addAttribute("court",court);
 		
 		return "viewCourt";	
+	}
+	
+	/*
+	 * Edit selected booking from courts 
+	 * Comment cannot be added
+	 */
+	@RequestMapping(value="/bookings/edit/{bookingId}", method=RequestMethod.GET)  
+	public String bookingsEdit(Model model, @PathVariable int bookingId) {
+		Booking booking=bookingDAO.getBookingByID(bookingId);
+	//	model.addAttribute("facilityId", facilityId);
+		model.addAttribute("booking",booking);
+		return "updateBooking";	
 	}
 	
 	/*
@@ -241,6 +252,32 @@ public class HomeController {
 		model.addAttribute("facility",facility);
 		System.out.println("load facility page");
 		return "courts";
+	}
+	
+	
+	/*
+	 * Method to handle when creating a new facility or updating a facility
+	 */
+	@RequestMapping(value="/saveBooking", method=RequestMethod.GET) 
+	public String saveBooking(Model model, @ModelAttribute("booking") Booking booking, @RequestParam Integer bookingId) {
+
+		Booking bookingToSave = bookingDAO.getBookingByID(bookingId);
+		//court.setCreationDate(LocalDateTime.now());
+		
+		
+		
+		//bookingToSave.getCourts().remove(court);
+		//bookingToSave.getCourts().add(court);
+		
+		System.out.println("getcourt ");
+		bookingDAO.saveBooking(bookingToSave);  
+		bookings(null);
+		System.out.println("save facility ");
+		
+		List<Booking> allbooking = bookingDAO.getAllBookings();
+		model.addAttribute("bookingToSave",bookingToSave);
+		System.out.println("load facility page");
+		return "bookings";
 	}
 	
 	/*
