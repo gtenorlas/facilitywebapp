@@ -15,7 +15,7 @@
 		     <th>Booking Start Date/Time</th>
 		     <th>Booking End Date/Time</th>
 		     <th>Edit</th>
-		     <th>Delete</th>
+		     <!-- <th>Delete</th> -->
 		  </tr>
 		 </thead>
 		 <tbody>
@@ -36,10 +36,12 @@
 						<fmt:formatDate pattern="E yyyy-MM-dd hh:mm" value="${ parsedDateTime }" var="formattedDate" />
 					
 	  					<td> ${ formattedDate }</td>
-	  					<td><c:url value="/bookings/edit/${booking.bookingId}" var="editUrl"/>
+	  					<td><c:url value="/bookings/edit/${booking.bookingId}/${item.courtNumber}" var="editUrl"/>
 				<a href="${editUrl }">Edit</a></td>
+				<!-- 
 				<td><c:url value="/bookings/cancel/${booking.bookingId}}" var="cancelUrl" />
 				<a href="${cancelUrl}" onclick="return cancelFunction('/bookings/cancel/${facility.facilityId}/${item.courtNumber}')" id="cancelBooking">Cancel</a></td>
+				 -->
 					</tr>
 				</c:forEach>
 			</c:forEach>

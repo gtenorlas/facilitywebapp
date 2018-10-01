@@ -105,10 +105,10 @@ public class HomeController {
 	 * Edit selected booking from courts 
 	 * Comment cannot be added
 	 */
-	@RequestMapping(value="/bookings/edit/{bookingId}", method=RequestMethod.GET)  
-	public String bookingsEdit(Model model, @PathVariable int bookingId) {
+	@RequestMapping(value="/bookings/edit/{bookingId}/{courtNumber}", method=RequestMethod.GET)  
+	public String bookingsEdit(Model model, @PathVariable int bookingId,@PathVariable int courtNumber ) {
 		Booking booking=bookingDAO.getBookingByID(bookingId);
-	//	model.addAttribute("facilityId", facilityId);
+		model.addAttribute("courtNumber", courtNumber);
 		model.addAttribute("booking",booking);
 		return "updateBooking";	
 	}
@@ -259,9 +259,16 @@ public class HomeController {
 	 * Method to handle when creating a new facility or updating a facility
 	 */
 	@RequestMapping(value="/saveBooking", method=RequestMethod.GET) 
-	public String saveBooking(Model model, @ModelAttribute("booking") Booking booking, @RequestParam Integer bookingId) {
+	public String saveBooking(Model model, @ModelAttribute("booking") Booking booking, @RequestParam int courtNumber) {
 
-		Booking bookingToSave = bookingDAO.getBookingByID(bookingId);
+		Court courtToSave = courtDAO.getCourt(courtNumber);
+		courtToSave.getBookings().remove(booking);
+		courtToSave.getBookings().add(booking);
+		courtDAO.saveCourt(courtToSave);
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Facility facility=facilityDao.getFacility(authentication.getName());
+		model.addAttribute("facility",facility);
 		//court.setCreationDate(LocalDateTime.now());
 		
 		
@@ -269,14 +276,14 @@ public class HomeController {
 		//bookingToSave.getCourts().remove(court);
 		//bookingToSave.getCourts().add(court);
 		
-		System.out.println("getcourt ");
-		bookingDAO.saveBooking(bookingToSave);  
-		bookings(null);
-		System.out.println("save facility ");
+		//System.out.println("getcourt ");
+		//bookingDAO.saveBooking(bookingToSave);  
+		//bookings(null);
+		//System.out.println("save facility ");
 		
-		List<Booking> allbooking = bookingDAO.getAllBookings();
-		model.addAttribute("bookingToSave",bookingToSave);
-		System.out.println("load facility page");
+		//List<Booking> allbooking = bookingDAO.getAllBookings();
+		//model.addAttribute("bookingToSave",bookingToSave);
+		//System.out.println("load facility page");
 		return "bookings";
 	}
 	
