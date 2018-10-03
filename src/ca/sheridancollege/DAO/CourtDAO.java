@@ -15,6 +15,7 @@ import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Fetch;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.JoinType;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
@@ -87,6 +88,7 @@ try {
 	 * @param court
 	 * @return
 	 */
+	
 	public boolean deleteCourt(Court court) {
 		 System.out.println("-- executing query --");
 //		 EntityManagerFactory entityManagerFactory =
@@ -106,20 +108,22 @@ try {
 			Root<Court> root=cq.from(Court.class);
 		    Fetch<Court, Booking> bookingFetch = root.fetch("bookings");
 		    System.out.println("booking fetch");
-			Join<Court, Booking> bookingJoin= root.join("bookings");
+			Join<Court, Booking> bookingJoin= root.join("bookings",JoinType.RIGHT);
 			System.out.println("booking join ");
 			cq.select(root);
 			
-			cq.where(cb.greaterThan(bookingJoin.get("startDateTime"),LocalDateTime.now()));
+			cq.where(cb.lessThan(bookingJoin.get("startDateTime"),LocalDateTime.now()));
 			//LocalDate date = null;
 			//System.out.println(date.atStartOfDay().toLocalDate());
 			//cq.where(cb.greaterThan(bookingJoin.get("startDateTime"),date.atStartOfDay().toLocalDate()));
 			//court.setEndDate(LocalDateTime.now());
 			System.out.println("booking where ");
-			Court courtToDeleteHasBookings = null;
+			Court courtToDeleteHasBookings = new Court();
 			try {
 				courtToDeleteHasBookings = session.createQuery(cq).getSingleResult();
 				System.out.println("booking exsites  ");
+				//Path<Object> localDT = bookingJoin.get("startDateTime");
+				//if( localDT >= LocalDateTime.now())
 				session.getTransaction().commit();
 				session.close();
 				return false;
@@ -161,7 +165,82 @@ try {
 
 
 	}
-	
+//	public boolean deleteCourt(Court court) {
+//		 System.out.println("-- executing query --");
+////		 EntityManagerFactory entityManagerFactory =
+////		          Persistence.createEntityManagerFactory("example-unit");
+////
+////	      EntityManager em = entityManagerFactory.createEntityManager();
+////	      Query query = em.createQuery("SELECT DISTINCT c FROM Court c LEFT JOIN FETCH c.bookings b");
+////	      List<Court> courtList = query.getResultList();
+////	
+////	      em.close();
+////	      return true;
+//		
+//		 	Session session = sessionFactory.openSession();
+//			session.beginTransaction();
+//			CriteriaBuilder cb = session.getCriteriaBuilder();
+//			CriteriaQuery<Court> cq = cb.createQuery(Court.class);
+//			Root<Court> root=cq.from(Court.class);
+//		    Fetch<Court, Booking> bookingFetch = root.fetch("bookings");
+//		    System.out.println("booking fetch");
+//			Join<Court, Booking> bookingJoin= root.join("bookings");
+//			System.out.println("booking join ");
+//			cq.select(root);
+//			System.out.println(court.getCourtNumber());
+//			System.out.println(bookingJoin.get("startDateTime"));
+//			cq.where(cb.greaterThan(bookingJoin.get("startDateTime"),LocalDateTime.now()));
+//			//LocalDate date = null;
+//			//System.out.println(date.atStartOfDay().toLocalDate());
+//			//cq.where(cb.greaterThan(bookingJoin.get("startDateTime"),date.atStartOfDay().toLocalDate()));
+//			//court.setEndDate(LocalDateTime.now());
+//			System.out.println("booking where ");
+//			Court courtToDeleteHasBookings = null;
+//			try {
+//				courtToDeleteHasBookings = session.createQuery(cq).getSingleResult();
+//				System.out.println("booking exsites  ");
+//				session.getTransaction().commit();
+//				session.close();
+//				return false;
+//			}
+//			catch (NoResultException nre){
+//			}
+//			
+//
+//			//session.getTransaction().commit();
+//			
+//			System.out.println("Deleting court ");
+//			
+//	/*		Session session = sessionFactory.openSession();
+//			session.beginTransaction();
+//
+//			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+//			CriteriaQuery<Booking> criteria = criteriaBuilder.createQuery(Booking.class);
+//			Root<Booking> root = criteria.from(Booking.class);
+//
+//			criteria.select(root);
+//			criteria.where(criteriaBuilder.and(criteriaBuilder.equal(root.get("courtNumber"), criteriaBuilder.isNull(root.get("endDate"))))) ;
+//
+//			Booking booking = session.createQuery(criteria).getSingleResult();
+//			session.getTransaction().commit();
+//			session.close();*/
+//			
+//			
+//			
+////			if (courtToDeleteHasBookings !=null) {
+////				session.close();
+////				return false;
+////			}
+//			
+//			court.setEndDate(LocalDateTime.now());
+//			court.setAvailability("Inactive");
+//			this.saveCourt(court);
+//			session.close();
+//			return true;
+//
+//
+//	}
+//	
 	/*
 	 * Delete a single Court
 	 */

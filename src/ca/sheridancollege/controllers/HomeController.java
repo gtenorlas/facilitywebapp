@@ -8,6 +8,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -140,7 +142,7 @@ public class HomeController {
 		//LocalDateTime joiningDate = LocalDateTime.parse("2014-04-01 00:00:00", formatter);
 		//court.setEndDate(LocalDateTime.now());
 		//court.setEndDate(joiningDate);
-		
+		System.out.println(check);
 		Facility facility=facilityDao.getFacility(facilityId);
 		if (check == true) {
 			courtDAO.getCourt(courtNumber);
@@ -151,7 +153,7 @@ public class HomeController {
 		//facility.getCourts().remove(court);
 		facility.getCourts();
 		facilityDao.saveFacility(facility);
-		
+		model.addAttribute("courtDeleted",false);
 		model.addAttribute("facility",facility);
 		
 		System.out.println("load facility page");
@@ -216,6 +218,29 @@ public class HomeController {
 		return "facilities";
 	}
 	
+	/*
+	 * Retrieve all facilities and view them to facilities.jsp based on keyword search
+	 */
+	@RequestMapping(value="/searchBooking", method=RequestMethod.GET)  
+	public String searchBooking(Model model, @RequestParam String customerName,  @RequestParam String status, @RequestParam String startDT) {
+		
+		LocalDateTime localDateTime = null;
+		if (startDT!=null) {
+			localDateTime = LocalDateTime.parse(startDT);
+
+		}
+		List<Booking> bookings=bookingDAO.searchBookings(customerName,status,localDateTime);
+		System.out.println(bookings);
+		
+	//	this.bookings(model);
+		System.out.println("load facility page");
+			
+		
+		return "bookings";
+	}
+	
+
+	
 	@RequestMapping(value="/createCourt/{facilityId}", method=RequestMethod.GET)
 	public String createCourt(Model model, @PathVariable int facilityId) {
 	
@@ -259,12 +284,31 @@ public class HomeController {
 	 * Method to handle when creating a new facility or updating a facility
 	 */
 	@RequestMapping(value="/saveBooking", method=RequestMethod.GET) 
-	public String saveBooking(Model model, @ModelAttribute("booking") Booking booking, @RequestParam int courtNumber) {
+	public String saveBooking(Model model, @ModelAttribute("booking") Booking booking, @RequestParam int courtNumber , @RequestParam String startDT, @RequestParam String endDT) {
 
+		LocalDateTime localstartdatetime=null;
+		LocalDateTime localenddatetime=null;
+		System.out.println("update date: " );
 		Court courtToSave = courtDAO.getCourt(courtNumber);
+		if (startDT!=null) {
+			 localstartdatetime = LocalDateTime.parse(startDT);
+
+		}
+		 if (endDT!=null) {
+			localenddatetime = LocalDateTime.parse(startDT);
+		}
+		booking.setEndDateTime(localenddatetime);
+		booking.setStartDateTime(localstartdatetime);
 		courtToSave.getBookings().remove(booking);
 		courtToSave.getBookings().add(booking);
 		courtDAO.saveCourt(courtToSave);
+		System.out.println("Trying to save Court : " + courtToSave.getCourtName());
+		this.bookings(model);
+		
+//		Booking bookingToSave = bookingDAO.getBookingByID(1);
+//		bookingToSave.getAllBookings().remove(booking);
+//		bookingToSave.getAllBookings().add(booking);
+//		bookingDAO.saveBooking(bookingToSave);
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Facility facility=facilityDao.getFacility(authentication.getName());

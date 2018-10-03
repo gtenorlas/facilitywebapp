@@ -76,7 +76,7 @@ public class RestHomeController {
 		LocalDateTime endDateTimeLocal = LocalDateTime.parse(endDateTime, formatter);
 
 		
-		Booking booking = new Booking(customerName, bookingDate, bookingType, status, startDateTimeLocal, endDateTimeLocal);
+		Booking booking = new Booking(customerName, bookingDate, bookingType, status, startDateTimeLocal, endDateTimeLocal, null);
 		
 		Court court = courtDAO.getCourt(courtId);
 		court.getBookings().add(booking); //add the booking to the particular court

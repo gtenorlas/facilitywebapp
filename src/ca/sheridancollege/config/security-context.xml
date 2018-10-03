@@ -34,6 +34,7 @@
 		<security:intercept-url pattern="/facilities" access="permitAll" />
 		<security:intercept-url pattern="/contactUs" access="permitAll" />
 		<security:intercept-url pattern="/search" access="permitAll" />
+		<security:intercept-url pattern="/searchBooking" access="permitAll" />
 		<security:intercept-url pattern="/css/**" access="permitAll" />
 		<security:intercept-url pattern="/scripts/**" access="permitAll" />
 		<security:intercept-url pattern="/images/**" access="permitAll" />

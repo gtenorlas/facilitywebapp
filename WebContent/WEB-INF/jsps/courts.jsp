@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <t:mainLayout>
     <jsp:body> 	
-<c:choose>
+			<!-- 		<c:choose>
 						 <c:when test="${courtDeleted}">
 					    	<div>Court successfully deleted!</div>
 						</c:when>    
@@ -11,6 +11,18 @@
 					    	<div>Court couldn't deleted!</div>
 						</c:otherwise>
 					</c:choose>
+					 -->
+					 
+					<c:if test="${courtDeleted}">
+					<div>Court successfully deleted!</div>
+					</c:if>
+					<c:if test="${courtDeleted==false}">
+					<div>Court could not be deleted!</div>
+					</c:if>
+					<c:if test="${courtDeleted==null}">
+					<div></div>
+					</c:if>
+					
 		<div class="container">
 		<div class="row">
 	  			<div class="col-md-12">

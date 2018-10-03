@@ -12,9 +12,12 @@
 			
 			<c:url value="/saveBooking" var="url" />
 				<form:form modelAttribute="booking" method="GET" action="${url}"  name="bookingForm"> 
+				<input name="facilityId" type=hidden value="${facilityId}"/>
 					<input name="courtNumber" type=hidden value="${courtNumber}"/>
 					<form:input path="bookingId" type="hidden" value="${booking.bookingId}"/>
-					<!--<form:input path="bookingDate" type="hidden" value="${booking.bookingDate}"/>  
+					<!--
+					<input type="datetime-local" required="false"  /> 
+					<form:input path="bookingDate" type="hidden" value="${booking.bookingDate}"/>  
 				  	<form:input path="bookingType" type="hidden" value="${booking.bookingType}"/>
 				  	<form:input path="customerName" type="hidden" value="${booking.customerName}"/>
 				  	<form:input path="endDateTime" type="hidden" value="${booking.endDateTime}"/>
@@ -40,13 +43,26 @@
 				    <div class="form-group row">
 				    	<form:label path="status" class="col-md-12 col-form-label">Status (select one)*:</form:label>
 				       <div class="col-md-12">
-				      		<form:select path="status" items="${ booking.status()}" value="${booking.status }" class="form-control"/>	
+				      		<form:select path="status" items="${ booking.status()}" value="${booking.status}" class="form-control"/>	
 				       </div>
 				    </div>
 				    
-				    
 				    <div class="form-group row">
-				    	<form:label path="comment" class="col-md-12 col-form-label">Comment:</form:label>
+				    	<form:label path="startDateTime" class="col-md-12 col-form-label">Booking Start Date/Time:</form:label>
+				       <div class="col-md-12">
+				      		<input  type="datetime-local" required="false"  name = "startDT" value="${booking.startDateTime}" class="form-control"/>    	
+				       </div>
+				    </div>
+				      
+				    <div class="form-group row">
+				    	<form:label path="endDateTime" class="col-md-12 col-form-label">Booking End Date/Time:</form:label>
+				       <div class="col-md-12">
+				      		<input  type="datetime-local" required="false" name = "endDT" value="${booking.endDateTime}" class="form-control"/>    	
+				       </div>
+				    </div>
+				  
+				    <div class="form-group row">
+				    	<form:label path="comment" class="col-md-12 col-form-label">Reason:</form:label>
 				       <div class="col-md-12">
 				      		<form:input path="comment" type="text" required="false" value="${booking.comment}" class="form-control"/>    	
 				       </div>

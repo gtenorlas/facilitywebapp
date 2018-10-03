@@ -1,5 +1,6 @@
 package ca.sheridancollege.DAO;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -71,6 +72,83 @@ public class BookingDAO {
 		session.close();
 
 		return booking;
+	}
+
+	public List<Booking> searchBookings(String customerName, String status, LocalDateTime localDateTime) {
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		
+		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+
+		
+		
+		CriteriaQuery<Booking> criteria = criteriaBuilder.createQuery(Booking.class);
+		Root<Booking> root = criteria.from(Booking.class);
+		
+//		LocalDateTime localDateTime = null;
+//		if (startDT!=null) {
+//			localDateTime = LocalDateTime.parse(startDT);
+//
+//		}
+		
+		if(customerName == null && status != null && localDateTime != null) {
+			criteria.where(criteriaBuilder.and(
+					criteriaBuilder.like(root.get("status"), "%" + status + "%"),
+					criteriaBuilder.like(root.get("startDateTime"), "%" + localDateTime + "%")
+					));
+		}
+		else if (status == null && customerName != null && localDateTime != null) {
+			criteria.where(criteriaBuilder.and
+				    (criteriaBuilder.like(root.get("customerName"), "%" + customerName + "%"),
+					criteriaBuilder.like(root.get("startDateTime"), "%" + localDateTime + "%")
+					));
+		}
+		else if (localDateTime == null && customerName != null && status != null) {
+			criteria.where(criteriaBuilder.and
+				    (criteriaBuilder.like(root.get("status"), "%" + status + "%"),
+					criteriaBuilder.like(root.get("startDateTime"), "%" + localDateTime + "%")
+					));
+		}
+		else if (localDateTime == null && status == null && customerName != null) {
+			criteria.where(criteriaBuilder.and
+				    (criteriaBuilder.like(root.get("customerName"), "%" + customerName + "%")
+					));
+		}
+		else if (localDateTime == null && customerName == null && status != null) {
+			criteria.where(criteriaBuilder.and
+				    (criteriaBuilder.like(root.get("status"), "%" + status + "%")
+					));
+		}
+		else if (localDateTime != null && customerName == null && status == null) {
+			criteria.where(criteriaBuilder.and
+				    (criteriaBuilder.like(root.get("startDateTime"), "%" + localDateTime + "%")
+					));
+		}
+		else if (localDateTime != null && customerName != null && status != null) {
+			criteria.where(criteriaBuilder.and
+					(criteriaBuilder.like(root.get("customerName"), "%" + customerName + "%"),
+							criteriaBuilder.like(root.get("status"), "%" + status + "%"),
+							criteriaBuilder.like(root.get("startDateTime"), "%" + localDateTime + "%")
+							));
+		}
+
+//		criteria.where(criteriaBuilder.and
+//			    (criteriaBuilder.like(root.get("customerName"), "%" + customerName + "%"),
+//				//criteriaBuilder.like(root.get("bookingType"), "%" + courtName + "%"),
+//				criteriaBuilder.like(root.get("status"), "%" + status + "%"),
+//				criteriaBuilder.like(root.get("startDateTime"), "%" + startDT + "%")
+//				));
+		
+		//criteria.orderBy(criteriaBuilder.asc(root.get("facilityName")));
+		
+		
+		List<Booking> bookingList = session.createQuery(criteria).getResultList();
+		
+		
+		session.getTransaction().commit();
+		session.close();
+		
+		return bookingList;
 	}
 
 }
