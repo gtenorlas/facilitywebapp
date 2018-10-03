@@ -61,10 +61,10 @@ public class RestHomeController {
 
 	// new Booking(id, bookingDate, bookingType, status, startDateTime,
 	// endDateTime));
-	@RequestMapping(value = "/bookingList/{customerName}/{bookingType}/{status}/{startDateTime}/{endDateTime}/{courtId}", method = {RequestMethod.OPTIONS, RequestMethod.POST})
+	@RequestMapping(value = "/bookingList/{customerName}/{bookingType}/{status}/{startDateTime}/{endDateTime}/{duration}/{courtId}", method = {RequestMethod.OPTIONS, RequestMethod.POST})
 	public String postBookingListItem(@PathVariable String customerName,
 			@PathVariable String bookingType, @PathVariable String status, @PathVariable String startDateTime,
-			@PathVariable String endDateTime, @PathVariable int courtId) {
+			@PathVariable String endDateTime, @PathVariable double duration, @PathVariable int courtId) {
 		
 		//DateTimeFormatter FMT = new DateTimeFormatterBuilder().appendPattern("MM-dd-yyyy-HH-mm")
 			//	.parseDefaulting(ChronoField.NANO_OF_DAY, 0).toFormatter().withZone(ZoneId.of("America/Toronto"));
@@ -76,7 +76,7 @@ public class RestHomeController {
 		LocalDateTime endDateTimeLocal = LocalDateTime.parse(endDateTime, formatter);
 
 		
-		Booking booking = new Booking(customerName, bookingDate, bookingType, status, startDateTimeLocal, endDateTimeLocal, null);
+		Booking booking = new Booking(customerName, bookingDate, bookingType, status, startDateTimeLocal, endDateTimeLocal,duration, null);
 		
 		Court court = courtDAO.getCourt(courtId);
 		court.getBookings().add(booking); //add the booking to the particular court

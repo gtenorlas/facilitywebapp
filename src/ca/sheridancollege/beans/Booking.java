@@ -28,6 +28,7 @@ public class Booking implements Serializable {
 	private String status;
 	private LocalDateTime startDateTime;
 	private LocalDateTime endDateTime;
+	private double duration;
 	private String comment;
 	
 	public Booking (int bookingId) {
@@ -35,7 +36,7 @@ public class Booking implements Serializable {
 	}
 	
 	public Booking(String customerName, LocalDateTime bookingDate, String bookingType, String status, LocalDateTime startDateTime,
-			LocalDateTime endDateTime, String comment) {
+			LocalDateTime endDateTime, double duration, String comment) {
 		super();
 		this.customerName = customerName;
 		this.bookingDate = bookingDate;
@@ -43,11 +44,12 @@ public class Booking implements Serializable {
 		this.status = status;
 		this.startDateTime = startDateTime;
 		this.endDateTime = endDateTime;
+		this.duration=duration;
 		this.comment = comment;
 	}
 	
 	public static String[] status(){
-		return new String[] {"Active","Cancel"};
+		return new String[] {"","Active","Completed","Cancelled"};
 	}
 
 	@Override
