@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 
@@ -341,6 +342,15 @@ public class HomeController {
 		booking.setEndDateTime(localenddatetime);
 		booking.setStartDateTime(localstartdatetime);
 		booking.setBookingDate(LocalDateTime.now());
+		
+		//calculate the duration first
+		// long diffInHours = ChronoUnit.HOURS.between(booking.getEndDateTime(),booking.getStartDateTime());
+		    long diffInMinutes = ChronoUnit.MINUTES.between(booking.getEndDateTime(),booking.getStartDateTime());
+		    
+		 //String hourDuration=(diffInHours + "."+diffInMinutes);
+		   System.out.println("minutes : " + diffInMinutes);
+		 booking.setDuration(Math.abs(diffInMinutes)/60.0);
+		
 		courtToSave.getBookings().remove(booking);
 		courtToSave.getBookings().add(booking);
 		courtDAO.saveCourt(courtToSave);

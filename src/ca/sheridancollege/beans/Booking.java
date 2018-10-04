@@ -1,6 +1,7 @@
 package ca.sheridancollege.beans;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 
@@ -72,6 +73,11 @@ public class Booking implements Serializable {
 		int result = 1;
 		result = prime * result + bookingId;
 		return result;
+	}
+	
+	public String getCost(Court court) {
+		NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+		return currencyFormat.format(this.duration * court.getPrice());
 	}
 
 	

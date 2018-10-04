@@ -48,6 +48,13 @@
 					      </div>
 				      </div>
 			  </form:form>
+			  <hr style="height:3px;"/>
+			  	  	  <div class="form-group row">
+					      <div class="offset-md-6 col-md-12">
+					        	<c:url value="/pdfs/report" var="urlPdf" />
+	<a href="${urlPdf}" class="btn btn-primary">Download Report</a>
+					      </div>
+				      </div>
 		  
 		<h1>All Bookings</h1> 
 		  <table class="table table-striped">
@@ -59,6 +66,7 @@
 		     <th>Status</th>
 		     <th>Booking Start Date/Time</th>
 		     <th>Booking End Date/Time</th>
+		     <th>Cost</th>
 		     <th>Edit</th>
 		     <!-- <th>Delete</th> -->
 		  </tr>
@@ -82,6 +90,8 @@
 						<fmt:formatDate pattern="E yyyy-MM-dd hh:mm" value="${ parsedDateTime }" var="formattedDate" />
 					
 	  					<td> ${ formattedDate }</td>
+	  					
+	  					<td> ${ booking.getCost(item)}</td>
 	  					<td><c:url value="/bookings/edit/${booking.bookingId}/${item.courtNumber}" var="editUrl"/>
 				<a href="${editUrl }">Edit</a></td>
 				<!-- 
@@ -95,11 +105,5 @@
 
 		</table>
 		</div>
-		<div class="row">
-	<div class="col-md-4 text-center">
-	<c:url value="/pdfs/report" var="urlPdf" />
-	<a href="${urlPdf}" class="btn btn-primary">Download Report</a>
-	</div>
-	</div>
     </jsp:body>
 </t:mainLayout>
