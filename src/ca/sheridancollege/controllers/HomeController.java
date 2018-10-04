@@ -295,10 +295,11 @@ public class HomeController {
 
 		}
 		 if (endDT!=null) {
-			localenddatetime = LocalDateTime.parse(startDT);
+			localenddatetime = LocalDateTime.parse(endDT);
 		}
 		booking.setEndDateTime(localenddatetime);
 		booking.setStartDateTime(localstartdatetime);
+		booking.setBookingDate(LocalDateTime.now());
 		courtToSave.getBookings().remove(booking);
 		courtToSave.getBookings().add(booking);
 		courtDAO.saveCourt(courtToSave);

@@ -27,7 +27,7 @@
 				    <div class="form-group row">
 				    	<form:label path="customerName" class="col-md-12 col-form-label">Customer Name:</form:label>
 				       <div class="col-md-12">
-				      		<form:input path="customerName" type="text" required="false" value="${booking.customerName}" class="form-control"/>    	
+				      		<form:input path="customerName" type="text" required="false" value="${booking.customerName}" class="form-control" readonly="true"/>    	
 				       </div>
 				    </div>
 				    
@@ -36,7 +36,7 @@
 				    <div class="form-group row">
 				    	<form:label path="bookingType" class="col-md-12 col-form-label">Booking Type:</form:label>
 				       <div class="col-md-12">
-				      		<form:input path="bookingType" type="text" required="false" value="${booking.bookingType}" class="form-control"/>    	
+				      		<form:input path="bookingType" type="text" required="false" value="${booking.bookingType}" class="form-control" readonly="true"/>    	
 				       </div>
 				    </div>
 				    
