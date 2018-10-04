@@ -95,9 +95,11 @@
 
 		</table>
 		</div>
-	<div>
-	<c:url value="/pdfs/hershey_centre_gtenorlas.pdf" var="urlPdf" />
-	<a href="${urlPdf}" target="_blank" class="btn btn-default">Download Report</a>
+		<div class="row">
+	<div class="col-md-4 text-center">
+	<c:url value="/pdfs/report" var="urlPdf" />
+	<a href="${urlPdf}" class="btn btn-primary">Download Report</a>
+	</div>
 	</div>
     </jsp:body>
 </t:mainLayout>

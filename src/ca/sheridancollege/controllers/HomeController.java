@@ -61,14 +61,15 @@ public class HomeController {
 	}
 		
 	@RequestMapping(value = "/pdfs/{file}", method = RequestMethod.GET)
-    public void getLogFile(HttpSession session,HttpServletResponse response, @PathVariable String file) throws Exception {
+    public void getLogFile(Model model, @PathVariable String file, HttpSession session,HttpServletResponse response) throws Exception {
         try {
-
-        	App createPdf=new App();
-        	createPdf.main();
-        	System.out.println("back to controller for saving file");
         	
-            String fileName="html_header_footer.pdf";
+        	
+
+        	
+        
+        	
+            String fileName="Report.pdf";
             //String filePathToBeServed = "D:\\Semester6Java\\A0Project\\WebContent\\pdfs\\";
             String filePathToBeServed = "/images/";
             File fileToDownload = new File(filePathToBeServed+fileName);
@@ -108,14 +109,26 @@ public class HomeController {
 	@RequestMapping(value="/bookings", method=RequestMethod.GET)  
 	public String bookings(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username=null;
+		Facility facility=null;
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
-		    String username = authentication.getName(); //grab the user currently authenticated
+		    username = authentication.getName(); //grab the user currently authenticated
 
-			Facility facility=facilityDao.getFacility(username);
+			 facility=facilityDao.getFacility(username);
 			model.addAttribute("facility",facility);
 			System.out.println("load facility page");
 		}
 		
+		//create the pdf before showing the courts
+		App createPdf=new App();
+		try {
+			System.out.println("facility court size: "+facility.getCourts().size());
+			createPdf.main(facility, username);
+		}catch(Exception e) {
+			System.out.println("Cannot create pdf");
+		}
+    	
+    	
 		return "bookings";
 	}
 	
