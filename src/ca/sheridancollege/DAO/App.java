@@ -31,14 +31,27 @@ import ca.sheridancollege.beans.Court;
 import ca.sheridancollege.beans.Facility;
 
 public class App {
-	public static final String DEST = "/images/Report.pdf";
-	public static final String REPORTFINAL = "/images/Report.pdf";
-	public static final String HEADER = "<table width=\"100%\" border=\"0\"><tr><td><img src=\"/images/logomini.jpg\" width=25 height=25 alt=\"Book2Ball\" /></td><td align=\"right\">Hershey Centre</td></tr></table>";
-	
+	public String DEST; // = "/images/Report.pdf";
+	public  String REPORTFINAL; //= "/images/Report.pdf";
+	public String HEADER;
+	public String FOOTER;// = "<table width=\"100%\" border=\"0\"><tr><td>Printed on October 2, 2018 by "+username+"</td><td align=\"right\">Page 1 of 4</td></tr></table>";
+
 	public static int totalPageNum = 0;
 	private Facility facility;
 	private String username;
-	public String FOOTER = "<table width=\"100%\" border=\"0\"><tr><td>Printed on October 2, 2018 by "+username+"</td><td align=\"right\">Page 1 of 4</td></tr></table>";
+	
+	
+	public App(Facility facility, String username) {
+		 this.facility=facility;
+		 this.username=username;
+		 DEST = "/images/Report.pdf";
+		 REPORTFINAL = "/images/Report.pdf";
+		 String image = "/images/logomini.jpg";
+		 HEADER = "<table width=\"100%\" border=\"0\"><tr><td><img src=\'"+ image + "' width=25 height=25 alt=\"Book2Ball\" /></td><td align=\"right\">"+facility.getFacilityName()+"</td></tr></table>";
+		 FOOTER = "<table width=\"100%\" border=\"0\"><tr><td>Printed on October 2, 2018 by "+username+"</td><td align=\"right\">Page 1 of 4</td></tr></table>";
+
+
+	}
 	
 	public class HeaderFooter extends PdfPageEventHelper {
 		protected ElementList header;
@@ -57,7 +70,7 @@ public class App {
 				ColumnText ct = new ColumnText(writer.getDirectContent());
 				// ct.setSimpleColumn(new Rectangle(36, 832, 559, 810));
 				// ct.setSimpleColumn(new Rectangle(36, 832, 559, 750)); //FOR A4 WITH IMAGE
-				ct.setSimpleColumn(new Rectangle(36, 770, 559, 730));
+				ct.setSimpleColumn(new Rectangle(36, 770, 559, 720));
 				// Image image = Image.getInstance("results/events/logomini.png");
 				// image.scaleToFit(25, 25);
 				// ct.addElement(image);
@@ -100,9 +113,8 @@ public class App {
 
 	}
 
-	public void main(Facility facility, String username) throws IOException, DocumentException {
-		this.facility = facility;
-		this.username = username;
+	public void main() throws IOException, DocumentException {
+
 		// create a dummy pdf file to get the page number
 		File file = new File(DEST);
 		file.getParentFile().mkdirs();

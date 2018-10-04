@@ -120,10 +120,10 @@ public class HomeController {
 		}
 		
 		//create the pdf before showing the courts
-		App createPdf=new App();
+		App createPdf=new App(facility, username);
 		try {
 			System.out.println("facility court size: "+facility.getCourts().size());
-			createPdf.main(facility, username);
+			createPdf.main();
 		}catch(Exception e) {
 			System.out.println("Cannot create pdf");
 		}
