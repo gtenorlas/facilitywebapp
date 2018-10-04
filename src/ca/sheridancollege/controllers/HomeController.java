@@ -1,14 +1,18 @@
 package ca.sheridancollege.controllers;
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import org.springframework.http.MediaType;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,13 +20,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import ca.sheridancollege.DAO.App;
 import ca.sheridancollege.DAO.BookingDAO;
 import ca.sheridancollege.DAO.CourtDAO;
 //import ca.sheridancollege.DAO.DAO;
@@ -33,6 +37,7 @@ import ca.sheridancollege.beans.Court;
 import ca.sheridancollege.beans.Facility;
 import ca.sheridancollege.beans.User;
 import ca.sheridancollege.beans.UserRole;
+
 
 @Controller //specify that this class is a controller
 @RequestMapping("/")
@@ -55,7 +60,30 @@ public class HomeController {
 		return "contactUs";
 	}
 		
-	
+	@RequestMapping(value = "/pdfs/{file}", method = RequestMethod.GET)
+    public void getLogFile(HttpSession session,HttpServletResponse response, @PathVariable String file) throws Exception {
+        try {
+
+        	App createPdf=new App();
+        	createPdf.main();
+        	System.out.println("back to controller for saving file");
+        	
+            String fileName="html_header_footer.pdf";
+            //String filePathToBeServed = "D:\\Semester6Java\\A0Project\\WebContent\\pdfs\\";
+            String filePathToBeServed = "/images/";
+            File fileToDownload = new File(filePathToBeServed+fileName);
+
+            InputStream inputStream = new FileInputStream(fileToDownload);
+            response.setContentType("application/force-download");
+            response.setHeader("Content-Disposition", "attachment; filename="+fileName); 
+            IOUtils.copy(inputStream, response.getOutputStream());
+            response.flushBuffer();
+            inputStream.close();
+        } catch (Exception exception){
+            System.out.println(exception.getMessage());
+        }
+
+    }
 		
 	/*
 	 * CRUD can be operated only when user is logged in.

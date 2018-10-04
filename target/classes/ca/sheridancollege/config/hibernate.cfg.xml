@@ -5,7 +5,7 @@
 	<session-factory>
 		<!-- Database connection settings -->
 		<property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-		<property name="connection.url">jdbc:mysql://localhost:3306/hibernatedbex91?useSSL=false&amp;serverTimezone=America/Toronto</property>
+		<property name="connection.url">jdbc:mysql://localhost:3306/hibernatedbex91?serverTimezone=America/Toronto</property>
 		<property name="connection.username">book2ball</property>
 		<property name="connection.password">Book2ball!</property>
 
@@ -17,7 +17,7 @@
 
 		<!-- Drop and re-create the database schema on startup -->
 		<!-- Use update for production instead of create -->
-		<property name="hbm2ddl.auto">create</property>
+		<property name="hbm2ddl.auto">update</property>
 
 		<!-- dbcp connection pool configuration -->
 		<property name="dbcp.initialSize">5</property>

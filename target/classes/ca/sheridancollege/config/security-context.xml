@@ -26,7 +26,7 @@
 		<security:intercept-url pattern="/createCourt/**" access="isAuthenticated()" />
 		<security:intercept-url pattern="/saveCourt" access="isAuthenticated()" />
 		<security:intercept-url pattern="/saveBooking" access="isAuthenticated()" />
-		<security:intercept-url pattern="/pdfs/**" access="isAuthenticated()" />
+		<security:intercept-url pattern="/pdfs/**" access="permitAll" />
 		
 		<security:intercept-url pattern="/saveFacility" access="permitAll" />
 		<security:intercept-url pattern="/updateBooking" access="permitAll" />
