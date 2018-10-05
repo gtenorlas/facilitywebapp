@@ -159,7 +159,7 @@ public class App {
 		PdfPTable table = new PdfPTable(6);
 		table.setTotalWidth(45);
 		;
-		table.setWidths(new int[] { 6, 6, 3, 8, 8, 4 });
+		table.setWidths(new int[] { 7, 6, 4, 7, 7,  6});
 
 		PdfPCell c1 = new PdfPCell(new Phrase("Court", headerFont));
 		c1.setHorizontalAlignment(1);

@@ -7,6 +7,11 @@ color:red;
   height: 100%;
 }
  
+li.disabled{
+	text-align:right;
+	color: red;
+}
+
 
 .wrapper {
     min-height: 100%;

@@ -266,17 +266,30 @@ public class HomeController {
 	@RequestMapping(value="/searchBooking", method=RequestMethod.GET)  
 	public String searchBooking(Model model, @RequestParam String customerName,  @RequestParam String status, @RequestParam String startDT) {
 		
+		System.out.println("filter booking");
 		LocalDateTime localDateTime = null;
-		if (startDT!=null) {
+		if (!startDT.equals("")) {
 			localDateTime = LocalDateTime.parse(startDT);
 
 		}
+		if (status.equals("")) {
+			status = null;
+
+		}
 		List<Booking> bookings=bookingDAO.searchBookings(customerName,status,localDateTime);
-		System.out.println(bookings);
+		System.out.println("Bokings are these"+bookings);
+		//booking
 		
-	//	this.bookings(model);
-		System.out.println("load facility page");
-			
+//Facility facility=new Facility();
+//		for (Booking each : bookings) {
+//			Court court=new Court();
+//			court.setCourtNumber(each.get);
+//		}
+
+		
+		model.addAttribute("bookings",bookings);
+		
+
 		
 		return "bookings";
 	}

@@ -63,6 +63,8 @@
 				    </div>
 				  </div>
 				</form>
+				
+				
 			    <ul class="nav navbar-nav navbar-right">
 			    
 			      <!-- check if user is logged in -->
@@ -70,6 +72,7 @@
 						 <c:when test="${not empty pageContext.request.userPrincipal}">
 					    	<!-- Have user to be able to logout -->
 					    	<c:url value="/logout" var="logoutUrl" />
+					    	<li class="navbar-text" >       ${facility.facilityName}     /      ${pageContext.request.userPrincipal.name}</li>
 							<li><a href="${logoutUrl}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 						</c:when>    
 						<c:otherwise>

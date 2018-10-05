@@ -90,45 +90,43 @@ public class BookingDAO {
 //			localDateTime = LocalDateTime.parse(startDT);
 //
 //		}
-		
+		System.out.println("filtering");
 		if(customerName == null && status != null && localDateTime != null) {
 			criteria.where(criteriaBuilder.and(
-					criteriaBuilder.like(root.get("status"), "%" + status + "%"),
-					criteriaBuilder.like(root.get("startDateTime"), "%" + localDateTime + "%")
+					criteriaBuilder.equal(root.get("status"),  status),
+					criteriaBuilder.equal(root.get("startDateTime"), localDateTime)
 					));
 		}
 		else if (status == null && customerName != null && localDateTime != null) {
 			criteria.where(criteriaBuilder.and
 				    (criteriaBuilder.like(root.get("customerName"), "%" + customerName + "%"),
-					criteriaBuilder.like(root.get("startDateTime"), "%" + localDateTime + "%")
+					criteriaBuilder.equal(root.get("startDateTime"), localDateTime )
 					));
 		}
 		else if (localDateTime == null && customerName != null && status != null) {
-			criteria.where(criteriaBuilder.and
-				    (criteriaBuilder.like(root.get("status"), "%" + status + "%"),
-					criteriaBuilder.like(root.get("startDateTime"), "%" + localDateTime + "%")
+			criteria.where(criteriaBuilder.and(
+					criteriaBuilder.equal(root.get("status"),  status),
+					criteriaBuilder.equal(root.get("customerName"), customerName)
 					));
 		}
 		else if (localDateTime == null && status == null && customerName != null) {
-			criteria.where(criteriaBuilder.and
-				    (criteriaBuilder.like(root.get("customerName"), "%" + customerName + "%")
-					));
+			criteria.where (criteriaBuilder.like(root.get("customerName"), "%" + customerName + "%")
+					);
 		}
 		else if (localDateTime == null && customerName == null && status != null) {
-			criteria.where(criteriaBuilder.and
-				    (criteriaBuilder.like(root.get("status"), "%" + status + "%")
-					));
+			criteria.where(criteriaBuilder.like(root.get("status"),  status)
+					);
 		}
 		else if (localDateTime != null && customerName == null && status == null) {
-			criteria.where(criteriaBuilder.and
-				    (criteriaBuilder.like(root.get("startDateTime"), "%" + localDateTime + "%")
-					));
+			criteria.where
+				    (criteriaBuilder.equal(root.get("startDateTime"), localDateTime)
+					);
 		}
 		else if (localDateTime != null && customerName != null && status != null) {
 			criteria.where(criteriaBuilder.and
 					(criteriaBuilder.like(root.get("customerName"), "%" + customerName + "%"),
-							criteriaBuilder.like(root.get("status"), "%" + status + "%"),
-							criteriaBuilder.like(root.get("startDateTime"), "%" + localDateTime + "%")
+							criteriaBuilder.equal(root.get("status"),  status),
+							criteriaBuilder.equal(root.get("startDateTime"), localDateTime)
 							));
 		}
 
