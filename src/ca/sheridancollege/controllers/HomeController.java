@@ -437,7 +437,7 @@ public class HomeController {
 		User user = new User(username, encryptedPassword, true);
 		
 		
-		UserRole userRole = new UserRole(user, "ROLE_USER");
+		UserRole userRole = new UserRole(user, "ROLE_FACILITY_ADMIN");
 		user.getUserRole().add(userRole);
 		
 		//disable  the user first

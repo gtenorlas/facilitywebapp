@@ -17,7 +17,7 @@
 
 		<!-- Drop and re-create the database schema on startup -->
 		<!-- Use update for production instead of create -->
-		<property name="hbm2ddl.auto">update</property>
+		<property name="hbm2ddl.auto">create</property>
 
 		<!-- dbcp connection pool configuration -->
 		<property name="dbcp.initialSize">5</property>
@@ -32,5 +32,6 @@
 		<mapping class="ca.sheridancollege.beans.Booking" />
 		<mapping class="ca.sheridancollege.beans.Court" />
 		<mapping class="ca.sheridancollege.beans.Facility" />
+		<mapping class="ca.sheridancollege.beans.Customer" />
 	</session-factory>
 </hibernate-configuration>

@@ -26,6 +26,7 @@
 	<div class="wrapper">
 		<nav class="navbar navbar-inverse">
 			  <div class="container-fluid">
+			  
 			    <div class="navbar-header btn-primary">
 			     <c:url value="/" var="homeUrl" />
 			      <a class="navbar-brand" href="${homeUrl }" style="color:#f5f5f0;">Book2Ball</a>

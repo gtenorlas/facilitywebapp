@@ -46,8 +46,8 @@ public class App {
 		 this.username=username;
 		 DEST = "/images/Report.pdf";
 		 REPORTFINAL = "/images/Report.pdf";
-		 String image = "/images/logomini.jpg";
-		 HEADER = "<table width=\"100%\" border=\"0\"><tr><td><img src=\'"+ image + "' width=25 height=25 alt=\"Book2Ball\" /></td><td align=\"right\">"+facility.getFacilityName()+"</td></tr></table>";
+		 String image ="<c:url value=\"/images/logomini.jpg\" />";
+		 HEADER = "<%@tag description=\"Shared Template\" pageEncoding=\"UTF-8\"%><%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\"%><%@attribute name=\"title\" fragment=\"true\" %><table width=\"100%\" border=\"0\"><tr><td><img src='images/logomini.jpg' alt='Book2Ball' width=25 height=25/></td><td align=\"right\">"+facility.getFacilityName()+"</td></tr></table>";
 		 FOOTER = "<table width=\"100%\" border=\"0\"><tr><td>Printed on October 2, 2018 by "+username+"</td><td align=\"right\">Page 1 of 4</td></tr></table>";
 
 
@@ -84,7 +84,6 @@ public class App {
 				LocalDateTime currentDate = LocalDateTime.now();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMMM dd, yyyy 'at' hh:mm a");
 				String formatCurrentDateTime = currentDate.format(formatter);
-				String username = "Gene Tenorlas";
 				FOOTER = "<table width=\"100%\" border=\"0\"><tr><td>Printed on " + formatCurrentDateTime + " by "
 						+ username + "</td>";
 
