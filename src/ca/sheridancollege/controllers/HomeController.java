@@ -12,6 +12,7 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
@@ -21,6 +22,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -400,9 +402,12 @@ public class HomeController {
 	 * Method to handle when creating a new facility or updating a facility
 	 */
 	@RequestMapping(value="/saveFacility", method=RequestMethod.GET) 
-	public String saveFacility(Model model, @ModelAttribute("facility") Facility facilityToSave) {
+	public String saveFacility(Model model, @ModelAttribute("facility") @Valid Facility facilityToSave, BindingResult result) {
 
 
+		if (result.hasErrors()) {
+			return "createFacility";
+		}
 		
 		System.out.println("Trying to save facility : " + facilityToSave.getFacilityName());
 		

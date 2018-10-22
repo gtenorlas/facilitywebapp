@@ -34,9 +34,9 @@
 			</plugin>
 		</plugins>
 	</build>
-	  <properties>
-  <itext.version>5.5.13</itext.version>
-  </properties>
+	<properties>
+		<itext.version>5.5.13</itext.version>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>jstl</groupId>
@@ -96,7 +96,7 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.12</version>
 		</dependency>
-				<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
@@ -145,27 +145,39 @@
 			<artifactId>lombok</artifactId>
 			<version>1.18.2</version>
 		</dependency>
-		 <!-- https://mvnrepository.com/artifact/com.itextpdf/itextpdf -->
-<dependency>
-    <groupId>com.itextpdf</groupId>
-    <artifactId>itextpdf</artifactId>
-    <version>5.5.13</version>
-</dependency>
-<dependency>
-  <groupId>com.itextpdf</groupId>
-  <artifactId>itext-pdfa</artifactId>
-  <version>${itext.version}</version>
-</dependency>
-<dependency>
-  <groupId>com.itextpdf</groupId>
-  <artifactId>itext-xtra</artifactId>
-  <version>${itext.version}</version>
-</dependency>
-<!-- https://mvnrepository.com/artifact/com.itextpdf.tool/xmlworker -->
-<dependency>
-    <groupId>com.itextpdf.tool</groupId>
-    <artifactId>xmlworker</artifactId>
-    <version>5.5.7</version>
-</dependency>
+		<!-- https://mvnrepository.com/artifact/com.itextpdf/itextpdf -->
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itextpdf</artifactId>
+			<version>5.5.13</version>
+		</dependency>
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itext-pdfa</artifactId>
+			<version>${itext.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.itextpdf</groupId>
+			<artifactId>itext-xtra</artifactId>
+			<version>${itext.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.itextpdf.tool/xmlworker -->
+		<dependency>
+			<groupId>com.itextpdf.tool</groupId>
+			<artifactId>xmlworker</artifactId>
+			<version>5.5.7</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>6.0.13.Final</version>
+		</dependency>
+		<!-- Verify validation annotations usage at compile time -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator-annotation-processor</artifactId>
+			<version>6.0.13.Final</version>
+		</dependency>
 	</dependencies>
 </project>
