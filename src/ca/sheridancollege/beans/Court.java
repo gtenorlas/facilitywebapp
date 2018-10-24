@@ -2,12 +2,11 @@ package ca.sheridancollege.beans;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -22,6 +21,36 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
+/*
+ * Cascade = "all" means to apply all primary cascade types. As of Hibernate 5.3, these types are:
+
+"delete" / "remove",
+"detach" / "evict",
+"merge",
+"lock",
+"persist",
+"refresh",
+"replicate",
+"save_update" / "update"
+
+
+CREATE TABLE `Cart` (
+  `cart_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`cart_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+ 
+CREATE TABLE `Items` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `cart_id` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `cart_id` (`cart_id`),
+  CONSTRAINT `items_ibfk_1` FOREIGN KEY (`cart_id`) REFERENCES `Cart` (`cart_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+
+It is importing to note that the @ManyToOne annotation is associated with Court class variable. @JoinColumn annotation references the mapped column.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,12 +59,14 @@ import lombok.NoArgsConstructor;
 public class Court implements Serializable {
 	@Id
 	@GeneratedValue
+	@Column(name = "courtNumber")
 	private int courtNumber;
 	private String courtName;
 	private String availability;
 	private int maxPlayer;
 	@LazyCollection(LazyCollectionOption.FALSE)
-	@OneToMany(cascade = {CascadeType.ALL})
+	@OneToMany(mappedBy="court", cascade = {CascadeType.ALL})
+	///private Set<Booking> bookings=new HashSet<Booking>();
 	private List<Booking> bookings=new ArrayList<Booking>();
 	private String courtType;
 	private Double price;

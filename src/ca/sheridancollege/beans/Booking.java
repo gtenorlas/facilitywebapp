@@ -2,12 +2,13 @@ package ca.sheridancollege.beans;
 
 import java.io.Serializable;
 import java.text.NumberFormat;
-import java.time.Instant;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
@@ -30,10 +31,26 @@ public class Booking implements Serializable {
 	private LocalDateTime startDateTime;
 	private LocalDateTime endDateTime;
 	private double duration;
+	@ManyToOne
+    @JoinColumn(name="courtNumber", nullable=false)
+    private Court court;
 	private String comment;
 	
 	public Booking (int bookingId) {
 		this.bookingId=bookingId;
+	}
+	public Booking(String customerName, LocalDateTime bookingDate, String bookingType, String status, LocalDateTime startDateTime,
+			LocalDateTime endDateTime, double duration, Court court, String comment) {
+		super();
+		this.customerName = customerName;
+		this.bookingDate = bookingDate;
+		this.bookingType = bookingType;
+		this.status = status;
+		this.startDateTime = startDateTime;
+		this.endDateTime = endDateTime;
+		this.duration=duration;
+		this.court=court;
+		this.comment = comment;
 	}
 	
 	public Booking(String customerName, LocalDateTime bookingDate, String bookingType, String status, LocalDateTime startDateTime,
