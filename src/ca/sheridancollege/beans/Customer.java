@@ -3,40 +3,48 @@ package ca.sheridancollege.beans;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name="customer")
 public class Customer implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8624850542956011867L;
 	@Id
+	@Column(name = "username", unique = true, nullable = false, length = 45)
 	private String username;
-	@OneToOne(fetch = FetchType.EAGER)
-    @MapsId
-	private User user;
+	@Column(name = "password", nullable = false, length = 60)
+	private String password;
+	@Column(name = "firstname", unique = false, nullable = false, length = 255)
 	private String firstName;
+	@Column(name = "lastname", unique = false, nullable = false, length = 255)
 	private String lastName;
 	private String email;
+	@Column(name = "contactnumber", unique = false, nullable = false, length = 45)
 	private String contactNumber;
 	private LocalDateTime startDate;
 	private LocalDateTime endDate;		
 	private String status;
 	private String originate;
 	
-	public Customer(User user, String firstName, String lastName, String email, String contactNumber, LocalDateTime startDate, LocalDateTime endDate, String status, String originate) {
+	public Customer(String firstName, String lastName, String email, String contactNumber, LocalDateTime startDate, LocalDateTime endDate, String status, String originate) {
 		this.username = email;
-		this.user = user;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;

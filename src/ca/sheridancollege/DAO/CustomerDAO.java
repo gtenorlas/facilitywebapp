@@ -38,15 +38,12 @@ public class CustomerDAO {
 
 		Customer customer = null;
 
-		UserDAO userDAO = new UserDAO();
-		User user = userDAO.getUser(username, password);
-		if (user != null) {
+
 			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 			CriteriaQuery<Customer> criteria = criteriaBuilder.createQuery(Customer.class);
 			Root<Customer> root = criteria.from(Customer.class);
-			root.fetch("user", JoinType.LEFT); // include the user to fix the fetch lazy issue
 			criteria.select(root);
-			criteria.where(criteriaBuilder.and(criteriaBuilder.equal(root.get("user").get("username"), username),
+			criteria.where(criteriaBuilder.and(criteriaBuilder.equal(root.get("username"), username),
 					criteriaBuilder.isNull(root.get("endDate"))));
 			try {
 				customer = session.createQuery(criteria).getSingleResult();
@@ -61,9 +58,7 @@ public class CustomerDAO {
 
 				return customer;
 			}
-		}else {
-			return customer;
-		}
+
 
 	}
 

@@ -44,8 +44,8 @@ public class RestCustomerController {
 
 
 
-	@RequestMapping(value = "/{username}/{password}", method = RequestMethod.GET)
-	public Object getBookingList(@PathVariable String username, @PathVariable String password) {
+	@RequestMapping(value = "/{username}/{password}/{originate}", method = RequestMethod.GET)
+	public Object getBookingList(@PathVariable String username, @PathVariable String password, @PathVariable String originate) {
 		return customerDAO.getCustomer(username, password);
 	}
 	
@@ -57,16 +57,8 @@ public class RestCustomerController {
 			@PathVariable String endDate, @PathVariable String status, @PathVariable String originate) {
 		
 		String encryptedPassword = new BCryptPasswordEncoder().encode(password);
-		User user = new User(username, encryptedPassword, true);
-		
-		
-		UserRole userRole = new UserRole(user, "ROLE_CUSTOMER");
-		user.getUserRole().add(userRole);
-		
-		
-		// Generate random 36-character string token for confirmation link
-	    user.setConfirmationToken(UUID.randomUUID().toString());
-	    
+
+
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy-HH-mm");
 		LocalDateTime startDateTimeLocal = LocalDateTime.parse(startDate, formatter);
@@ -74,9 +66,8 @@ public class RestCustomerController {
 		if (endDate != null && !endDate.equals("null")) {
 			 endDateTimeLocal = LocalDateTime.parse(endDate, formatter);
 		}
-		UserDAO userDAO = new UserDAO();
-		userDAO.createUser(user);
-		Customer customer = new Customer(username, user, firstName, lastName, email, contactNumber, startDateTimeLocal, endDateTimeLocal, status, originate);
+
+		Customer customer = new Customer(username, encryptedPassword, firstName, lastName, email, contactNumber, startDateTimeLocal, endDateTimeLocal, status, originate);
 		customerDAO.saveCustomer(customer);
 		return "Customer is saved";
 	}
