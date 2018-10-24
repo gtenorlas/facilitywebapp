@@ -20,20 +20,16 @@ import ca.sheridancollege.beans.User;
 import ca.sheridancollege.beans.UserRole;
 
 @RestController // specify that this class is a restful controller
-@CrossOrigin(origins = { "*"}, maxAge = 6000)
+@CrossOrigin(origins = { "*" }, maxAge = 6000)
 @RequestMapping("/api/customer")
 public class RestCustomerController {
 	CustomerDAO customerDAO = new CustomerDAO();
-	
-	public RestCustomerController(){
+
+	public RestCustomerController() {
 		CorsRegistry registry = new CorsRegistry();
-		registry.addMapping("/api/customer")
-		.allowedOrigins("*", "http://localhost:8080")
-		.allowedMethods("POST", "GET", "PUT", "DELETE")
-		.allowedHeaders("Content-Type")
-		.exposedHeaders("header-1", "header-2")
-		.allowCredentials(false)
-		.maxAge(6000);
+		registry.addMapping("/api/customer").allowedOrigins("*", "http://localhost:8080")
+				.allowedMethods("POST", "GET", "PUT", "DELETE").allowedHeaders("Content-Type")
+				.exposedHeaders("header-1", "header-2").allowCredentials(false).maxAge(6000);
 	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET) // routing to home
@@ -42,36 +38,43 @@ public class RestCustomerController {
 
 	}
 
-
-
 	@RequestMapping(value = "/{username}/{password}/{originate}", method = RequestMethod.GET)
-	public Object getBookingList(@PathVariable String username, @PathVariable String password, @PathVariable String originate) {
-		return customerDAO.getCustomer(username, password);
+	public Object getBookingList(@PathVariable String username, @PathVariable String password,
+			@PathVariable String originate) {
+		if (originate.equals("standard")) {
+			return customerDAO.getCustomer(username, password);
+		} else {
+			return customerDAO.getCustomer(username);
+		}
 	}
-	
 
 	// new Booking(id, bookingDate, bookingType, status, startDateTime,
 	// endDateTime));
-	@RequestMapping(value = "/{username}/{password}/{firstName}/{lastName}/{email}/{contactNumber}/{startDate}/{endDate}/{status}/{originate}", method = {RequestMethod.OPTIONS, RequestMethod.POST})
-	public String postCustomerItem(@PathVariable String username, @PathVariable String password, @PathVariable String firstName, @PathVariable String lastName, @PathVariable String email, @PathVariable String contactNumber, @PathVariable String startDate,
-			@PathVariable String endDate, @PathVariable String status, @PathVariable String originate) {
-		
-		String encryptedPassword = new BCryptPasswordEncoder().encode(password);
+	@RequestMapping(value = "/{username}/{password}/{firstName}/{lastName}/{email}/{contactNumber}/{startDate}/{endDate}/{status}/{originate}", method = {
+			RequestMethod.OPTIONS, RequestMethod.POST })
+	public String postCustomerItem(@PathVariable String username, @PathVariable String password,
+			@PathVariable String firstName, @PathVariable String lastName, @PathVariable String email,
+			@PathVariable String contactNumber, @PathVariable String startDate, @PathVariable String endDate,
+			@PathVariable String status, @PathVariable String originate) {
 
+		// String encryptedPassword = new BCryptPasswordEncoder().encode(password);
 
-		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy-HH-mm");
 		LocalDateTime startDateTimeLocal = LocalDateTime.parse(startDate, formatter);
 		LocalDateTime endDateTimeLocal = null;
 		if (endDate != null && !endDate.equals("null")) {
-			 endDateTimeLocal = LocalDateTime.parse(endDate, formatter);
+			endDateTimeLocal = LocalDateTime.parse(endDate, formatter);
 		}
 
-		Customer customer = new Customer(username, encryptedPassword, firstName, lastName, email, contactNumber, startDateTimeLocal, endDateTimeLocal, status, originate);
-		customerDAO.saveCustomer(customer);
-		return "Customer is saved";
+		Customer customer = new Customer(username, password, firstName, lastName, email, contactNumber,
+				startDateTimeLocal, endDateTimeLocal, status, originate);
+		customer.setPassword(Customer.hashPassword(password));
+		if (!customerDAO.isDuplicate(username)) {
+			customerDAO.saveCustomer(customer);
+			return "Customer is saved";
+		} else {
+			return "Customer already exists.";
+		}
 	}
-
-
 
 }

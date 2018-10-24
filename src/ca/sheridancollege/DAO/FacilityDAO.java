@@ -40,7 +40,7 @@ public class FacilityDAO {
 		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 		CriteriaQuery<Facility> criteria = criteriaBuilder.createQuery(Facility.class);
 		Root<Facility> root = criteria.from(Facility.class);
-
+		root.fetch("courts",JoinType.LEFT);
 		criteria.select(root);
 
 		List<Facility> facilities = session.createQuery(criteria).getResultList();
