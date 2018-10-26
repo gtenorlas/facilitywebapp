@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import antlr.StringUtils;
 import ca.sheridancollege.DAO.App;
 import ca.sheridancollege.DAO.BookingDAO;
 import ca.sheridancollege.DAO.CourtDAO;
@@ -268,15 +270,33 @@ public class HomeController {
 	@RequestMapping(value="/searchBooking", method=RequestMethod.GET)  
 	public String searchBooking(Model model, @RequestParam String customerName,  @RequestParam String status, @RequestParam String startDT) {
 		
+		Facility facility = null;
+		
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+		    String username = authentication.getName(); //grab the user currently authenticated
+
+			facility=facilityDao.getFacility(username);
+			
+
+		}
+		
 		System.out.println("filter booking");
+		System.out.println("startDT " + startDT);
 		LocalDateTime localDateTime = null;
+	
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		if (!startDT.equals("")) {
-			localDateTime = LocalDateTime.parse(startDT);
+			startDT += " 11:05";
+			localDateTime = LocalDateTime.parse(startDT,formatter);
 
 		}
 		if (status.equals("")) {
 			status = null;
 
+		}
+		if (customerName.equals("")) {
+			customerName=null;
 		}
 		List<Booking> bookings=bookingDAO.searchBookings(customerName,status,localDateTime);
 		System.out.println("Bokings are these"+bookings);
@@ -289,9 +309,10 @@ public class HomeController {
 //		}
 
 		
-		model.addAttribute("bookings",bookings);
 		
-
+	//	model.addAttribute("bookings",bookings);
+		
+		model.addAttribute("facility",facility);
 		
 		return "bookings";
 	}
@@ -365,6 +386,8 @@ public class HomeController {
 		 //String hourDuration=(diffInHours + "."+diffInMinutes);
 		   System.out.println("minutes : " + diffInMinutes);
 		 booking.setDuration(Math.abs(diffInMinutes)/60.0);
+		 
+		 booking.setCourt(courtToSave); //added 10/25/2018
 		
 		courtToSave.getBookings().remove(booking);
 		courtToSave.getBookings().add(booking);

@@ -35,33 +35,7 @@ public class RestFacilityController {
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET) // routing to home
 	public Object facilityItem(Model model, @PathVariable String id) {
-		try {
-			System.out.println("trying to get json object from facility");
-			URL url = new URL("http://localhost:8080/com.spring/api/facility/");
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("GET");
-			conn.connect();
-			int responsecode = conn.getResponseCode();
-
-			if (responsecode != 200)
-				throw new RuntimeException("HttpResponseCode: " + responsecode);
-			else {
-				Scanner sc = new Scanner(url.openStream());
-				StringBuilder inline=new StringBuilder();
-				while(sc.hasNext())
-				{
-					inline.append(sc.nextLine()+"\n");
-				}
-				System.out.println("\nJSON data in string format");
-				System.out.println(inline);
-				sc.close();
-			}
-
-		} catch (Exception e) {
-
-		}
-
-		return facilityDAO.getFacilities();
+		return facilityDAO.getFacility(id);
 	}
 
 }

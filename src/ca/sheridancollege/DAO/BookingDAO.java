@@ -83,41 +83,38 @@ public class BookingDAO {
 		CriteriaQuery<Booking> criteria = criteriaBuilder.createQuery(Booking.class);
 		Root<Booking> root = criteria.from(Booking.class);
 
-//		LocalDateTime localDateTime = null;
-//		if (startDT!=null) {
-//			localDateTime = LocalDateTime.parse(startDT);
-//
-//		}
+
 		System.out.println("filtering");
 		if (customerName == null && status != null && localDateTime != null) {
-			criteria.where(criteriaBuilder.and(criteriaBuilder.equal(root.get("status"), status),
-					criteriaBuilder.equal(root.get("startDateTime"), localDateTime)));
+			System.out.println("option 1 filtering");
+			Predicate isDateMatch = criteriaBuilder.greaterThanOrEqualTo(root.get("startDateTime"), localDateTime);
+			Predicate isStatusMatch = criteriaBuilder.equal(root.get("status"), status);
+			criteria.where(criteriaBuilder.and(isDateMatch,isStatusMatch));
 		} else if (status == null && customerName != null && localDateTime != null) {
+			System.out.println("option 2 filtering");
 			criteria.where(criteriaBuilder.and(criteriaBuilder.like(root.get("customerName"), "%" + customerName + "%"),
 					criteriaBuilder.equal(root.get("startDateTime"), localDateTime)));
 		} else if (localDateTime == null && customerName != null && status != null) {
+			System.out.println("option 3 filtering");
 			criteria.where(criteriaBuilder.and(criteriaBuilder.equal(root.get("status"), status),
 					criteriaBuilder.equal(root.get("customerName"), customerName)));
 		} else if (localDateTime == null && status == null && customerName != null) {
+			System.out.println("option 4 filtering");
 			criteria.where(criteriaBuilder.like(root.get("customerName"), "%" + customerName + "%"));
 		} else if (localDateTime == null && customerName == null && status != null) {
+			System.out.println("option 5 filtering");
 			criteria.where(criteriaBuilder.like(root.get("status"), status));
 		} else if (localDateTime != null && customerName == null && status == null) {
+			System.out.println("option 6 filtering");
 			criteria.where(criteriaBuilder.equal(root.get("startDateTime"), localDateTime));
 		} else if (localDateTime != null && customerName != null && status != null) {
+			System.out.println("option 7 filtering");
 			criteria.where(criteriaBuilder.and(criteriaBuilder.like(root.get("customerName"), "%" + customerName + "%"),
 					criteriaBuilder.equal(root.get("status"), status),
 					criteriaBuilder.equal(root.get("startDateTime"), localDateTime)));
 		}
 
-//		criteria.where(criteriaBuilder.and
-//			    (criteriaBuilder.like(root.get("customerName"), "%" + customerName + "%"),
-//				//criteriaBuilder.like(root.get("bookingType"), "%" + courtName + "%"),
-//				criteriaBuilder.like(root.get("status"), "%" + status + "%"),
-//				criteriaBuilder.like(root.get("startDateTime"), "%" + startDT + "%")
-//				));
 
-		// criteria.orderBy(criteriaBuilder.asc(root.get("facilityName")));
 
 		List<Booking> bookingList = session.createQuery(criteria).getResultList();
 
