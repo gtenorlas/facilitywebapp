@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import antlr.StringUtils;
 import ca.sheridancollege.DAO.App;
 import ca.sheridancollege.DAO.BookingDAO;
 import ca.sheridancollege.DAO.CourtDAO;
@@ -133,7 +133,15 @@ public class HomeController {
 			System.out.println("Cannot create pdf");
 		}
     	
+		List<Booking> bookings=new ArrayList<Booking>();
+		for (Court eachCourt: facility.getCourts()) {
+			for (Booking eachBooking: eachCourt.getBookings()) {
+				bookings.add(eachBooking);
+			}
+		}
     	
+		model.addAttribute("bookings", bookings);
+		
 		return "bookings";
 	}
 	
@@ -271,10 +279,10 @@ public class HomeController {
 	public String searchBooking(Model model, @RequestParam String customerName,  @RequestParam String status, @RequestParam String startDT) {
 		
 		Facility facility = null;
-		
+		String username = null;
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
-		    String username = authentication.getName(); //grab the user currently authenticated
+		     username = authentication.getName(); //grab the user currently authenticated
 
 			facility=facilityDao.getFacility(username);
 			
@@ -299,20 +307,13 @@ public class HomeController {
 			customerName=null;
 		}
 		List<Booking> bookings=bookingDAO.searchBookings(customerName,status,localDateTime);
-		System.out.println("Bokings are these"+bookings);
-		//booking
-		
-//Facility facility=new Facility();
-//		for (Booking each : bookings) {
-//			Court court=new Court();
-//			court.setCourtNumber(each.get);
-//		}
+		//System.out.println("Bokings are these"+bookings);
 
 		
 		
-	//	model.addAttribute("bookings",bookings);
 		
-		model.addAttribute("facility",facility);
+		
+		model.addAttribute("bookings", bookings);
 		
 		return "bookings";
 	}

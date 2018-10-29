@@ -34,7 +34,7 @@ public class Facility implements Serializable {
 	@Size(min=3, max=255, message="Facility name must be between 3 to 255 characters")
 	private String facilityName;
 	@NotEmpty(message = "Facility description cannot be empty")
-	@Size(min=100, max=3000, message="Facility description must be between 100 to 3000 characters")
+	@Size(min=50,max=3000, message="Facility description must be between 50 to 3000 characters")
 	@Column(name = "facilityDescription", length = 3000, columnDefinition="TEXT")
 	@Type(type="text") 	//allow larger amount of characters in column description with text type
 	private String facilityDescription; 

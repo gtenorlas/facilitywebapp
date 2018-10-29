@@ -29,6 +29,7 @@
 				    	<label class="col-md-12 col-form-label">Status (select one)*:</label>
 				       <div class="col-md-12">
 				      		<select name = "status"  class="form-control">	
+				      		<option value=""></option>
 				      		<option value="active">Active</option>
   							<option value="cancel">Cancel</option>
   							</select>
@@ -73,12 +74,12 @@
 		 </thead>
 		 <tbody>
 	
-			<c:forEach var="item" items="${facility.courts}">
+
 			
-				<c:forEach var="booking" items="${item.bookings}">
+				<c:forEach var="booking" items="${bookings}">
 					<tr>
-						<td>${item.courtNumber}</td>
-						<td>${item.courtName}</td>
+						<td>${booking.court.courtNumber}</td>
+						<td>${booking.court.courtName}</td>
 						<td>${booking.customerName}</td>
 						<td>${booking.status}</td>
 						<fmt:parseDate value="${booking.startDateTime }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
@@ -91,8 +92,8 @@
 					
 	  					<td> ${ formattedDate }</td>
 	  					
-	  					<td> ${ booking.getCost(item)}</td>
-	  					<td><c:url value="/bookings/edit/${booking.bookingId}/${item.courtNumber}" var="editUrl"/>
+	  					<td> ${ booking.getCost(booking.court)}</td>
+	  					<td><c:url value="/bookings/edit/${booking.bookingId}/${booking.court.courtNumber}" var="editUrl"/>
 				<a href="${editUrl }">Edit</a></td>
 				<!-- 
 				<td><c:url value="/bookings/cancel/${booking.bookingId}}" var="cancelUrl" />
@@ -100,7 +101,7 @@
 				 -->
 					</tr>
 				</c:forEach>
-			</c:forEach>
+	
 		 </tbody>
 
 		</table>
