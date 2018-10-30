@@ -17,6 +17,8 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -64,6 +66,7 @@ public class Court implements Serializable {
 	private String courtName;
 	private String availability;
 	private int maxPlayer;
+	@JsonManagedReference
 	@LazyCollection(LazyCollectionOption.FALSE)
 	@OneToMany(mappedBy="court", cascade = {CascadeType.ALL})
 	///private Set<Booking> bookings=new HashSet<Booking>();

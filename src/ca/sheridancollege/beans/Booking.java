@@ -11,6 +11,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,6 +33,7 @@ public class Booking implements Serializable {
 	private LocalDateTime startDateTime;
 	private LocalDateTime endDateTime;
 	private double duration;
+	@JsonBackReference
 	@ManyToOne
     @JoinColumn(name="courtNumber", nullable=false)
     private Court court;

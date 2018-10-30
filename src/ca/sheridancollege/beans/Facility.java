@@ -16,6 +16,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Type;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -59,7 +61,7 @@ public class Facility implements Serializable {
 	@NotEmpty(message = "Country cannot be empty")
 	@Size(max=255, message="Country cannot be more than 255 characters")
 	private String country;
-	
+	@JsonManagedReference
 	@OneToMany(cascade = {CascadeType.ALL})
 	private List<Court> courts;
 	
