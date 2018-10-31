@@ -67,6 +67,33 @@ public class RestCustomerController {
 			return "success";
 		}
 	}
+	
+	@RequestMapping(value = "/token/validate/{email}/{token}/", method = RequestMethod.POST)
+	public Object validateToken(@PathVariable String email, @PathVariable String token) {
+		Customer customer=(Customer)customerDAO.getCustomerByEmail(email.trim());
+		if (customer ==null ) {
+			return "invalid";
+		}else {
+			if(customer.getConfirmationToken().equals(token.trim())) {
+				return "success";
+			}else {
+			return "invalid";
+			}
+		}
+	}
+	
+	@RequestMapping(value = "/reset/{email}/{newPassword}/", method = RequestMethod.POST)
+	public Object resetPassword(@PathVariable String email, @PathVariable String newPassword) {
+		Customer customer=(Customer)customerDAO.getCustomerByEmail(email.trim());
+		if (customer ==null ) {
+			return "invalid";
+		}else {
+			customer.setPassword(Customer.hashPassword(newPassword));
+			customerDAO.saveCustomer(customer);
+			return "success";
+		}
+	}
+
 
 	// new Booking(id, bookingDate, bookingType, status, startDateTime,
 	// endDateTime));
