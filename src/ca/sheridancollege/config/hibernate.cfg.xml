@@ -33,5 +33,6 @@
 		<mapping class="ca.sheridancollege.beans.Court" />
 		<mapping class="ca.sheridancollege.beans.Facility" />
 		<mapping class="ca.sheridancollege.beans.Customer" />
+		<mapping class="ca.sheridancollege.beans.Payment" />
 	</session-factory>
 </hibernate-configuration>

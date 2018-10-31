@@ -6,7 +6,10 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,8 +25,17 @@ public class Payment implements Serializable {
 	@Id
 	@GeneratedValue
 	private int paymentId;
-	private Double amount;
-	private LocalDateTime date;
-	private int invoiceId;
-	private int methodId;
+	@JsonBackReference
+	@OneToOne
+	private Booking booking;
+	private double courtCharge; //hourly rate of the court
+	private double adminFee; //top up cost for using the app
+	private double subTotal; //courtCharge + adminFee
+	private double taxPercentage; //tax in percentage
+	private double taxAmount; //tax calculated based on subtotal
+	private double totalAmount; //subTotal + taxAmount
+	private LocalDateTime paymentDateTime;
+	private String confirmationNumber;
+	private String paymentMethod;
+	private String status;
 }

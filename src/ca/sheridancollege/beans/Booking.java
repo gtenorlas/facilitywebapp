@@ -9,9 +9,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,6 +28,7 @@ public class Booking implements Serializable {
 	@Id
 	@GeneratedValue
 	private int bookingId;
+	private String customerEmail;
 	private String customerName;
 	private LocalDateTime bookingDate;
 	private String bookingType;
@@ -38,6 +41,10 @@ public class Booking implements Serializable {
     @JoinColumn(name="courtNumber", nullable=false)
     private Court court;
 	private String comment;
+	@JsonManagedReference
+	@OneToOne
+    private Payment payment;
+	private String facilityName;
 	
 	public Booking (int bookingId) {
 		this.bookingId=bookingId;
