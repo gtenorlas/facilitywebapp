@@ -2,9 +2,7 @@ package ca.sheridancollege.controllers;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.UUID;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,10 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 
 import ca.sheridancollege.DAO.CustomerDAO;
-import ca.sheridancollege.DAO.UserDAO;
 import ca.sheridancollege.beans.Customer;
-import ca.sheridancollege.beans.User;
-import ca.sheridancollege.beans.UserRole;
+import ca.sheridancollege.beans.Email;
 
 @RestController // specify that this class is a restful controller
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
@@ -39,12 +35,36 @@ public class RestCustomerController {
 	}
 
 	@RequestMapping(value = "/{username}/{password}/{originate}", method = RequestMethod.GET)
-	public Object getBookingList(@PathVariable String username, @PathVariable String password,
+	public Object getCustomer(@PathVariable String username, @PathVariable String password,
 			@PathVariable String originate) {
 		if (originate.equals("standard")) {
 			return customerDAO.getCustomer(username, password);
 		} else {
 			return customerDAO.getCustomer(username);
+		}
+	}
+	
+	@RequestMapping(value = "/token/{email}/", method = RequestMethod.POST)
+	public Object getToken(@PathVariable String email) {
+		Customer customer=(Customer)customerDAO.getCustomerByEmail(email.trim());
+		if (customer ==null ) {
+			return "invalid";
+		}else {
+			String token = Customer.generateToken();
+			customer.setConfirmationToken(token);
+			customerDAO.saveCustomer(customer);
+			Email newEmail = new Email(email,
+                    "Token", "You've requested a password reset for your Book2ball account login. Please enter the token below in the Book2ball app, and you'll be able to create a new password. \r\n" + 
+                    		"\r\n" + 
+                    		"Token: " + token + 
+                    		"\r\n\n\n" + 
+      
+                    		"If you have not authorized this change, please contact Book2ball with the information in this e-mail.\r\n" + 
+                    		"THANK YOU!\r\n" + 
+                    		"\r\n" + 
+                    		"MAGS.WEBSITE\r\n");
+            newEmail.send();
+			return "success";
 		}
 	}
 
@@ -60,17 +80,19 @@ public class RestCustomerController {
 		// String encryptedPassword = new BCryptPasswordEncoder().encode(password);
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy-HH-mm");
-		LocalDateTime startDateTimeLocal = LocalDateTime.parse(startDate, formatter);
-		LocalDateTime endDateTimeLocal = null;
-		if (endDate != null && !endDate.equals("null")) {
-			endDateTimeLocal = LocalDateTime.parse(endDate, formatter);
-		}
+		//LocalDateTime startDateTimeLocal = LocalDateTime.parse(startDate, formatter);
+		LocalDateTime startDateTimeLocal = LocalDateTime.now();
+		//LocalDateTime endDateTimeLocal = null;
+		//if (endDate != null && !endDate.equals("null")) {
+		//	endDateTimeLocal = LocalDateTime.parse(endDate, formatter);
+		//}
 
 		Customer customer = new Customer(username, password, firstName, lastName, email, contactNumber,
-				startDateTimeLocal, endDateTimeLocal, status, originate);
+				startDateTimeLocal, null, status, originate, null);
 		customer.setPassword(Customer.hashPassword(password));
 		if (!customerDAO.isDuplicate(username)) {
 			customerDAO.saveCustomer(customer);
+			System.out.println("Email saved is: " + customer.getEmail());
 			return "Customer is saved";
 		} else {
 			return "Customer already exists.";

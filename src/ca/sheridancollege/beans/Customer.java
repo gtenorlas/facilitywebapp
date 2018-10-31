@@ -2,6 +2,7 @@ package ca.sheridancollege.beans;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,6 +50,8 @@ public class Customer implements Serializable {
 	private LocalDateTime endDate;		
 	private String status;
 	private String originate;
+	@Column(name = "confirmationtoken", nullable = true)
+	private String confirmationToken;
 	
 	public Customer(String firstName, String lastName, String email, String contactNumber, LocalDateTime startDate, LocalDateTime endDate, String status, String originate) {
 		this.username = email;
@@ -97,6 +100,11 @@ public class Customer implements Serializable {
 		password_verified = BCrypt.checkpw(password_plaintext, stored_hash);
 
 		return(password_verified);
+	}
+	
+	public static String generateToken() {
+		UUID id = UUID.randomUUID();
+		return id.toString().substring(0, 8);
 	}
 
 }

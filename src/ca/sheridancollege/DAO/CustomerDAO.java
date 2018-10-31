@@ -22,7 +22,7 @@ public class CustomerDAO {
 	public void saveCustomer(Customer customer) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		session.save(customer);
+		session.saveOrUpdate(customer);
 		session.flush();
 		session.getTransaction().commit();
 		session.close();
@@ -109,6 +109,42 @@ public class CustomerDAO {
 
 
 	}
+	/*
+	 * Get a single customer
+	 */
+	public Object getCustomerByEmail(String email) {
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+
+		Customer customer = null;
+			System.out.println("Trying to get customer by email: "+ email);
+
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<Customer> criteria = criteriaBuilder.createQuery(Customer.class);
+			Root<Customer> root = criteria.from(Customer.class);
+			criteria.select(root);
+			
+			Predicate sameEmail = criteriaBuilder.equal(root.get("email"), email);
+			Predicate isEndDateNull = criteriaBuilder.isNull(root.get("endDate"));
+			
+			criteria.where(criteriaBuilder.and(sameEmail,isEndDateNull));
+			try {
+				customer = session.createQuery(criteria).getSingleResult();
+				System.out.println("query created ");
+				session.getTransaction().commit();
+				session.close();
+				
+				return customer;
+			}
+
+			catch (NoResultException nre) {
+				session.close();
+
+				return customer;
+			}
+
+
+	}
 	
 	/*
 	 * Get a single customer
@@ -126,9 +162,10 @@ public class CustomerDAO {
 			criteria.select(root);
 			
 			Predicate sameUsername = criteriaBuilder.equal(root.get("username"), username);
-			Predicate isEndDateNull = criteriaBuilder.isNull(root.get("endDate"));
+			Predicate sameEmail = criteriaBuilder.equal(root.get("email"), username);
+			//Predicate isEndDateNull = criteriaBuilder.isNull(root.get("endDate"));
 			
-			criteria.where(criteriaBuilder.and(sameUsername,isEndDateNull));
+			criteria.where(criteriaBuilder.or(sameUsername,sameEmail));
 			try {
 				customer = session.createQuery(criteria).getSingleResult();
 				System.out.println("query created ");
@@ -150,6 +187,9 @@ public class CustomerDAO {
 
 
 	}
+	
+	
+	
 	
 	
 
