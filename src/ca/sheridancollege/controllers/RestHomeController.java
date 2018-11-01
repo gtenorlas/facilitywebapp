@@ -55,53 +55,55 @@ public class RestHomeController {
 	}
 
 	// new Booking(id, bookingDate, bookingType, status, startDateTime,
-	// endDateTime));
-	@RequestMapping(value = "/bookingList/{customerName}/{bookingType}/{status}/{startDateTime}/{endDateTime}/{duration}/{courtId}", method = {
-			RequestMethod.OPTIONS, RequestMethod.POST })
-	public String postBookingListItem(@PathVariable String customerName, @PathVariable String bookingType,
-			@PathVariable String status, @PathVariable String startDateTime, @PathVariable String endDateTime,
-			@PathVariable double duration, @PathVariable int courtId) {
+		// endDateTime));
+		@RequestMapping(value = "/bookingList/{customerEmail}/{customerName}/{bookingType}/{status}/{startDateTime}/{endDateTime}/{duration}/{courtId}/{paymentId}", method = {
+				RequestMethod.OPTIONS, RequestMethod.POST })
+		public String postBookingListItem(@PathVariable String customerEmail,@PathVariable String customerName, @PathVariable String bookingType,
+				@PathVariable String status, @PathVariable String startDateTime, @PathVariable String endDateTime,
+				@PathVariable double duration, @PathVariable int courtId, @PathVariable int paymentId) {
 
-		// DateTimeFormatter FMT = new
-		// DateTimeFormatterBuilder().appendPattern("MM-dd-yyyy-HH-mm")
-		// .parseDefaulting(ChronoField.NANO_OF_DAY,
-		// 0).toFormatter().withZone(ZoneId.of("America/Toronto"));
+			// DateTimeFormatter FMT = new
+			// DateTimeFormatterBuilder().appendPattern("MM-dd-yyyy-HH-mm")
+			// .parseDefaulting(ChronoField.NANO_OF_DAY,
+			// 0).toFormatter().withZone(ZoneId.of("America/Toronto"));
 
-		LocalDateTime bookingDate = LocalDateTime.now();
+			LocalDateTime bookingDateTime = LocalDateTime.now();
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy-HH-mm");
-		LocalDateTime startDateTimeLocal = null, endDateTimeLocal = null;
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy-HH-mm");
+			LocalDateTime startDateTimeLocal = null, endDateTimeLocal = null;
 
-		// try to convert the string date into localdatetime
-		try {
-			startDateTimeLocal = LocalDateTime.parse(startDateTime, formatter);
-			endDateTimeLocal = LocalDateTime.parse(endDateTime, formatter);
-		} catch (Exception e) {
-			return "Please check date format entered.";
+			// try to convert the string date into localdatetime
+			try {
+				startDateTimeLocal = LocalDateTime.parse(startDateTime, formatter);
+				endDateTimeLocal = LocalDateTime.parse(endDateTime, formatter);
+			} catch (Exception e) {
+				return "Please check date format entered.";
+			}
+
+			if (endDateTimeLocal.isBefore(startDateTimeLocal) || endDateTimeLocal.isEqual(startDateTimeLocal)) {
+				return "Booking start date and time must be ahead than end date and time.";
+			}
+
+			Booking booking = new Booking(customerName, bookingDateTime, bookingType, status, startDateTimeLocal,
+					endDateTimeLocal, duration, null);
+			
+			booking.setCustomerEmail(customerEmail);
+
+			// bookingDAO.saveBooking(booking);
+
+			if (bookingDAO.bookingValidation(courtId, startDateTimeLocal, endDateTimeLocal)) {
+				// Court court = courtDAO.getCourt(courtId);
+				Court court = courtDAO.getCourt(courtId);
+				booking.setCourt(court);
+				court.getBookings().add(booking); // add the booking to the particular court
+
+				courtDAO.saveCourt(court);
+				return "Booking Saved";
+			} else {
+				return "Court " + courtId + " is not available with the selected dates and time";
+			}
+
 		}
-
-		if (endDateTimeLocal.isBefore(startDateTimeLocal) || endDateTimeLocal.isEqual(startDateTimeLocal)) {
-			return "Booking start date and time must be ahead than end date and time.";
-		}
-
-		Booking booking = new Booking(customerName, bookingDate, bookingType, status, startDateTimeLocal,
-				endDateTimeLocal, duration, null);
-
-		// bookingDAO.saveBooking(booking);
-
-		if (bookingDAO.bookingValidation(courtId, startDateTimeLocal, endDateTimeLocal)) {
-			// Court court = courtDAO.getCourt(courtId);
-			Court court = courtDAO.getCourt(courtId);
-			booking.setCourt(court);
-			court.getBookings().add(booking); // add the booking to the particular court
-
-			courtDAO.saveCourt(court);
-			return "Booking Saved";
-		} else {
-			return "Court " + courtId + " is not available with the selected dates and time";
-		}
-
-	}
 
 	/*
 	 * // @RequestMapping(value="/studentList", method=RequestMethod.PUT, //

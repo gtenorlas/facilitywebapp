@@ -19,8 +19,10 @@ public class UserDAO {
 
 	public User findByUserName(String username) {
 		System.out.println("dao to retrieve user " + username);
+		
 		return (User) sessionFactory.openSession().createNamedQuery("User.getUserByUsername")
 				.setParameter("username", username).getSingleResult();
+
 	}
 
 	/*
@@ -47,7 +49,6 @@ public class UserDAO {
 			return user;
 		} catch (Exception e) {
 			System.out.println(e.getStackTrace());
-			;
 			session.close();
 			return user;
 		}
@@ -57,10 +58,15 @@ public class UserDAO {
 	public void createUser(User user) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
+		try {
 		session.save(user);
 		session.flush();
 		session.getTransaction().commit();
-		session.close();
+		}catch(Exception e) {
+			System.out.println("Error createUser-> " + e.getStackTrace());
+		}finally {
+		 session.close();
+		}
 
 		System.out.println("User is saved in dao " + user.getUsername());
 	}
@@ -71,10 +77,15 @@ public class UserDAO {
 	public void createUserRole(UserRole userRole) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
+		try {
 		session.save(userRole);
 		session.flush();
 		session.getTransaction().commit();
+		}catch(Exception e) {
+			System.out.println("Error createUserRole-> " + e.getStackTrace());
+		}finally {
 		session.close();
+		}
 
 		System.out.println("Role is saved in dao " + userRole.getRole());
 	}
@@ -97,10 +108,16 @@ public class UserDAO {
 
 		criteria.select(root);
 
-		UserRole userRole = session.createQuery(criteria).getSingleResult();
+		UserRole userRole=null;
+		try {
+		userRole = session.createQuery(criteria).getSingleResult();
 
 		session.getTransaction().commit();
+		}catch (Exception e) {
+			System.out.println("Error getUserRole-> " + e.getStackTrace());
+		}finally {
 		session.close();
+		}
 
 		return userRole;
 	}

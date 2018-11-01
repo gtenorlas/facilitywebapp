@@ -1,6 +1,7 @@
 package ca.sheridancollege.DAO;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -21,13 +22,19 @@ public class BookingDAO {
 	/*
 	 * Save Booking
 	 */
-	public void saveBooking(Booking booking) {
+	public boolean saveBooking(Booking booking) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		session.saveOrUpdate(booking);
-		// session.flush();
-		session.getTransaction().commit();
-		session.close();
+		try {
+			session.saveOrUpdate(booking);
+			// session.flush();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			return false;
+		} finally {
+			session.close();
+		}
+		return true;
 	}
 
 	/*
@@ -43,10 +50,16 @@ public class BookingDAO {
 
 		criteria.select(root);
 
-		List<Booking> bookings = session.createQuery(criteria).getResultList();
+		List<Booking> bookings = new ArrayList<Booking>();
 
-		session.getTransaction().commit();
-		session.close();
+		try {
+			bookings = session.createQuery(criteria).getResultList();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			System.out.println("Error getAllBookings -> " + e);
+		} finally {
+			session.close();
+		}
 
 		return bookings;
 	}
@@ -66,10 +79,16 @@ public class BookingDAO {
 
 		criteria.where(criteriaBuilder.equal(root.get("bookingId"), id));
 
-		Booking booking = session.createQuery(criteria).getSingleResult();
+		Booking booking = null;
+		try {
+			booking = session.createQuery(criteria).getSingleResult();
 
-		session.getTransaction().commit();
-		session.close();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			System.out.println("Error getAllBookingByID -> " + e);
+		} finally {
+			session.close();
+		}
 
 		return booking;
 	}
@@ -83,13 +102,12 @@ public class BookingDAO {
 		CriteriaQuery<Booking> criteria = criteriaBuilder.createQuery(Booking.class);
 		Root<Booking> root = criteria.from(Booking.class);
 
-
 		System.out.println("filtering");
 		if (customerName == null && status != null && localDateTime != null) {
 			System.out.println("option 1 filtering");
 			Predicate isDateMatch = criteriaBuilder.greaterThanOrEqualTo(root.get("startDateTime"), localDateTime);
 			Predicate isStatusMatch = criteriaBuilder.equal(root.get("status"), status);
-			criteria.where(criteriaBuilder.and(isDateMatch,isStatusMatch));
+			criteria.where(criteriaBuilder.and(isDateMatch, isStatusMatch));
 		} else if (status == null && customerName != null && localDateTime != null) {
 			System.out.println("option 2 filtering");
 			criteria.where(criteriaBuilder.and(criteriaBuilder.like(root.get("customerName"), "%" + customerName + "%"),
@@ -114,21 +132,20 @@ public class BookingDAO {
 					criteriaBuilder.equal(root.get("startDateTime"), localDateTime)));
 		}
 
+		List<Booking> bookings = new ArrayList<Booking>();
 
+		try {
+			bookings = session.createQuery(criteria).getResultList();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			System.out.println("Error searchBookings -> " + e);
+		} finally {
+			session.close();
+		}
 
-		List<Booking> bookingList = session.createQuery(criteria).getResultList();
-
-		session.getTransaction().commit();
-		session.close();
-
-		return bookingList;
+		return bookings;
 	}
 
-	
-	
-	
-	
-	
 	// check when newStartDate is before startDate
 //    if (newStartDateTimeLocal.isBefore(startDateTimeLocal)) {
 //        if (newEndDateTimeLocal.isAfter(startDateTimeLocal)) {
@@ -148,17 +165,19 @@ public class BookingDAO {
 		Root<Booking> root = criteria.from(Booking.class);
 
 		Predicate sameCourtNumber = cb.equal(root.get("court").get("courtNumber"), courtNumber);
-		
+
 		Predicate isStartDateBeforeStartDate = cb.greaterThanOrEqualTo(root.get("startDateTime"), startDateTime);
 		Predicate isEndDateAfterStartDate = cb.lessThan(root.get("startDateTime"), endDateTime);
-		
+
 		Predicate isStartDateAfterStartDate = cb.lessThan(root.get("startDateTime"), startDateTime);
-		Predicate isStartDateBeforeEndDate =  cb.greaterThan(root.get("endDateTime"), startDateTime);
+		Predicate isStartDateBeforeEndDate = cb.greaterThan(root.get("endDateTime"), startDateTime);
 
-		//criteria.where(cb.and(sameCourtNumber, isStartDateBeforeStartDate,isEndDateAfterStartDate));
+		// criteria.where(cb.and(sameCourtNumber,
+		// isStartDateBeforeStartDate,isEndDateAfterStartDate));
 
-		criteria.where(cb.or(cb.and(sameCourtNumber, isStartDateBeforeStartDate,isEndDateAfterStartDate),cb.and(sameCourtNumber, isStartDateAfterStartDate,isStartDateBeforeEndDate)));
-		
+		criteria.where(cb.or(cb.and(sameCourtNumber, isStartDateBeforeStartDate, isEndDateAfterStartDate),
+				cb.and(sameCourtNumber, isStartDateAfterStartDate, isStartDateBeforeEndDate)));
+
 		List<Booking> bookingList = null;
 		try {
 			bookingList = session.createQuery(criteria).getResultList();
@@ -171,6 +190,7 @@ public class BookingDAO {
 			}
 			return false;
 		} catch (Exception e) {
+			session.close();
 			return true;
 		}
 	}

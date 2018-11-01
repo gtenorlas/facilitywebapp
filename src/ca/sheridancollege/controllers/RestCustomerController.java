@@ -52,7 +52,7 @@ public class RestCustomerController {
 		}else {
 			String token = Customer.generateToken();
 			customer.setConfirmationToken(token);
-			customerDAO.saveCustomer(customer);
+			customerDAO.updateCustomer(customer);
 			Email newEmail = new Email(email,
                     "Token", "You've requested a password reset for your Book2ball account login. Please enter the token below in the Book2ball app, and you'll be able to create a new password. \r\n" + 
                     		"\r\n" + 
@@ -89,7 +89,7 @@ public class RestCustomerController {
 			return "invalid";
 		}else {
 			customer.setPassword(Customer.hashPassword(newPassword));
-			customerDAO.saveCustomer(customer);
+			customerDAO.updateCustomer(customer);
 			return "success";
 		}
 	}
@@ -99,7 +99,7 @@ public class RestCustomerController {
 	// endDateTime));
 	@RequestMapping(value = "/{username}/{password}/{firstName}/{lastName}/{email}/{contactNumber}/{startDate}/{endDate}/{status}/{originate}", method = {
 			RequestMethod.OPTIONS, RequestMethod.POST })
-	public String postCustomerItem(@PathVariable String username, @PathVariable String password,
+	public Object postCustomerItem(@PathVariable String username, @PathVariable String password,
 			@PathVariable String firstName, @PathVariable String lastName, @PathVariable String email,
 			@PathVariable String contactNumber, @PathVariable String startDate, @PathVariable String endDate,
 			@PathVariable String status, @PathVariable String originate) {
@@ -118,9 +118,13 @@ public class RestCustomerController {
 				startDateTimeLocal, null, status, originate, null);
 		customer.setPassword(Customer.hashPassword(password));
 		if (!customerDAO.isDuplicate(username)) {
-			customerDAO.saveCustomer(customer);
+			int id = customerDAO.saveCustomer(customer);
 			System.out.println("Email saved is: " + customer.getEmail());
-			return "Customer is saved";
+			if (id != 0) {
+				return id;
+			}else {
+				return "Customer did not save due to internal error";
+			}
 		} else {
 			return "Customer already exists.";
 		}

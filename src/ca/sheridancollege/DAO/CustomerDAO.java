@@ -19,15 +19,36 @@ public class CustomerDAO {
 	SessionFactory sessionFactory = new Configuration().configure("ca/sheridancollege/config/hibernate.cfg.xml")
 			.buildSessionFactory();
 
-	public void saveCustomer(Customer customer) {
+	public int saveCustomer(Customer customer) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		session.saveOrUpdate(customer);
+		int id=0;
+		try {
+			id = (Integer) session.save(customer);
 		session.flush();
 		session.getTransaction().commit();
+		}catch (Exception e) {
+			System.out.println("Error saveCustomer -> " + e);
+		}finally {
 		session.close();
-
-		System.out.println("Customer is saved in dao " + customer.getFirstName());
+		}
+		return id;
+	}
+	
+	public boolean updateCustomer(Customer customer) {
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		try {
+		session.update(customer);
+		
+		session.getTransaction().commit();
+		}catch (Exception e) {
+			System.out.println("Error saveCustomer -> " + e);
+			return false;
+		}finally {
+		session.close();
+		}
+		return true;
 	}
 
 	/*
