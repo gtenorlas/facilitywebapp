@@ -33,7 +33,7 @@ public class Payment implements Serializable {
 	private Booking booking;
 	private double courtCharge; //hourly rate of the court
 	private double adminFee; //top up cost for using the app
-	private double subTotal; //courtCharge + adminFee
+	private double subTotal; //(courtCharge * duration) + adminFee
 	private double taxPercentage; //tax in percentage
 	private double taxAmount; //tax calculated based on subtotal
 	private double totalAmount; //subTotal + taxAmount

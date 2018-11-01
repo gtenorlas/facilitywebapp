@@ -50,14 +50,14 @@
 				    <div class="form-group row">
 				    	<form:label path="startDateTime" class="col-md-12 col-form-label">Booking Start Date/Time:</form:label>
 				       <div class="col-md-12">
-				      		<input  type="datetime-local" required="false"  name = "startDT" value="${booking.startDateTime}" class="form-control"/>    	
+				      		<input  type="datetime-local" required="false"  name = "startDT" value="${booking.startDateTime}" class="form-control" readonly="true"/>    	
 				       </div>
 				    </div>
 				      
 				    <div class="form-group row">
 				    	<form:label path="endDateTime" class="col-md-12 col-form-label">Booking End Date/Time:</form:label>
 				       <div class="col-md-12">
-				      		<input  type="datetime-local" required="false" name = "endDT" value="${booking.endDateTime}" class="form-control"/>    	
+				      		<input  type="datetime-local" required="false" name = "endDT" value="${booking.endDateTime}" class="form-control" readonly="true"/>    	
 				       </div>
 				    </div>
 				  

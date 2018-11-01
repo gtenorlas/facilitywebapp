@@ -107,7 +107,8 @@ public class Booking implements Serializable {
 	
 	public String getCost(Court court) {
 		NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-		return currencyFormat.format(this.duration * court.getPrice());
+		//return currencyFormat.format(this.duration * court.getPrice());
+		return currencyFormat.format(this.payment.getSubTotal());
 	}
 
 	

@@ -391,6 +391,11 @@ public class HomeController {
 		 booking.setCourt(courtToSave); //added 10/25/2018
 		
 		courtToSave.getBookings().remove(booking);
+		
+		//ADJUST THE PAYMENT VALUE
+		
+		
+		
 		courtToSave.getBookings().add(booking);
 		courtDAO.saveCourt(courtToSave);
 		System.out.println("Trying to save Court : " + courtToSave.getCourtName());
