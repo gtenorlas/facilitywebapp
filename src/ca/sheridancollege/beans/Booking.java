@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -42,7 +44,8 @@ public class Booking implements Serializable {
     private Court court;
 	private String comment;
 	@JsonManagedReference
-	@OneToOne
+	@OneToOne(mappedBy = "booking", cascade = CascadeType.ALL, 
+    fetch = FetchType.LAZY, optional = true)
     private Payment payment;
 	private String facilityName;
 	

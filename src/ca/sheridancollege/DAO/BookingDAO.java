@@ -36,6 +36,24 @@ public class BookingDAO {
 		}
 		return true;
 	}
+	
+	/*
+	 * Save Booking
+	 */
+	public int saveBookingForAPI(Booking booking) {
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		int id=0;
+		try {
+			id=(Integer) session.save(booking);
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			System.out.println("Error saveBookingForAPI-> " + e);
+		} finally {
+			session.close();
+		}
+		return id;
+	}
 
 	/*
 	 * Get All bookings to be viewed to be used in RestController

@@ -45,12 +45,12 @@ public class RestBookingController {
 
 	// new Booking(id, bookingDate, bookingType, status, startDateTime,
 	// endDateTime));
-	@RequestMapping(value = "/{customerEmail}/{customerName}/{bookingType}/{status}/{startDateTime}/{endDateTime}/{duration}/{courtId}/{paymentId}", method = {
+	@RequestMapping(value = "/{customerEmail}/{customerName}/{bookingType}/{status}/{startDateTime}/{endDateTime}/{duration}/{courtId}/{facilityName}", method = {
 			RequestMethod.OPTIONS, RequestMethod.POST })
-	public String postBookingListItem(@PathVariable String customerEmail, @PathVariable String customerName,
+	public Object postBookingListItem(@PathVariable String customerEmail, @PathVariable String customerName,
 			@PathVariable String bookingType, @PathVariable String status, @PathVariable String startDateTime,
 			@PathVariable String endDateTime, @PathVariable double duration, @PathVariable int courtId,
-			@PathVariable int paymentId) {
+			@PathVariable String facilityName) {
 
 		// DateTimeFormatter FMT = new
 		// DateTimeFormatterBuilder().appendPattern("MM-dd-yyyy-HH-mm")
@@ -78,6 +78,7 @@ public class RestBookingController {
 				endDateTimeLocal, duration, null);
 
 		booking.setCustomerEmail(customerEmail);
+		booking.setFacilityName(facilityName);
 
 		// bookingDAO.saveBooking(booking);
 
@@ -85,12 +86,16 @@ public class RestBookingController {
 			// Court court = courtDAO.getCourt(courtId);
 			Court court = courtDAO.getCourt(courtId);
 			booking.setCourt(court);
-			court.getBookings().add(booking); // add the booking to the particular court
-
-			courtDAO.saveCourt(court);
-			return "Booking Saved";
+			// court.getBookings().add(booking); // add the booking to the particular court
+			// courtDAO.saveCourt(court);
+			int id = bookingDAO.saveBookingForAPI(booking);
+			if (id != 0) {
+				return id;
+			} else {
+				return "Internal error while booking save";
+			}
 		} else {
-			return "Court " + courtId + " is not available with the selected dates and time";
+			return "Court not available";
 		}
 
 	}

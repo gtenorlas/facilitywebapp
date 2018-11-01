@@ -4,8 +4,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -26,7 +28,8 @@ public class Payment implements Serializable {
 	@GeneratedValue
 	private int paymentId;
 	@JsonBackReference
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bookingId")
 	private Booking booking;
 	private double courtCharge; //hourly rate of the court
 	private double adminFee; //top up cost for using the app
