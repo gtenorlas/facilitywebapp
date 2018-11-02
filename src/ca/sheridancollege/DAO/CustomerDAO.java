@@ -19,20 +19,21 @@ public class CustomerDAO {
 	SessionFactory sessionFactory = new Configuration().configure("ca/sheridancollege/config/hibernate.cfg.xml")
 			.buildSessionFactory();
 
-	public int saveCustomer(Customer customer) {
+	public boolean saveCustomer(Customer customer) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		int id=0;
+
 		try {
-			id = (Integer) session.save(customer);
+			session.save(customer);
 		session.flush();
 		session.getTransaction().commit();
 		}catch (Exception e) {
 			System.out.println("Error saveCustomer -> " + e);
+			return false;
 		}finally {
 		session.close();
 		}
-		return id;
+		return true;
 	}
 	
 	public boolean updateCustomer(Customer customer) {

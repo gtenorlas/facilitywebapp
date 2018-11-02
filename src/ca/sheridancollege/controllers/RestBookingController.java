@@ -42,6 +42,11 @@ public class RestBookingController {
 	public Object getBooking(@PathVariable int id) {
 		return bookingDAO.getBookingByID(id);
 	}
+	
+	@RequestMapping(value = "/email/{email}", method = RequestMethod.GET)
+	public Object getBookings(@PathVariable String email) {
+		return bookingDAO.getAllBookings(email);
+	}
 
 	// new Booking(id, bookingDate, bookingType, status, startDateTime,
 	// endDateTime));

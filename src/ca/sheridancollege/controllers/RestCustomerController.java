@@ -118,10 +118,10 @@ public class RestCustomerController {
 				startDateTimeLocal, null, status, originate, null);
 		customer.setPassword(Customer.hashPassword(password));
 		if (!customerDAO.isDuplicate(username)) {
-			int id = customerDAO.saveCustomer(customer);
+			boolean saved = customerDAO.saveCustomer(customer);
 			System.out.println("Email saved is: " + customer.getEmail());
-			if (id != 0) {
-				return id;
+			if (saved) {
+				return "success";
 			}else {
 				return "Customer did not save due to internal error";
 			}

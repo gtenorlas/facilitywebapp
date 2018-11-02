@@ -81,6 +81,34 @@ public class BookingDAO {
 
 		return bookings;
 	}
+	
+	/*
+	 * Get All bookings to be viewed to be used in RestController
+	 */
+	public List<Booking> getAllBookings(String email) {
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+
+		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+		CriteriaQuery<Booking> criteria = criteriaBuilder.createQuery(Booking.class);
+		Root<Booking> root = criteria.from(Booking.class);
+
+		criteria.select(root);
+		criteria.where(criteriaBuilder.equal(root.get("customerEmail"), email));
+
+		List<Booking> bookings = new ArrayList<Booking>();
+
+		try {
+			bookings = session.createQuery(criteria).getResultList();
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			System.out.println("Error getAllBookings -> " + e);
+		} finally {
+			session.close();
+		}
+
+		return bookings;
+	}
 
 	/*
 	 * Get All bookings to be viewed to be used in RestController
