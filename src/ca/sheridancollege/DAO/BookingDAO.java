@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -86,13 +87,15 @@ public class BookingDAO {
 	 * Get All bookings to be viewed to be used in RestController
 	 */
 	public List<Booking> getAllBookings(String email) {
+		System.out.println("Getting emails by booking using DAO");
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 
 		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 		CriteriaQuery<Booking> criteria = criteriaBuilder.createQuery(Booking.class);
 		Root<Booking> root = criteria.from(Booking.class);
-
+		root.fetch("payment", JoinType.LEFT); // include the bookings to fix the fetch lazy issue
+		
 		criteria.select(root);
 		criteria.where(criteriaBuilder.equal(root.get("customerEmail"), email));
 
@@ -107,6 +110,7 @@ public class BookingDAO {
 			session.close();
 		}
 
+		 System.out.println("bookings count " + bookings.size());
 		return bookings;
 	}
 

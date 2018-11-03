@@ -38,13 +38,16 @@ public class RestBookingController {
 		return bookingDAO.getAllBookings();
 	}
 
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public Object getBooking(@PathVariable int id) {
 		return bookingDAO.getBookingByID(id);
 	}
 	
-	@RequestMapping(value = "/email/{email}", method = RequestMethod.GET)
+	
+	@RequestMapping(value = "/email/{email}/", method = RequestMethod.GET)
 	public Object getBookings(@PathVariable String email) {
+		System.out.println("Trying to get all booking by email");
 		return bookingDAO.getAllBookings(email);
 	}
 
