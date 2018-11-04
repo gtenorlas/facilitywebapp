@@ -333,7 +333,7 @@ public class HomeController {
 	/*
 	 * Method to handle when creating a new facility or updating a facility
 	 */
-	@RequestMapping(value="/saveCourt", method=RequestMethod.GET) 
+	@RequestMapping(value="/saveCourt", method=RequestMethod.POST) 
 	public String saveCourt(Model model, @ModelAttribute("court") Court court, @RequestParam int facilityId) {
 
 
@@ -430,7 +430,7 @@ public class HomeController {
 	/*
 	 * Method to handle when creating a new facility or updating a facility
 	 */
-	@RequestMapping(value="/saveFacility", method=RequestMethod.GET) 
+	@RequestMapping(value="/saveFacility", method=RequestMethod.POST) 
 	public String saveFacility(Model model, @ModelAttribute("facility") @Valid Facility facilityToSave, BindingResult result) {
 
 

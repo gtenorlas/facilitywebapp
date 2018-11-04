@@ -11,7 +11,7 @@
 		<h1>Create/Update a Court</h1>
 			
 			<c:url value="/saveCourt" var="url" />
-				<form:form modelAttribute="court" method="GET" action="${url}"  name="courtForm"> 
+				<form:form modelAttribute="court" method="post" action="${url}"  name="courtForm"> 
 					<input name="facilityId" type=hidden value="${facilityId}"/>
 					<form:input path="courtNumber" type="hidden" value="${court.courtNumber}"/>
 					  

@@ -16,7 +16,7 @@
 		<h1>Create Facility</h1>
 			
 			<c:url value="/saveFacility" var="url" />
-				<form:form modelAttribute="facility" method="GET" action="${url}" name="facilityForm"> 
+				<form:form modelAttribute="facility" method="post" action="${url}" name="facilityForm"> 
 					<form:input path="facilityId" type="hidden" value="${facility.facilityId}"/>
 					<form:input path="username" type="hidden" value="${facility.username}"/>
 					 				    	  
