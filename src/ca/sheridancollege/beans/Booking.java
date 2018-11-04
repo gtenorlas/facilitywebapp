@@ -48,6 +48,7 @@ public class Booking implements Serializable {
     fetch = FetchType.LAZY, optional = true)
     private Payment payment;
 	private String facilityName;
+	private String courtName;
 	
 	public Booking (int bookingId) {
 		this.bookingId=bookingId;

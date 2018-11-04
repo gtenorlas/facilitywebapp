@@ -94,6 +94,7 @@ public class RestBookingController {
 			if (court != null) {
 				if (court.getAvailability().toLowerCase().equals("active")) {
 					booking.setCourt(court);
+					booking.setCourtName(court.getCourtName());
 					// court.getBookings().add(booking); // add the booking to the particular court
 					// courtDAO.saveCourt(court);
 					int id = bookingDAO.saveBookingForAPI(booking);
