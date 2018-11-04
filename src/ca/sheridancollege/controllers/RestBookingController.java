@@ -38,13 +38,11 @@ public class RestBookingController {
 		return bookingDAO.getAllBookings();
 	}
 
-	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public Object getBooking(@PathVariable int id) {
 		return bookingDAO.getBookingByID(id);
 	}
-	
-	
+
 	@RequestMapping(value = "/email/{email}/", method = RequestMethod.GET)
 	public Object getBookings(@PathVariable String email) {
 		System.out.println("Trying to get all booking by email");
@@ -93,14 +91,22 @@ public class RestBookingController {
 		if (bookingDAO.bookingValidation(courtId, startDateTimeLocal, endDateTimeLocal)) {
 			// Court court = courtDAO.getCourt(courtId);
 			Court court = courtDAO.getCourt(courtId);
-			booking.setCourt(court);
-			// court.getBookings().add(booking); // add the booking to the particular court
-			// courtDAO.saveCourt(court);
-			int id = bookingDAO.saveBookingForAPI(booking);
-			if (id != 0) {
-				return id;
-			} else {
-				return "Internal error while booking save";
+			if (court != null) {
+				if (court.getAvailability().toLowerCase().equals("active")) {
+					booking.setCourt(court);
+					// court.getBookings().add(booking); // add the booking to the particular court
+					// courtDAO.saveCourt(court);
+					int id = bookingDAO.saveBookingForAPI(booking);
+					if (id != 0) {
+						return id;
+					} else {
+						return "Internal error while booking save";
+					}
+				}else {
+					return "Court not available";
+				}
+			}else {
+				return "Court not available";
 			}
 		} else {
 			return "Court not available";
