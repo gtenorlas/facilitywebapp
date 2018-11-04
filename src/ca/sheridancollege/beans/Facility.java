@@ -72,5 +72,7 @@ public class Facility implements Serializable {
 	private String contactNumber;
 	private LocalDateTime creationDate;
 	private LocalDateTime endDate;
+	private String lat;
+	private String lng;
 
 }
