@@ -13,6 +13,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import ca.sheridancollege.DAO.BookingDAO;
 import ca.sheridancollege.DAO.PaymentDAO;
 import ca.sheridancollege.beans.Booking;
+import ca.sheridancollege.beans.Email;
 import ca.sheridancollege.beans.Payment;
 
 @RestController // specify that this class is a restful controller
@@ -81,7 +82,18 @@ public class RestPaymentController {
 		if (id==0) {
 			return "invalid";
 		}
-			
+		
+		Email newEmail = new Email(booking.getCustomerEmail(), "Your Booking",
+				"Congratulation in your recent booking with Book2Ball! \r\n"
+						+ "\r\n" + 
+						
+						"Booking Details: "
+						
+						+ "bookingdetailshere"+ "\r\n\n\n" +
+
+						"If you have not authorized this booking, please contact Book2ball with the information in this e-mail.\r\n"
+						+ "THANK YOU!\r\n" + "\r\n" + "MAGS.WEBSITE\r\n");
+		newEmail.send();	
 		return id;
 		
 	}
