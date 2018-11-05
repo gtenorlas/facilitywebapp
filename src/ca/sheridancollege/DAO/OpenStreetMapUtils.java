@@ -6,11 +6,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.json.simple.JSONValue;
-import org.json.simple.parser.JSONParser;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.jayway.jsonpath.JsonPath;
 
 public class OpenStreetMapUtils {
@@ -19,12 +14,6 @@ public class OpenStreetMapUtils {
 	// public final static Logger log = Logger.getLogger("OpenStreeMapUtils");
 
 	private static OpenStreetMapUtils instance = null;
-	@Autowired
-	private JSONParser jsonParser;
-
-	public OpenStreetMapUtils() {
-		jsonParser = new JSONParser();
-	}
 
 	public static OpenStreetMapUtils getInstance() {
 		if (instance == null) {
@@ -74,7 +63,6 @@ public class OpenStreetMapUtils {
 	public Map<String, Double> getCoordinates(String address) {
 		Map<String, Double> res;
 		StringBuffer query;
-		String[] split = address.split(" ");
 		String queryResult = null;
 
 		query = new StringBuffer();
