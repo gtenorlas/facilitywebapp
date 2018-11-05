@@ -122,16 +122,9 @@ public class HomeController {
 			System.out.println("load facility page");
 		}
 
-		// create the pdf before showing the courts
-		App createPdf = new App(facility, username);
-		try {
-			System.out.println("facility court size: " + facility.getCourts().size());
-			createPdf.main();
-		} catch (Exception e) {
-			System.out.println("Cannot create pdf");
-		}
+		//List<Booking> bookings = new ArrayList<Booking>();
 
-		List<Booking> bookings = new ArrayList<Booking>();
+		ArrayList<Booking> bookings = new ArrayList<Booking>();
 		for (Court eachCourt : facility.getCourts()) {
 			for (Booking eachBooking : eachCourt.getBookings()) {
 				bookings.add(eachBooking);
@@ -139,6 +132,15 @@ public class HomeController {
 		}
 
 		model.addAttribute("bookings", bookings);
+		
+		// create the pdf before showing the courts
+		App createPdf = new App(facility, username, bookings);
+		try {
+			System.out.println("facility court size: " + facility.getCourts().size());
+			createPdf.main();
+		} catch (Exception e) {
+			System.out.println("Cannot create pdf");
+		}
 
 		return "bookings";
 	}
@@ -302,8 +304,20 @@ public class HomeController {
 		if (customerName.equals("")) {
 			customerName = null;
 		}
+		//List<Booking> bookings = bookingDAO.searchBookings(customerName, status, localDateTime);
 		List<Booking> bookings = bookingDAO.searchBookings(customerName, status, localDateTime);
-		// System.out.println("Bokings are these"+bookings);
+		
+		// create the pdf before showing the courts
+		App createPdf = new App(facility, username, (ArrayList)bookings);
+		try {
+			System.out.println("facility court size: " + facility.getCourts().size());
+			createPdf.main();
+		} catch (Exception e) {
+			System.out.println("Cannot create pdf");
+		}
+
+
+		
 
 		model.addAttribute("bookings", bookings);
 

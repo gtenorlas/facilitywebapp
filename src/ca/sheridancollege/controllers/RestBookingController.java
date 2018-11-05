@@ -67,6 +67,8 @@ public class RestBookingController {
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy-HH-mm");
 		LocalDateTime startDateTimeLocal = null, endDateTimeLocal = null;
+		
+		
 
 		// try to convert the string date into localdatetime
 		try {
@@ -85,6 +87,7 @@ public class RestBookingController {
 
 		booking.setCustomerEmail(customerEmail);
 		booking.setFacilityName(facilityName);
+		booking.setStatus("Active");
 
 		// bookingDAO.saveBooking(booking);
 

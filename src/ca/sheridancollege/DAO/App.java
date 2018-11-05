@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -38,12 +39,14 @@ public class App {
 
 	public static int totalPageNum = 0;
 	private Facility facility;
+	private ArrayList<Booking> bookings;
 	private String username;
 	
 	
-	public App(Facility facility, String username) {
+	public App(Facility facility, String username, ArrayList<Booking> bookings) {
 		 this.facility=facility;
 		 this.username=username;
+		 this.bookings = bookings;
 		 DEST = "/images/Report.pdf";
 		 REPORTFINAL = "/images/Report.pdf";
 		 String image ="<c:url value=\"/images/logomini.jpg\" />";
@@ -192,6 +195,25 @@ public class App {
 		double totalCost=0;
 		System.out.println("before the court loop");
 		
+
+			System.out.println("in the court loop");
+			for (Booking eachBooking: bookings) {
+				System.out.println("in the booking loop");
+				table.addCell(new Phrase(eachBooking.getCourt().getCourtNumber() + " - "+ eachBooking.getCourt().getCourtName(), cellFont));
+				table.addCell(new Phrase(eachBooking.getCustomerName(), cellFont));
+				table.addCell(new Phrase(eachBooking.getStatus(), cellFont));
+				table.addCell(new Phrase(eachBooking.getStartDateTime().format(formatter), cellFont));
+				table.addCell(new Phrase(eachBooking.getEndDateTime().format(formatter), cellFont));
+				Phrase cost = (new Phrase(currencyFormat.format(eachBooking.getPayment().getCourtCharge()), cellFont));
+				totalCost+=eachBooking.getPayment().getCourtCharge();
+				PdfPCell cell = new PdfPCell(cost);
+				cell.setHorizontalAlignment(2);
+				table.addCell(cell);
+				
+			}
+	
+		
+		/*
 		System.out.println("facility court size: "+this.facility.getCourts().size());
 		for (Court eachCourt : this.facility.getCourts()) {
 			// step 4
@@ -211,6 +233,7 @@ public class App {
 				
 			}
 		}
+		*/
 
 		PdfPCell cell = new PdfPCell(new Phrase("Total:", headerFont));
 		// cell.setPadding(5);
