@@ -426,7 +426,8 @@ public class HomeController {
 
 		String address = "";
 		// address = "The White House Washington DC";
-		address += facilityToSave.getLine_1() + ", " + facilityToSave.getCity() + ", " + facilityToSave.getProvince();
+		address += facilityToSave.getLine_1().trim() + ", " + facilityToSave.getLine_2().trim() + ", " + facilityToSave.getLine_3().trim() + ", "
+		+ facilityToSave.getCity().trim() + ", " + facilityToSave.getProvince().trim();
 		address = address.replaceAll(",", "%2C");
 		address = address.replaceAll(" ", "+");
 
@@ -434,7 +435,7 @@ public class HomeController {
 
 		coords = OpenStreetMapUtils.getInstance().getCoordinates(address);
 		if (coords.get("lat") == null) {
-			address += facilityToSave.getFacilityName()+ ", " + facilityToSave.getCity() + ", " + facilityToSave.getProvince();
+			address += facilityToSave.getFacilityName()+ ", " + facilityToSave.getCity().trim() + ", " + facilityToSave.getProvince().trim();
 			address = address.replaceAll(",", "%2C");
 			address = address.replaceAll(" ", "+");
 			coords = OpenStreetMapUtils.getInstance().getCoordinates(address);

@@ -60,19 +60,21 @@
 					
 					<div class="form-group">
 				  		<form:label path="province">Province:</form:label>
-				  		<form:input path="province" class="form-control" type="text" required="false" value="${facility.province}"/>
+				  		<form:input path="province" class="form-control" type="text" required="true" value="${facility.province}"/>
 				  		<form:errors path="province" cssClass="error" /> 	
 					</div>
 					
 					<div class="form-group">
-				  		<form:label path="postalCode">Postal Code*:</form:label>
-				  		<form:input path="postalCode" class="form-control" type="text" required="true" value="${facility.postalCode}"/>
+				  		<form:label path="postalCode">Postal Code:</form:label>
+				  		<form:input path="postalCode" class="form-control" type="text"  value="${facility.postalCode}"/>
 				  		<form:errors path="postalCode" cssClass="error" /> 	
 					</div>
 					
 					<div class="form-group">
 				  		<form:label path="country">Country*:</form:label>
-				  		<form:input path="country" class="form-control" type="text" required="true" value="${facility.country}"/>
+
+				      		<form:select path="country" items="${ facility.countryList()}" value="${facility.country }" class="form-control"/>	
+
 				  		<form:errors path="country" cssClass="error" /> 	
 					</div>
 					

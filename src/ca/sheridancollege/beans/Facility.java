@@ -2,7 +2,10 @@ package ca.sheridancollege.beans;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -55,7 +58,6 @@ public class Facility implements Serializable {
 	private String city;
 	@Size(max=255, message="Province cannot be more than 255 characters")
 	private String province;
-	@NotEmpty(message = "Postal code cannot be empty")
 	@Size(max=20, message="Postal code cannot be more than 20 characters")
 	private String postalCode;
 	@NotEmpty(message = "Country cannot be empty")
@@ -74,5 +76,23 @@ public class Facility implements Serializable {
 	private LocalDateTime endDate;
 	private String lat;
 	private String lng;
+	
+	public static Object countryList() {
+		String[] countryCodes = Locale.getISOCountries();
+		ArrayList<String> countryNames = new ArrayList<>();
+
+		for (String countryCode : countryCodes) {
+
+		    Locale obj = new Locale("", countryCode);
+
+		    System.out.println("Country Code = " + obj.getCountry() 
+		        + ", Country Name = " + obj.getDisplayCountry());
+		    countryNames.add(obj.getDisplayCountry());
+
+		}
+		Collections.sort(countryNames); 
+		
+		return countryNames;
+	}
 
 }
