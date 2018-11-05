@@ -37,16 +37,16 @@ public class BookingDAO {
 		}
 		return true;
 	}
-	
+
 	/*
 	 * Save Booking
 	 */
 	public int saveBookingForAPI(Booking booking) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
-		int id=0;
+		int id = 0;
 		try {
-			id=(Integer) session.save(booking);
+			id = (Integer) session.save(booking);
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			System.out.println("Error saveBookingForAPI-> " + e);
@@ -82,7 +82,7 @@ public class BookingDAO {
 
 		return bookings;
 	}
-	
+
 	/*
 	 * Get All bookings to be viewed to be used in RestController
 	 */
@@ -95,7 +95,7 @@ public class BookingDAO {
 		CriteriaQuery<Booking> criteria = criteriaBuilder.createQuery(Booking.class);
 		Root<Booking> root = criteria.from(Booking.class);
 		root.fetch("payment", JoinType.LEFT); // include the bookings to fix the fetch lazy issue
-		
+
 		criteria.select(root);
 		criteria.where(criteriaBuilder.equal(root.get("customerEmail"), email));
 
@@ -110,7 +110,7 @@ public class BookingDAO {
 			session.close();
 		}
 
-		 System.out.println("bookings count " + bookings.size());
+		System.out.println("bookings count " + bookings.size());
 		return bookings;
 	}
 
@@ -151,35 +151,54 @@ public class BookingDAO {
 
 		CriteriaQuery<Booking> criteria = criteriaBuilder.createQuery(Booking.class);
 		Root<Booking> root = criteria.from(Booking.class);
+		LocalDateTime nextDay = null;
+		try {
+			nextDay = localDateTime.plusDays(1);
+
+		} catch (Exception e) {
+
+		}
+		Predicate isDateMatchStartOfDay = criteriaBuilder.greaterThanOrEqualTo(root.get("startDateTime"),
+				localDateTime);
+		Predicate isDateMatchEndOfDay = criteriaBuilder.lessThanOrEqualTo(root.get("startDateTime"), nextDay);
+		Predicate isStatusMatch = criteriaBuilder.equal(root.get("status"), status);
+		Predicate isCustomerMatch = null;
+
+		if (customerName != null) {
+			if (customerName.contains("%")) {
+				//customerName.replaceAll("\\*", "%");
+				System.out.println("customerName is "+customerName);
+				isCustomerMatch = criteriaBuilder.like(root.get("customerName"), customerName);
+			} else {
+				isCustomerMatch = criteriaBuilder.equal(root.get("customerName"), customerName);
+			}
+		}
 
 		System.out.println("filtering");
 		if (customerName == null && status != null && localDateTime != null) {
 			System.out.println("option 1 filtering");
-			Predicate isDateMatch = criteriaBuilder.greaterThanOrEqualTo(root.get("startDateTime"), localDateTime);
-			Predicate isStatusMatch = criteriaBuilder.equal(root.get("status"), status);
-			criteria.where(criteriaBuilder.and(isDateMatch, isStatusMatch));
+
+			criteria.where(criteriaBuilder.and(isDateMatchStartOfDay, isDateMatchEndOfDay, isStatusMatch));
 		} else if (status == null && customerName != null && localDateTime != null) {
 			System.out.println("option 2 filtering");
-			criteria.where(criteriaBuilder.and(criteriaBuilder.like(root.get("customerName"), "%" + customerName + "%"),
-					criteriaBuilder.equal(root.get("startDateTime"), localDateTime)));
+
+			criteria.where(criteriaBuilder.and(isDateMatchStartOfDay, isDateMatchEndOfDay, isCustomerMatch));
 		} else if (localDateTime == null && customerName != null && status != null) {
 			System.out.println("option 3 filtering");
-			criteria.where(criteriaBuilder.and(criteriaBuilder.equal(root.get("status"), status),
-					criteriaBuilder.equal(root.get("customerName"), customerName)));
+			criteria.where(criteriaBuilder.and(isCustomerMatch, isStatusMatch));
 		} else if (localDateTime == null && status == null && customerName != null) {
 			System.out.println("option 4 filtering");
-			criteria.where(criteriaBuilder.like(root.get("customerName"), "%" + customerName + "%"));
+			criteria.where(isCustomerMatch);
 		} else if (localDateTime == null && customerName == null && status != null) {
 			System.out.println("option 5 filtering");
-			criteria.where(criteriaBuilder.like(root.get("status"), status));
+			criteria.where(isStatusMatch);
 		} else if (localDateTime != null && customerName == null && status == null) {
 			System.out.println("option 6 filtering");
-			criteria.where(criteriaBuilder.equal(root.get("startDateTime"), localDateTime));
+			criteria.where(criteriaBuilder.and(isDateMatchStartOfDay, isDateMatchEndOfDay));
 		} else if (localDateTime != null && customerName != null && status != null) {
 			System.out.println("option 7 filtering");
-			criteria.where(criteriaBuilder.and(criteriaBuilder.like(root.get("customerName"), "%" + customerName + "%"),
-					criteriaBuilder.equal(root.get("status"), status),
-					criteriaBuilder.equal(root.get("startDateTime"), localDateTime)));
+			criteria.where(
+					criteriaBuilder.and(isDateMatchStartOfDay, isDateMatchEndOfDay, isStatusMatch, isCustomerMatch));
 		}
 
 		List<Booking> bookings = new ArrayList<Booking>();

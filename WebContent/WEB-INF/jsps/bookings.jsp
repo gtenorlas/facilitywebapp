@@ -31,7 +31,8 @@
 				      		<select name = "status"  class="form-control">	
 				      		<option value=""></option>
 				      		<option value="active">Active</option>
-  							<option value="cancel">Cancel</option>
+  							<option value="cancelled">Cancelled</option>
+  							<option value="completed">Completed</option>
   							</select>
 				       </div>
 				    </div>
