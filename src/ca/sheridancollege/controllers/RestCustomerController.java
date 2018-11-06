@@ -34,7 +34,7 @@ public class RestCustomerController {
 
 	}
 
-	@RequestMapping(value = "/{username}/{password}/{originate}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{username}/{password}/{originate}", method = RequestMethod.POST)
 	public Object getCustomer(@PathVariable String username, @PathVariable String password,
 			@PathVariable String originate) {
 		if (originate.toLowerCase().trim().equals("standard")) {

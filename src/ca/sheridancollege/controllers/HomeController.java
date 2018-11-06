@@ -527,7 +527,7 @@ public class HomeController {
 							+ "<b>End Date Time:</b> "
 							+ Booking.formatDate(bookingSaved.getEndDateTime()) + "<br/>"
 							+ "<b>Booking Status:</b> " + bookingSaved.getStatus()
-							+ "<br/>"+
+							+ "<br/><br/><br/>"+
 
 
 							"If you have not authorized this change, please contact Book2ball with the information in this e-mail.</br>"
