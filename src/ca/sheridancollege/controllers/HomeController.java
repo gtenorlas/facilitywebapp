@@ -41,7 +41,9 @@ import ca.sheridancollege.DAO.OpenStreetMapUtils;
 import ca.sheridancollege.DAO.UserDAO;
 import ca.sheridancollege.beans.Booking;
 import ca.sheridancollege.beans.Court;
+import ca.sheridancollege.beans.Email;
 import ca.sheridancollege.beans.Facility;
+import ca.sheridancollege.beans.Payment;
 import ca.sheridancollege.beans.User;
 import ca.sheridancollege.beans.UserRole;
 
@@ -440,8 +442,17 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/saveBooking", method = RequestMethod.GET)
 	public String saveBooking(Model model, @ModelAttribute("booking") Booking booking, @RequestParam int courtNumber,
-			@RequestParam String startDT, @RequestParam String endDT) {
+			@RequestParam String startDT, @RequestParam String endDT){
 
+		int bookingId=booking.getBookingId();
+		Booking bookingSaved = bookingDAO.getBookingByID(bookingId);
+		if (bookingSaved ==null) {
+			System.out.println("bookingSaved is null" );
+		}else {
+			System.out.println("customername " +bookingSaved.getCustomerName());
+		}
+		System.out.println("bookingSavedEmail "+bookingSaved.getCustomerEmail());
+		
 		LocalDateTime localstartdatetime = null;
 		LocalDateTime localenddatetime = null;
 		System.out.println("update date: ");
@@ -453,51 +464,91 @@ public class HomeController {
 		if (endDT != null) {
 			localenddatetime = LocalDateTime.parse(endDT);
 		}
-		booking.setEndDateTime(localenddatetime);
-		booking.setStartDateTime(localstartdatetime);
-		booking.setBookingDate(LocalDateTime.now());
+		bookingSaved.setEndDateTime(localenddatetime);
+		bookingSaved.setStartDateTime(localstartdatetime);
+		bookingSaved.setStatus(booking.getStatus());
+		//booking.setBookingDate(LocalDateTime.now());
+		
+		System.out.println("bookingModelEmail "+booking.getCustomerEmail());
 
 		// calculate the duration first
 		// long diffInHours =
 		// ChronoUnit.HOURS.between(booking.getEndDateTime(),booking.getStartDateTime());
-		long diffInMinutes = ChronoUnit.MINUTES.between(booking.getEndDateTime(), booking.getStartDateTime());
+		long diffInMinutes = ChronoUnit.MINUTES.between(localstartdatetime, localenddatetime);
 
 		// String hourDuration=(diffInHours + "."+diffInMinutes);
 		System.out.println("minutes : " + diffInMinutes);
-		booking.setDuration(Math.abs(diffInMinutes) / 60.0);
+		bookingSaved.setDuration(Math.abs(diffInMinutes) / 60.0);
 
-		booking.setCourt(courtToSave); // added 10/25/2018
+		bookingSaved.setCourt(courtToSave); // added 10/25/2018
 
-		courtToSave.getBookings().remove(booking);
 
-		// ADJUST THE PAYMENT VALUE
-
-		courtToSave.getBookings().add(booking);
-		courtDAO.saveCourt(courtToSave);
-		System.out.println("Trying to save Court : " + courtToSave.getCourtName());
-		this.bookings(model);
-
-//		Booking bookingToSave = bookingDAO.getBookingByID(1);
-//		bookingToSave.getAllBookings().remove(booking);
-//		bookingToSave.getAllBookings().add(booking);
-//		bookingDAO.saveBooking(bookingToSave);
+		bookingDAO.saveBooking(bookingSaved);
+		
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Facility facility = facilityDao.getFacility(authentication.getName());
-		model.addAttribute("facility", facility);
-		// court.setCreationDate(LocalDateTime.now());
+		String username = null;
+		Facility facility = null;
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			username = authentication.getName(); // grab the user currently authenticated
 
-		// bookingToSave.getCourts().remove(court);
-		// bookingToSave.getCourts().add(court);
+			facility = facilityDao.getFacility(username);
+			model.addAttribute("facility", facility);
+			System.out.println("load facility page");
+		}
+		
+		
+		ArrayList<Booking> bookings = new ArrayList<Booking>();
+		for (Court eachCourt : facility.getCourts()) {
+			for (Booking eachBooking : eachCourt.getBookings()) {
+				bookings.add(eachBooking);
+				if (eachBooking.getBookingId()== bookingId) {
+					//bookingSaved =eachBooking;
+				}
+			}
+		}
 
-		// System.out.println("getcourt ");
-		// bookingDAO.saveBooking(bookingToSave);
-		// bookings(null);
-		// System.out.println("save facility ");
+		model.addAttribute("bookings", bookings);
+		
+		
+		System.out.println("bookingid "+bookingId);
+		System.out.println("bookingSaved "+bookingSaved.getCustomerEmail());
+		
+		if (bookingSaved.getStatus().toLowerCase().equals("cancelled") ) {
+			Email newEmail = new Email(bookingSaved.getCustomerEmail(), "Booking Cancellation",
+					"<font color=black>As requested, your booking has been cancelled. <br/>" +
 
-		// List<Booking> allbooking = bookingDAO.getAllBookings();
-		// model.addAttribute("bookingToSave",bookingToSave);
-		// System.out.println("load facility page");
+							"<h3>Cancellation Details:</h3>"
+
+							+ "<b>Facility Name: </b>"+bookingSaved.getFacilityName() + "<br/>" 
+							+ "<b>Facility Address: </b>"+bookingSaved.getFaciltyAddress() + "<br/>"
+							+ "<b>Court Name: </b>" + bookingSaved.getCourtName() + "<br/>" 
+							+ "<b>Start Date Time:</b>"+ Booking.formatDate(bookingSaved.getStartDateTime()) + "<br/>"
+							+ "<b>End Date Time:</b> "
+							+ Booking.formatDate(bookingSaved.getEndDateTime()) + "<br/>"
+							+ "<b>Booking Status:</b> " + bookingSaved.getStatus()
+							+ "<br/>"+
+
+
+							"If you have not authorized this change, please contact Book2ball with the information in this e-mail.</br>"
+							+ "THANK YOU!<br/>" + "<b>MAGS.WEBSITE</b></font>");
+			newEmail.send();
+		}
+		
+		
+
+
+	
+		
+		// create the pdf before showing the courts
+		App createPdf = new App(facility, username, bookings);
+		try {
+			System.out.println("facility court size: " + facility.getCourts().size());
+			createPdf.main();
+		} catch (Exception e) {
+			System.out.println("Cannot create pdf");
+		}
+
 		return "bookings";
 	}
 

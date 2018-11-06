@@ -1,6 +1,7 @@
 package ca.sheridancollege.beans;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
@@ -41,4 +42,9 @@ public class Payment implements Serializable {
 	private String confirmationNumber;
 	private String paymentMethod;
 	private String status;
+	
+	public static String formatToCurrency(Object number) {
+		NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+		return currencyFormat.format(number);
+	}
 }

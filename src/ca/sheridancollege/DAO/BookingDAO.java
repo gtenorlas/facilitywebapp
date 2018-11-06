@@ -133,7 +133,7 @@ public class BookingDAO {
 		Booking booking = null;
 		try {
 			booking = session.createQuery(criteria).getSingleResult();
-
+			session.flush();
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			System.out.println("Error getAllBookingByID -> " + e);

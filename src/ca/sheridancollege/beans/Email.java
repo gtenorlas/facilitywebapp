@@ -1,13 +1,17 @@
 package ca.sheridancollege.beans;
 
+import java.awt.Color;
 import java.util.Properties;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 public class Email {
 
@@ -39,6 +43,12 @@ public class Email {
     public void setMessage(String message) {
         this.message = message;
     }
+    
+    public static String addColor(String msg, Color color) {
+        String hexColor = String.format("#%06X",  (0xFFFFFF & color.getRGB()));
+        String colorMsg = "<FONT COLOR=\"#" + hexColor + "\">" + msg + "</FONT>";
+        return colorMsg;
+    }
 
     public void send() {
         //Get the session object  
@@ -61,7 +71,22 @@ public class Email {
             message.setFrom(new InternetAddress(user));
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(this.receiver));
             message.setSubject(this.subject);
-            message.setText(this.message);
+            
+            MimeMultipart mp = new MimeMultipart();
+            MimeBodyPart mbp1= new MimeBodyPart(); 
+          //  String htmlText = "<b> This is formatted</b>"+
+           // "<font size =\"5\" face=\"arial\" >This paragraph is in Arial, size 5</font>";
+            mbp1.setContent(this.message,"text/html");
+            mp.addBodyPart(mbp1);
+            //msg.setContent(mp);
+            
+            
+            
+            
+            
+            
+            //message.setText(this.message);
+            message.setContent(mp);
 
             //send the message  
             Transport.send(message);

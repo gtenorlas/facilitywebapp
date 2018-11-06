@@ -240,12 +240,11 @@ public class App {
 		cell.setColspan(5); // occupy 5 cells horizontally
 
 		table.addCell(cell);
-		;
+		
 		Phrase cost = (new Phrase(currencyFormat.format(totalCost), headerFont));
 		PdfPCell cellTotalCost = new PdfPCell(cost);
 		cell.setHorizontalAlignment(2);
 		table.addCell(cellTotalCost);
-		;
 
 		document.add(table);
 

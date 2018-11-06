@@ -22,8 +22,10 @@
 				  	<form:input path="customerName" type="hidden" value="${booking.customerName}"/>
 				  	<form:input path="endDateTime" type="hidden" value="${booking.endDateTime}"/>
 				  	<form:input path="startDateTime" type="hidden" value="${booking.startDateTime}"/>
-				  	<form:input path="comment" type="hidden" value="${booking.comment}"/> -->
-				    
+				  					  	 <form:input path="bookingDate" type="hidden" value="${booking.bookingDate}"/>  
+				    <form:input path="customerEmail" type="hidden" value="${booking.customerEmail}"/>  
+				  	 -->
+
 				    <div class="form-group row">
 				    	<form:label path="customerName" class="col-md-12 col-form-label">Customer Name:</form:label>
 				       <div class="col-md-12">

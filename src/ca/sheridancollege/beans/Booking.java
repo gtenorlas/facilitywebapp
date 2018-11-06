@@ -3,6 +3,7 @@ package ca.sheridancollege.beans;
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -111,6 +112,20 @@ public class Booking implements Serializable {
 		NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
 		//return currencyFormat.format(this.duration * court.getPrice());
 		return currencyFormat.format(this.payment.getSubTotal());
+	}
+	
+	public static String formatDate(LocalDateTime date) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, yyyy-MM-dd HH:mm a");
+		
+		
+
+		// try to convert the string date into localdatetime
+		try {
+			return date.format( formatter);
+
+		} catch (Exception e) {
+			return "Please check date format entered.";
+		}
 	}
 
 	
