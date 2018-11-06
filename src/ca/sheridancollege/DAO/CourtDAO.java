@@ -1,6 +1,5 @@
 package ca.sheridancollege.DAO;
 
-
 import java.time.LocalDateTime;
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -24,6 +23,7 @@ public class CourtDAO {
 	 * it's id, then will be saved
 	 */
 	public boolean saveCourt(Court court) {
+		
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		try {
@@ -36,6 +36,7 @@ public class CourtDAO {
 		} finally {
 			session.close();
 		}
+		System.out.println("Done saving court");
 		return true;
 	}
 
@@ -64,12 +65,11 @@ public class CourtDAO {
 			court = session.createQuery(criteria).getSingleResult();
 			System.out.println("query created ");
 			session.getTransaction().commit();
-		}
-		catch (NoResultException nre) {
+		} catch (NoResultException nre) {
 			System.out.println("NoResultExceptionError getCourt -> " + nre);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			System.out.println("Error getCourt -> " + e);
-		}finally {
+		} finally {
 			session.close();
 		}
 
@@ -96,46 +96,49 @@ public class CourtDAO {
 //	      em.close();
 //	      return true;
 
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-		CriteriaBuilder cb = session.getCriteriaBuilder();
-		CriteriaQuery<Court> cq = cb.createQuery(Court.class);
-		Root<Court> root = cq.from(Court.class);
-		Fetch<Court, Booking> bookingFetch = root.fetch("bookings");
-		System.out.println("booking fetch");
-		Join<Court, Booking> bookingJoin = root.join("bookings", JoinType.RIGHT);
-		System.out.println("booking join ");
-		cq.select(root);
+		/*
+		 * 
+		 * Session session = sessionFactory.openSession(); session.beginTransaction();
+		 * CriteriaBuilder cb = session.getCriteriaBuilder(); CriteriaQuery<Court> cq =
+		 * cb.createQuery(Court.class); Root<Court> root = cq.from(Court.class);
+		 * Fetch<Court, Booking> bookingFetch = root.fetch("bookings");
+		 * System.out.println("booking fetch"); Join<Court, Booking> bookingJoin =
+		 * root.join("bookings", JoinType.RIGHT); System.out.println("booking join ");
+		 * cq.select(root);
+		 * 
+		 * cq.where(cb.lessThan(bookingJoin.get("startDateTime"), LocalDateTime.now()));
+		 * // LocalDate date = null; //
+		 * System.out.println(date.atStartOfDay().toLocalDate()); //
+		 * cq.where(cb.greaterThan(bookingJoin.get("startDateTime"),date.atStartOfDay().
+		 * toLocalDate())); // court.setEndDate(LocalDateTime.now());
+		 * System.out.println("booking where "); Court courtToDeleteHasBookings = new
+		 * Court(); try { courtToDeleteHasBookings =
+		 * session.createQuery(cq).getSingleResult();
+		 * System.out.println("booking exsites  "); // Path<Object> localDT =
+		 * bookingJoin.get("startDateTime"); // if( localDT >= LocalDateTime.now())
+		 * session.getTransaction().commit(); session.close(); return false; } catch
+		 * (NoResultException nre) {
+		 * System.out.println("NoResultExceptionError getCourt -> " + nre); }catch
+		 * (Exception e) { System.out.println("Error getCourt -> " + e); }
+		 * 
+		 * System.out.println("Deleting court ");
+		 * 
+		 * court.setEndDate(LocalDateTime.now()); court.setAvailability("Inactive");
+		 * this.saveCourt(court); session.close(); return true;
+		 */
 
-		cq.where(cb.lessThan(bookingJoin.get("startDateTime"), LocalDateTime.now()));
-		// LocalDate date = null;
-		// System.out.println(date.atStartOfDay().toLocalDate());
-		// cq.where(cb.greaterThan(bookingJoin.get("startDateTime"),date.atStartOfDay().toLocalDate()));
-		// court.setEndDate(LocalDateTime.now());
-		System.out.println("booking where ");
-		Court courtToDeleteHasBookings = new Court();
-		try {
-			courtToDeleteHasBookings = session.createQuery(cq).getSingleResult();
-			System.out.println("booking exsites  ");
-			// Path<Object> localDT = bookingJoin.get("startDateTime");
-			// if( localDT >= LocalDateTime.now())
-			session.getTransaction().commit();
-			session.close();
+		LocalDateTime currentLocalDateTme = LocalDateTime.now();
+		BookingDAO bookingDAO = new BookingDAO();
+		boolean canDelete = bookingDAO.canDeleteCourt(court.getCourtNumber(), currentLocalDateTme);
+		if (canDelete) {
+			court.setEndDate(LocalDateTime.now());
+			court.setAvailability("Inactive");
+
+			this.saveCourt(court);
+			return true;
+		} else {
 			return false;
 		}
-		catch (NoResultException nre) {
-			System.out.println("NoResultExceptionError getCourt -> " + nre);
-		}catch (Exception e) {
-			System.out.println("Error getCourt -> " + e);
-		}
-
-		System.out.println("Deleting court ");
-
-		court.setEndDate(LocalDateTime.now());
-		court.setAvailability("Inactive");
-		this.saveCourt(court);
-		session.close();
-		return true;
 
 	}
 
@@ -215,7 +218,7 @@ public class CourtDAO {
 //
 //	}
 //	
-	
+
 	/*
 	 * Delete a single Court
 	 */
@@ -224,82 +227,72 @@ public class CourtDAO {
 	 * @return
 	 */
 	/*
-	public boolean deleteCourtOld(Court court) {
-
-		// some uses em instead of session as variable name on stack overflow
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-		CriteriaBuilder cb = session.getCriteriaBuilder();
-		CriteriaQuery<Court> cq = cb.createQuery(Court.class);
-		Root<Court> root = cq.from(Court.class);
-		Fetch<Court, Booking> bookingFetch = root.fetch("bookings");
-		System.out.println("booking fetch");
-		Join<Court, Booking> bookingJoin = root.join("bookings");
-		System.out.println("booking join ");
-		cq.select(root);
-
-		// cq.where(cb.greaterThan(bookingJoin.get("startDateTime"),LocalDateTime.now()));
-		LocalDate date = null;
-		System.out.println(date.atStartOfDay().toLocalDate());
-		cq.where(cb.greaterThan(bookingJoin.get("startDateTime"), date.atStartOfDay().toLocalDate()));
-		System.out.println("booking where ");
-
-		Court courtToDeleteHasBookings = session.createQuery(cq).getSingleResult();
-
-		session.getTransaction().commit();
-
-		System.out.println("Deleting court ");
-
-		/*
-		 * Session session = sessionFactory.openSession(); session.beginTransaction();
-		 * 
-		 * CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-		 * CriteriaQuery<Booking> criteria = criteriaBuilder.createQuery(Booking.class);
-		 * Root<Booking> root = criteria.from(Booking.class);
-		 * 
-		 * criteria.select(root);
-		 * criteria.where(criteriaBuilder.and(criteriaBuilder.equal(root.get(
-		 * "courtNumber"), criteriaBuilder.isNull(root.get("endDate"))))) ;
-		 * 
-		 * Booking booking = session.createQuery(criteria).getSingleResult();
-		 * session.getTransaction().commit(); session.close();
-		 */
+	 * public boolean deleteCourtOld(Court court) {
+	 * 
+	 * // some uses em instead of session as variable name on stack overflow Session
+	 * session = sessionFactory.openSession(); session.beginTransaction();
+	 * CriteriaBuilder cb = session.getCriteriaBuilder(); CriteriaQuery<Court> cq =
+	 * cb.createQuery(Court.class); Root<Court> root = cq.from(Court.class);
+	 * Fetch<Court, Booking> bookingFetch = root.fetch("bookings");
+	 * System.out.println("booking fetch"); Join<Court, Booking> bookingJoin =
+	 * root.join("bookings"); System.out.println("booking join "); cq.select(root);
+	 * 
+	 * //
+	 * cq.where(cb.greaterThan(bookingJoin.get("startDateTime"),LocalDateTime.now())
+	 * ); LocalDate date = null;
+	 * System.out.println(date.atStartOfDay().toLocalDate());
+	 * cq.where(cb.greaterThan(bookingJoin.get("startDateTime"),
+	 * date.atStartOfDay().toLocalDate())); System.out.println("booking where ");
+	 * 
+	 * Court courtToDeleteHasBookings = session.createQuery(cq).getSingleResult();
+	 * 
+	 * session.getTransaction().commit();
+	 * 
+	 * System.out.println("Deleting court ");
+	 * 
+	 * /* Session session = sessionFactory.openSession();
+	 * session.beginTransaction();
+	 * 
+	 * CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+	 * CriteriaQuery<Booking> criteria = criteriaBuilder.createQuery(Booking.class);
+	 * Root<Booking> root = criteria.from(Booking.class);
+	 * 
+	 * criteria.select(root);
+	 * criteria.where(criteriaBuilder.and(criteriaBuilder.equal(root.get(
+	 * "courtNumber"), criteriaBuilder.isNull(root.get("endDate"))))) ;
+	 * 
+	 * Booking booking = session.createQuery(criteria).getSingleResult();
+	 * session.getTransaction().commit(); session.close();
+	 */
 
 	/*
-		if (courtToDeleteHasBookings != null) {
-			session.close();
-			return false;
-		}
-
-		court.setEndDate(LocalDateTime.now());
-		this.saveCourt(court);
-		session.close();
-		return true;
-
-	}
-
-
-	public void setInactive(Court court) {
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-
-		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-		CriteriaUpdate<Court> criteria = criteriaBuilder.createCriteriaUpdate(Court.class);
-		Root<Court> root = criteria.from(Court.class);
-
-		// criteria.set(court.getEndDate(), LocalDateTime.now());
-
-		// criteria.select(root);
-		int courtNumber = court.getCourtNumber();
-
-		criteria.where(criteriaBuilder.equal(root.get("courtNumber"), courtNumber));
-
-		session.createQuery(criteria).executeUpdate();
-
-		session.getTransaction().commit();
-		session.close();
-
-	}
-	*/
+	 * if (courtToDeleteHasBookings != null) { session.close(); return false; }
+	 * 
+	 * court.setEndDate(LocalDateTime.now()); this.saveCourt(court);
+	 * session.close(); return true;
+	 * 
+	 * }
+	 * 
+	 * 
+	 * public void setInactive(Court court) { Session session =
+	 * sessionFactory.openSession(); session.beginTransaction();
+	 * 
+	 * CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+	 * CriteriaUpdate<Court> criteria =
+	 * criteriaBuilder.createCriteriaUpdate(Court.class); Root<Court> root =
+	 * criteria.from(Court.class);
+	 * 
+	 * // criteria.set(court.getEndDate(), LocalDateTime.now());
+	 * 
+	 * // criteria.select(root); int courtNumber = court.getCourtNumber();
+	 * 
+	 * criteria.where(criteriaBuilder.equal(root.get("courtNumber"), courtNumber));
+	 * 
+	 * session.createQuery(criteria).executeUpdate();
+	 * 
+	 * session.getTransaction().commit(); session.close();
+	 * 
+	 * }
+	 */
 
 }

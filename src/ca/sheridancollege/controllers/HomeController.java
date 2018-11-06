@@ -184,10 +184,17 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/courts/delete/{facilityId}/{courtNumber}", method = RequestMethod.GET)
 	public String courtsDelete(Model model, @PathVariable int facilityId, @PathVariable int courtNumber) {
+		System.out.println("courtsToDelete");
 
-		Court court = courtDAO.getCourt(courtNumber);
+		System.out.println("beforebookingDatetime");
+		LocalDateTime bookingDateTime = LocalDateTime.now();
+		
+		System.out.println("bookingDAO");
+		boolean canDelete = bookingDAO.canDeleteCourt(courtNumber, bookingDateTime);
+		System.out.println("endbookingDAO");
+		
 		// facility.getCourts().remove(court);
-		boolean check = courtDAO.deleteCourt(court);
+		//boolean check = courtDAO.deleteCourt(court);
 		// courtDAO.setInactive(court);
 		// DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd
 		// HH:mm:ss");
@@ -195,18 +202,20 @@ public class HomeController {
 		// formatter);
 		// court.setEndDate(LocalDateTime.now());
 		// court.setEndDate(joiningDate);
-		System.out.println(check);
-		Facility facility = facilityDao.getFacility(facilityId);
-		if (check == true) {
-			courtDAO.getCourt(courtNumber);
-			facility.getCourts().remove(court);
+		
+		//Facility facility = facilityDao.getFacility(facilityId);
+		if (canDelete == true) {
+			System.out.println("court can be deleted");
+			Court court = courtDAO.getCourt(courtNumber);
+			System.out.println("Court to delete name " + court.getCourtName());
+			court.setEndDate(bookingDateTime);
+			court.setAvailability("Inactive");
+			courtDAO.saveCourt(court);
 			model.addAttribute("courtDeleted", true);
+		}else {
+			model.addAttribute("courtDeleted", false);
 		}
-		// Facility facility=facilityDao.getFacility(facilityId);
-		// facility.getCourts().remove(court);
-		facility.getCourts();
-		facilityDao.saveFacility(facility);
-		model.addAttribute("courtDeleted", false);
+		Facility facility=facilityDao.getFacility(facilityId);
 		model.addAttribute("facility", facility);
 
 		System.out.println("load facility page");
@@ -327,8 +336,15 @@ public class HomeController {
 	@RequestMapping(value = "/createCourt/{facilityId}", method = RequestMethod.GET)
 	public String createCourt(Model model, @PathVariable int facilityId) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Facility facility = facilityDao.getFacility(authentication.getName());
-		model.addAttribute("facility", facility);
+		String username = null;
+		Facility facility = null;
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			username = authentication.getName(); // grab the user currently authenticated
+
+			facility = facilityDao.getFacility(username);
+			model.addAttribute("facility", facility);
+			System.out.println("load facility page");
+		}
 
 		Court court = new Court();
 		model.addAttribute("facilityId", facilityId);

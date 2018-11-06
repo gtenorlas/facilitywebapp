@@ -78,7 +78,7 @@ public class Court implements Serializable {
 	private LocalDateTime endDate;
 	
 	public static String[] availabilityTypes(){
-		return new String[] {"Active","Inactive","Maintenance"};
+		return new String[] {"Active","Maintenance"}; //removed Inactive because there is a delete button that makes it Inactive
 	}
 	
 	public static String[] courtTypes(){

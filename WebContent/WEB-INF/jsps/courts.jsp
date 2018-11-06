@@ -3,26 +3,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <t:mainLayout>
     <jsp:body> 	
-			<!-- 		<c:choose>
-						 <c:when test="${courtDeleted}">
-					    	<div>Court successfully deleted!</div>
-						</c:when>    
-						<c:otherwise>
-					    	<div>Court couldn't deleted!</div>
-						</c:otherwise>
-					</c:choose>
-					 -->
-					 
+
+
+	
+		
+					 <div class="row">
+	  			<div class="col-md-12">
 					<c:if test="${courtDeleted}">
-					<div>Court successfully deleted!</div>
+					<h4>Court successfully deleted!</h4>
 					</c:if>
 					<c:if test="${courtDeleted==false}">
-					<div>Court could not be deleted!</div>
+					<h4>Court not deleted as it has active bookings.</h4>
 					</c:if>
 					<c:if test="${courtDeleted==null}">
 					<div></div>
 					</c:if>
-					
+						</div>
+	     	</div>
+
 		<div class="container">
 		<div class="row">
 	  			<div class="col-md-12">
@@ -46,7 +44,7 @@
 	
 		 	
 			<c:forEach var="item" items="${facility.courts}">
-			
+			<c:if test="${empty item.endDate}">
 		
 			<tr>
 				<td>${item.courtNumber}</td>
@@ -58,6 +56,7 @@
 				<td><c:url value="/courts/delete/${facility.facilityId}/${item.courtNumber}" var="deleteUrl" />
 				<a href="${deleteUrl}" onclick="return deleteFunction('/courts/delete/${facility.facilityId}/${item.courtNumber}')" id="deleteCourt">Delete</a></td>
 			</tr>
+			</c:if>
 			</c:forEach>
 
 		 </tbody>

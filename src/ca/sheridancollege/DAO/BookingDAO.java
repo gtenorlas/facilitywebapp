@@ -264,5 +264,36 @@ public class BookingDAO {
 			return true;
 		}
 	}
+	
+	public boolean canDeleteCourt(int courtNumber, LocalDateTime currentDateTime) {
+		System.out.println("checking canDeleteCourt in bookingDAO");
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		CriteriaBuilder cb = session.getCriteriaBuilder();
+		CriteriaQuery<Booking> criteria = cb.createQuery(Booking.class);
+		Root<Booking> root = criteria.from(Booking.class);
+
+		Predicate sameCourtNumber = cb.equal(root.get("court").get("courtNumber"), courtNumber);
+		Predicate hasFutureBookings = cb.greaterThanOrEqualTo(root.get("startDateTime"), currentDateTime);
+		Predicate isActiveStatus = cb.equal(root.get("status"), "Active");
+		criteria.where(cb.and(sameCourtNumber, hasFutureBookings,isActiveStatus));
+		List<Booking> bookingList = null;
+		try {
+			bookingList = session.createQuery(criteria).getResultList();
+
+			session.getTransaction().commit();
+			session.close();
+			System.out.println("booking validation returned " + bookingList.size());
+			if (bookingList.size() == 0) {
+				return true;
+			}
+			return false;
+		} catch (Exception e) {
+			session.close();
+			return true;
+		}
+		
+		
+	}
 
 }
