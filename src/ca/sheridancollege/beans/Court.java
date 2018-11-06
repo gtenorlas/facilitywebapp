@@ -10,6 +10,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -17,6 +19,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
@@ -76,6 +79,10 @@ public class Court implements Serializable {
 	@DateTimeFormat(pattern = "E yyyy-MM-dd hh:mm")
 	private LocalDateTime creationDate;
 	private LocalDateTime endDate;
+	@JsonBackReference
+	@ManyToOne
+    @JoinColumn(name="facilityId", nullable=false)
+    private Facility facility;
 	
 	public static String[] availabilityTypes(){
 		return new String[] {"Active","Maintenance"}; //removed Inactive because there is a delete button that makes it Inactive

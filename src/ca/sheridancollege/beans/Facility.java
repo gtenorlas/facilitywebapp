@@ -10,6 +10,7 @@ import java.util.Locale;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -18,6 +19,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Type;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -63,8 +65,10 @@ public class Facility implements Serializable {
 	@NotEmpty(message = "Country cannot be empty")
 	@Size(max=255, message="Country cannot be more than 255 characters")
 	private String country;
+	@Autowired(required = false)
 	@JsonManagedReference
-	@OneToMany(cascade = {CascadeType.ALL})
+	@OneToMany(mappedBy = "facility", cascade = CascadeType.ALL, 
+		    fetch = FetchType.LAZY)
 	private List<Court> courts;
 	
 	private String username;

@@ -417,14 +417,17 @@ public class HomeController {
 		System.out.println("Trying to save Court : " + court.getCourtName());
 		System.out.println("Trying to save facility id : " + facilityId);
 		Facility facilityToSave = facilityDao.getFacility(facilityId);
+		
 		court.setCreationDate(LocalDateTime.now());
-
-		facilityToSave.getCourts().remove(court);
-		facilityToSave.getCourts().add(court);
+		court.setFacility(facilityToSave);
+		courtDAO.saveCourt(court);
+		
+		//facilityToSave.getCourts().remove(court);
+		//facilityToSave.getCourts().add(court);
 
 		System.out.println("getcourt ");
-		facilityDao.saveFacility(facilityToSave);
-		System.out.println("save facility ");
+		//facilityDao.saveFacility(facilityToSave);
+		//System.out.println("save facility ");
 
 		Facility facility = facilityDao.getFacility(facilityId);
 		model.addAttribute("facility", facility);
