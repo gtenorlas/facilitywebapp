@@ -34,7 +34,7 @@ public class RestFacilityController {
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET) // routing to home
-	public Object facilityItem(Model model, @PathVariable String id) {
+	public Object facilityItem(Model model, @PathVariable int id) {
 		return facilityDAO.getFacility(id);
 	}
 
