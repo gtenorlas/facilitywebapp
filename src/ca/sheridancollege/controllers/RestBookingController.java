@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +16,7 @@ import ca.sheridancollege.DAO.CourtDAO;
 //import ca.sheridancollege.DAO.DAO;
 import ca.sheridancollege.beans.Booking;
 import ca.sheridancollege.beans.Court;
+import ca.sheridancollege.beans.Facility;
 
 @RestController // specify that this class is a restful controller
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
@@ -98,7 +98,33 @@ public class RestBookingController {
 				if (court.getAvailability().toLowerCase().equals("active")) {
 					booking.setCourt(court);
 					booking.setCourtName(court.getCourtName());
-					//court.
+					Facility facility = court.getFacility();
+					String address = facility.getLine_1() + "\n";
+					if (facility.getLine_2() != null) {
+						if(!facility.getLine_2().trim().isEmpty()) {
+							address += facility.getLine_2() + "\n";
+						}
+							
+					}
+					if (facility.getLine_3() != null) {
+						if(!facility.getLine_3().trim().isEmpty()) {
+							address += facility.getLine_3() + "\n";
+						}
+							
+					}
+					address += facility.getCity() + ", ";
+					address += facility.getProvince() + "\n";
+					if (facility.getPostalCode() != null) {
+						if(!facility.getPostalCode().trim().isEmpty()) {
+							address += facility.getPostalCode() + "\n";
+						}
+							
+					}
+					address += facility.getCountry() + "\n";
+					address += facility.getContactNumber();
+					
+					booking.setFaciltyAddress(address);
+					
 					
 					// court.getBookings().add(booking); // add the booking to the particular court
 					// courtDAO.saveCourt(court);
