@@ -28,7 +28,7 @@ public class PaymentDAO {
 		int id = 0;
 		try {
 			id = (Integer) session.save(payment);
-			// session.flush();
+			session.flush();
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			System.out.println("Error savePayment-> " + e);
@@ -44,7 +44,7 @@ public class PaymentDAO {
 
 		try {
 			session.update(payment);
-			// session.flush();
+			session.flush();
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			System.out.println("Error updatePayment-> " + e);

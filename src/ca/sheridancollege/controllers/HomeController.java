@@ -326,6 +326,9 @@ public class HomeController {
 
 	@RequestMapping(value = "/createCourt/{facilityId}", method = RequestMethod.GET)
 	public String createCourt(Model model, @PathVariable int facilityId) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Facility facility = facilityDao.getFacility(authentication.getName());
+		model.addAttribute("facility", facility);
 
 		Court court = new Court();
 		model.addAttribute("facilityId", facilityId);

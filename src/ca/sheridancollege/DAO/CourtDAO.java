@@ -28,6 +28,7 @@ public class CourtDAO {
 		session.beginTransaction();
 		try {
 			session.saveOrUpdate(court);
+			session.flush();
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			System.out.println("Error saveCourt -> " + e);

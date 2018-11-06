@@ -28,7 +28,7 @@ public class BookingDAO {
 		session.beginTransaction();
 		try {
 			session.saveOrUpdate(booking);
-			// session.flush();
+			session.flush();
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			return false;
@@ -47,6 +47,7 @@ public class BookingDAO {
 		int id = 0;
 		try {
 			id = (Integer) session.save(booking);
+			session.flush();
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			System.out.println("Error saveBookingForAPI-> " + e);
