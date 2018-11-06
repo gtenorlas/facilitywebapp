@@ -57,11 +57,32 @@ public class HomeController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = null;
+		Facility facility = null;
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			username = authentication.getName(); // grab the user currently authenticated
+
+			facility = facilityDao.getFacility(username);
+			model.addAttribute("facility", facility);
+			System.out.println("load facility page");
+		}
 		return "/index";
 	}
 
 	@RequestMapping(value = "/contactUs", method = RequestMethod.GET)
 	public String contactUs(Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = null;
+		Facility facility = null;
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			username = authentication.getName(); // grab the user currently authenticated
+
+			facility = facilityDao.getFacility(username);
+			model.addAttribute("facility", facility);
+			System.out.println("load facility page");
+		}
+		
 		System.out.println("in contact us");
 		return "contactUs";
 	}
@@ -150,6 +171,17 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/courts/view/{id}", method = RequestMethod.GET)
 	public String courtsView(Model model, @PathVariable int id) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = null;
+		Facility facility = null;
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			username = authentication.getName(); // grab the user currently authenticated
+
+			facility = facilityDao.getFacility(username);
+			model.addAttribute("facility", facility);
+			System.out.println("load facility page");
+		}
+		
 		Court court = courtDAO.getCourt(id);
 		model.addAttribute("court", court);
 
@@ -161,6 +193,17 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/bookings/edit/{bookingId}/{courtNumber}", method = RequestMethod.GET)
 	public String bookingsEdit(Model model, @PathVariable int bookingId, @PathVariable int courtNumber) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = null;
+		Facility facility = null;
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			username = authentication.getName(); // grab the user currently authenticated
+
+			facility = facilityDao.getFacility(username);
+			model.addAttribute("facility", facility);
+			System.out.println("load facility page");
+		}
+		
 		Booking booking = bookingDAO.getBookingByID(bookingId);
 		model.addAttribute("courtNumber", courtNumber);
 		model.addAttribute("booking", booking);
@@ -172,6 +215,17 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/courts/edit/{facilityId}/{courtNumber}", method = RequestMethod.GET)
 	public String courtsEdit(Model model, @PathVariable int facilityId, @PathVariable int courtNumber) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = null;
+		Facility facility = null;
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			username = authentication.getName(); // grab the user currently authenticated
+
+			facility = facilityDao.getFacility(username);
+			model.addAttribute("facility", facility);
+			System.out.println("load facility page");
+		}
+		
 		Court court = courtDAO.getCourt(courtNumber);
 		model.addAttribute("facilityId", facilityId);
 		model.addAttribute("court", court);
@@ -258,6 +312,7 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/facilities", method = RequestMethod.GET)
 	public String facilities(Model model) {
+		
 		List<Facility> facilities = facilityDao.getFacilities();
 		model.addAttribute("facilities", facilities);
 		System.out.println("load facility page");
