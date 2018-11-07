@@ -27,13 +27,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
+/**
+ * 
+ * @author MAGS
+ *
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "facility")
 public class Facility implements Serializable {
+	/**
+	 * Work with facility details
+	 */
 	@Id
 	@GeneratedValue
 	private int facilityId;
@@ -81,6 +88,10 @@ public class Facility implements Serializable {
 	private String lat;
 	private String lng;
 	
+	/**
+	 * 
+	 * @return country name list
+	 */
 	public static Object countryList() {
 		String[] countryCodes = Locale.getISOCountries();
 		ArrayList<String> countryNames = new ArrayList<>();

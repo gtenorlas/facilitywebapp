@@ -13,12 +13,20 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+/**
+ * 
+ * @author MAGS
+ *
+ */
 public class Email {
 
+	/**
+	 * work with emails
+	 */
     private String receiver;
     private String subject;
     private String message;
-      private final String host = "mags.website";
+    private final String host = "mags.website";
     private final String user = "support@mags.website";//change accordingly  
     private final String password = "Book2ball!";//change accordingly  
 
@@ -50,6 +58,9 @@ public class Email {
         return colorMsg;
     }
 
+    /**
+     * send email message
+     */
     public void send() {
         //Get the session object  
         Properties props = new Properties();

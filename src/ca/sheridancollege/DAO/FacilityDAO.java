@@ -13,7 +13,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import ca.sheridancollege.beans.Facility;
-
+/**
+ * 
+ * @author MAGS
+ *
+ */
 public class FacilityDAO {
 
 	SessionFactory sessionFactory = new Configuration().configure("ca/sheridancollege/config/hibernate.cfg.xml")

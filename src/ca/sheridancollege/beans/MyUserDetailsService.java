@@ -14,9 +14,16 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 //import ca.sheridancollege.DAO.DAO;
 import ca.sheridancollege.DAO.UserDAO;
-
+/**
+ * 
+ * @author MAGS
+ *
+ */
 public class MyUserDetailsService implements UserDetailsService {
- //private DAO dao = new DAO();
+ 
+	/**
+	 * work with user details
+	 */
 	UserDAO userDAO = new UserDAO();
 	
 	@Override
@@ -27,22 +34,29 @@ public class MyUserDetailsService implements UserDetailsService {
 
 	}
 	
-	// Converts ca.sheridancollege.beans.User user to
-	// org.springframework.security.core.userdetails.User
-	private User buildUserForAuthentication(ca.sheridancollege.beans.User user,
-	List<GrantedAuthority> authorities) {
-	return new User(user.getUsername(), user.getPassword(), user.isEnabled(), true,
-	true, true, authorities);
+	/**
+	 * Converts ca.sheridancollege.beans.User user to org.springframework.security.core.userdetails.User
+	 * @param user
+	 * @param authorities
+	 * @return user
+	 */
+	private User buildUserForAuthentication(ca.sheridancollege.beans.User user, List<GrantedAuthority> authorities) {
+		return new User(user.getUsername(), user.getPassword(), user.isEnabled(), true, true, true, authorities);
 	}
 	
+	/**
+	 * build user authority
+	 * @param userRoles
+	 * @return granted user authority 
+	 */
 	private List<GrantedAuthority> buildUserAuthority(Set<UserRole> userRoles) {
 		Set<GrantedAuthority> setAuths = new HashSet<GrantedAuthority>();
 		// Build user's authorities
 		for (UserRole userRole : userRoles) {
-		setAuths.add(new SimpleGrantedAuthority(userRole.getRole()));
+			setAuths.add(new SimpleGrantedAuthority(userRole.getRole()));
 		}
 		List<GrantedAuthority> Result = new ArrayList<GrantedAuthority>(setAuths);
 		return Result;
-		}
+	}
 
 }

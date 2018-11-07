@@ -7,11 +7,17 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import com.jayway.jsonpath.JsonPath;
-
+/**
+ * 
+ * @author MAGS
+ *
+ */
 public class OpenStreetMapUtils {
+	/**
+	 * get coordinate for facility location
+	 */
 	private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36";
 
-	// public final static Logger log = Logger.getLogger("OpenStreeMapUtils");
 
 	private static OpenStreetMapUtils instance = null;
 
@@ -25,12 +31,8 @@ public class OpenStreetMapUtils {
 	private String getRequest(String url) throws Exception {
 
 		URL obj = new URL(url);
-		// URL testobj = new URL("https://httpbin.org/ip");
 		System.out.println("Connect: " + url);
-		// System.out.println("Proxy: " + proxies.get(x).getIp() + ":" +
-		// Integer.parseInt(proxies.get(x).getPort()));
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-		// HttpURLConnection testcon = (HttpURLConnection) testobj.openConnection();
 		con.setConnectTimeout(5000); // set timeout to 5 seconds
 		con.setReadTimeout(10000); // set read time out
 		System.out.println("66");
@@ -75,7 +77,6 @@ public class OpenStreetMapUtils {
 
 		System.out.println("query -> " + query.toString());
 
-		// log.debug("Query:" + query);
 
 		try {
 			queryResult = getRequest(query.toString());
@@ -91,13 +92,6 @@ public class OpenStreetMapUtils {
 			return null;
 		}
 		System.out.println("queryRestul -> " + queryResult);
-
-		//Object obj = JSONValue.parse(queryResult);
-		// log.debug("obj=" + obj);
-
-		// String pageName = JsonPath.read(yourJsonString, "$.pageInfo.pageName");
-		// String pagePic = JsonPath.read(yourJsonString, "$.pageInfo.pagePic");
-		// String post_id = JsonPath.read(yourJsonString, "$.pagePosts[0].post_id");
 		
 		
 
@@ -122,7 +116,7 @@ public class OpenStreetMapUtils {
 		 * lat); res.put("lon", Double.parseDouble(lon)); res.put("lat",
 		 * Double.parseDouble(lat));
 		 * 
-		 * } }
+		 *
 		 */
 
 		return res;

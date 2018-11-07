@@ -18,6 +18,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 
+ * @author MAGS
+ *
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,6 +30,9 @@ import lombok.NoArgsConstructor;
 @Table(name="payment")
 public class Payment implements Serializable {
 
+	/**
+	 * work with payment details
+	 */
 	@Id
 	@GeneratedValue
 	private int paymentId;
@@ -43,6 +51,11 @@ public class Payment implements Serializable {
 	private String paymentMethod;
 	private String status;
 	
+	/**
+	 * 
+	 * @param number
+	 * @return currency
+	 */
 	public static String formatToCurrency(Object number) {
 		NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
 		return currencyFormat.format(number);

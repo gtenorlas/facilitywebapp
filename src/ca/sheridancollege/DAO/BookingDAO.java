@@ -15,7 +15,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import ca.sheridancollege.beans.Booking;
-
+/**
+ * 
+ * @author MAGS
+ *
+ */
 public class BookingDAO {
 	SessionFactory sessionFactory = new Configuration().configure("ca/sheridancollege/config/hibernate.cfg.xml")
 			.buildSessionFactory();

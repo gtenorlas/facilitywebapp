@@ -13,7 +13,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import ca.sheridancollege.beans.Booking;
 import ca.sheridancollege.beans.Court;
-
+/**
+ * 
+ * @author MAGS
+ *
+ */
 public class CourtDAO {
 	SessionFactory sessionFactory = new Configuration().configure("ca/sheridancollege/config/hibernate.cfg.xml")
 			.buildSessionFactory();

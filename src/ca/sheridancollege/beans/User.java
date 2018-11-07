@@ -20,6 +20,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * 
+ * @author MAGS
+ *
+ */
 @Getter
 @Setter
 @NoArgsConstructor
@@ -29,6 +34,9 @@ import lombok.Setter;
 @NamedQuery(name="User.getUserByUsername", query="from User where username = :username")
 public class User implements Serializable {
 
+	/**
+	 * work with application user
+	 */
 	@Id
 	@Column(name = "username", unique = true, nullable = false, length = 45)
 	private String username;

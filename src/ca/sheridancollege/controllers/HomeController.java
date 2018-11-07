@@ -47,11 +47,18 @@ import ca.sheridancollege.beans.Payment;
 import ca.sheridancollege.beans.User;
 import ca.sheridancollege.beans.UserRole;
 
+/**
+ * 
+ * @author MAGS
+ *
+ */
 @Controller // specify that this class is a controller
 @RequestMapping("/")
 public class HomeController {
 
-	// DAO dao = new DAO();
+	/**
+	 * Home controller for the webapp
+	 */
 	FacilityDAO facilityDao = new FacilityDAO();
 	CourtDAO courtDAO = new CourtDAO();
 	BookingDAO bookingDAO = new BookingDAO();
@@ -144,8 +151,6 @@ public class HomeController {
 			model.addAttribute("facility", facility);
 			System.out.println("load facility page");
 		}
-
-		//List<Booking> bookings = new ArrayList<Booking>();
 
 		ArrayList<Booking> bookings = new ArrayList<Booking>();
 		for (Court eachCourt : facility.getCourts()) {
@@ -249,17 +254,6 @@ public class HomeController {
 		boolean canDelete = bookingDAO.canDeleteCourt(courtNumber, bookingDateTime);
 		System.out.println("endbookingDAO");
 		
-		// facility.getCourts().remove(court);
-		//boolean check = courtDAO.deleteCourt(court);
-		// courtDAO.setInactive(court);
-		// DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd
-		// HH:mm:ss");
-		// LocalDateTime joiningDate = LocalDateTime.parse("2014-04-01 00:00:00",
-		// formatter);
-		// court.setEndDate(LocalDateTime.now());
-		// court.setEndDate(joiningDate);
-		
-		//Facility facility = facilityDao.getFacility(facilityId);
 		if (canDelete == true) {
 			System.out.println("court can be deleted");
 			Court court = courtDAO.getCourt(courtNumber);
@@ -279,7 +273,7 @@ public class HomeController {
 	}
 
 	/*
-	 * handle to login
+	 * handle for the login form
 	 */
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String loginForm(Model model) {
@@ -291,6 +285,9 @@ public class HomeController {
 		return "createAccount";
 	}
 
+	/*
+	 * create facility
+	 */
 	@RequestMapping(value = "/createFacility", method = RequestMethod.GET)
 	public String createFacility(Model model) {
 		Facility facility = new Facility();
@@ -370,7 +367,6 @@ public class HomeController {
 		if (customerName.equals("")) {
 			customerName = null;
 		}
-		//List<Booking> bookings = bookingDAO.searchBookings(customerName, status, localDateTime);
 		List<Booking> bookings = bookingDAO.searchBookings(customerName, status, localDateTime);
 		
 		// create the pdf before showing the courts
@@ -390,6 +386,12 @@ public class HomeController {
 		return "bookings";
 	}
 
+	/*
+	 * create court for a facility
+	 * @param model
+	 * @param facilityId
+	 * @return createCourt jsp call string
+	 */
 	@RequestMapping(value = "/createCourt/{facilityId}", method = RequestMethod.GET)
 	public String createCourt(Model model, @PathVariable int facilityId) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -424,12 +426,8 @@ public class HomeController {
 		court.setFacility(facilityToSave);
 		courtDAO.saveCourt(court);
 		
-		//facilityToSave.getCourts().remove(court);
-		//facilityToSave.getCourts().add(court);
 
 		System.out.println("getcourt ");
-		//facilityDao.saveFacility(facilityToSave);
-		//System.out.println("save facility ");
 
 		Facility facility = facilityDao.getFacility(facilityId);
 		model.addAttribute("facility", facility);
@@ -468,20 +466,16 @@ public class HomeController {
 		bookingSaved.setStartDateTime(localstartdatetime);
 		bookingSaved.setStatus(booking.getStatus());
 		bookingSaved.setComment(booking.getComment());
-		//booking.setBookingDate(LocalDateTime.now());
 		
 		System.out.println("bookingModelEmail "+booking.getCustomerEmail());
 
 		// calculate the duration first
-		// long diffInHours =
-		// ChronoUnit.HOURS.between(booking.getEndDateTime(),booking.getStartDateTime());
 		long diffInMinutes = ChronoUnit.MINUTES.between(localstartdatetime, localenddatetime);
 
-		// String hourDuration=(diffInHours + "."+diffInMinutes);
 		System.out.println("minutes : " + diffInMinutes);
 		bookingSaved.setDuration(Math.abs(diffInMinutes) / 60.0);
 
-		bookingSaved.setCourt(courtToSave); // added 10/25/2018
+		bookingSaved.setCourt(courtToSave);
 
 
 		bookingDAO.saveBooking(bookingSaved);
@@ -504,7 +498,6 @@ public class HomeController {
 			for (Booking eachBooking : eachCourt.getBookings()) {
 				bookings.add(eachBooking);
 				if (eachBooking.getBookingId()== bookingId) {
-					//bookingSaved =eachBooking;
 				}
 			}
 		}
@@ -568,7 +561,6 @@ public class HomeController {
 		System.out.println("Trying to save facility : " + facilityToSave.getFacilityName());
 
 		String address = "";
-		// address = "The White House Washington DC";
 		address += facilityToSave.getLine_1().trim() + ", " + facilityToSave.getLine_2().trim() + ", " + facilityToSave.getLine_3().trim() + ", "
 		+ facilityToSave.getCity().trim() + ", " + facilityToSave.getProvince().trim();
 		address = address.replaceAll(",", "%2C");
@@ -614,7 +606,6 @@ public class HomeController {
 				return "loginForm";
 			}
 		}else {
-			//result.addError(new ObjectError("line_1", "Invalid"));
 			result.rejectValue("line_1", "error.facility", "Please validate the address.");
 			result.rejectValue("city", "error.facility", "Please validate the city.");
 			result.rejectValue("province", "error.facility", "Please validate the province.");
@@ -632,33 +623,12 @@ public class HomeController {
 		UserRole userRole = new UserRole(user, "ROLE_FACILITY_ADMIN");
 		user.getUserRole().add(userRole);
 
-		// disable the user first
-		// user.setEnabled(false);
-
 		// Generate random 36-character string token for confirmation link
 		user.setConfirmationToken(UUID.randomUUID().toString());
 
 		userDAO.createUser(user);
-		// dao.createUserRole(userRole);
 
 		System.out.println("New user created " + user.getUsername());
-
-//		//logout the user
-//	    Authentication authentic = SecurityContextHolder.getContext().getAuthentication();
-//	    if (authentic != null){    
-//	        new SecurityContextLogoutHandler().logout(request, response, authentic);
-//	    }
-//		
-//		//load the user to be logged in right after the registration
-//		
-//		
-//		UserDetails userDetails = new MyUserDetailsService().loadUserByUsername(username);
-//		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails,
-//		encryptedPassword, userDetails.getAuthorities());
-//		SecurityContextHolder.getContext().setAuthentication(auth);
-//		
-//		
-//		System.out.println("New user auto logged in " + user.getUsername());
 
 		model.addAttribute("accountCreated", true);
 		model.addAttribute("username", username);

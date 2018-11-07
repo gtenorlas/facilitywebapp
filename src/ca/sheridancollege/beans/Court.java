@@ -27,34 +27,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-/*
- * Cascade = "all" means to apply all primary cascade types. As of Hibernate 5.3, these types are:
-
-"delete" / "remove",
-"detach" / "evict",
-"merge",
-"lock",
-"persist",
-"refresh",
-"replicate",
-"save_update" / "update"
-
-
-CREATE TABLE `Cart` (
-  `cart_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`cart_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
- 
-CREATE TABLE `Items` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `cart_id` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `cart_id` (`cart_id`),
-  CONSTRAINT `items_ibfk_1` FOREIGN KEY (`cart_id`) REFERENCES `Cart` (`cart_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-
-
-It is importing to note that the @ManyToOne annotation is associated with Court class variable. @JoinColumn annotation references the mapped column.
+/**
+ * 
+ * @author MAGS
+ *
  */
 @Data
 @AllArgsConstructor
@@ -62,6 +38,9 @@ It is importing to note that the @ManyToOne annotation is associated with Court 
 @Entity
 @Table(name="court")
 public class Court implements Serializable {
+	/**
+	 * Work with court details
+	 */
 	@Id
 	@GeneratedValue
 	@Column(name = "courtNumber")

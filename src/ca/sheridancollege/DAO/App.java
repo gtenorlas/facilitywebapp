@@ -30,12 +30,16 @@ import com.itextpdf.tool.xml.XMLWorkerHelper;
 import ca.sheridancollege.beans.Booking;
 import ca.sheridancollege.beans.Court;
 import ca.sheridancollege.beans.Facility;
-
+/**
+ * 
+ * @author MAGS
+ *
+ */
 public class App {
-	public String DEST; // = "/images/Report.pdf";
-	public  String REPORTFINAL; //= "/images/Report.pdf";
+	public String DEST;
+	public  String REPORTFINAL;
 	public String HEADER;
-	public String FOOTER;// = "<table width=\"100%\" border=\"0\"><tr><td>Printed on October 2, 2018 by "+username+"</td><td align=\"right\">Page 1 of 4</td></tr></table>";
+	public String FOOTER;
 
 	public static int totalPageNum = 0;
 	private Facility facility;
@@ -71,12 +75,8 @@ public class App {
 		public void onEndPage(PdfWriter writer, Document document) {
 			try {
 				ColumnText ct = new ColumnText(writer.getDirectContent());
-				// ct.setSimpleColumn(new Rectangle(36, 832, 559, 810));
-				// ct.setSimpleColumn(new Rectangle(36, 832, 559, 750)); //FOR A4 WITH IMAGE
 				ct.setSimpleColumn(new Rectangle(36, 770, 559, 720));
-				// Image image = Image.getInstance("results/events/logomini.png");
-				// image.scaleToFit(25, 25);
-				// ct.addElement(image);
+				
 				for (Element e : header) {
 					ct.addElement(e);
 
@@ -138,7 +138,6 @@ public class App {
 
 		// step 1
 		// margin left, right, top, bottom
-		// Document document = new Document(PageSize.A4, 36, 36, 72, 72);
 		Document document = new Document(PageSize.LETTER, 36, 36, 72, 72);
 		// step 2
 		PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(filename));
@@ -211,29 +210,6 @@ public class App {
 				table.addCell(cell);
 				
 			}
-	
-		
-		/*
-		System.out.println("facility court size: "+this.facility.getCourts().size());
-		for (Court eachCourt : this.facility.getCourts()) {
-			// step 4
-			System.out.println("in the court loop");
-			for (Booking eachBooking: eachCourt.getBookings()) {
-				System.out.println("in the booking loop");
-				table.addCell(new Phrase(eachCourt.getCourtNumber() + " - "+eachCourt.getCourtName(), cellFont));
-				table.addCell(new Phrase(eachBooking.getCustomerName(), cellFont));
-				table.addCell(new Phrase(eachBooking.getStatus(), cellFont));
-				table.addCell(new Phrase(eachBooking.getStartDateTime().format(formatter), cellFont));
-				table.addCell(new Phrase(eachBooking.getEndDateTime().format(formatter), cellFont));
-				Phrase cost = (new Phrase(currencyFormat.format(eachBooking.getDuration()*eachCourt.getPrice()), cellFont));
-				totalCost+=eachBooking.getDuration()*eachCourt.getPrice();
-				PdfPCell cell = new PdfPCell(cost);
-				cell.setHorizontalAlignment(2);
-				table.addCell(cell);
-				
-			}
-		}
-		*/
 
 		PdfPCell cell = new PdfPCell(new Phrase("Total:", headerFont));
 		// cell.setPadding(5);
@@ -247,11 +223,6 @@ public class App {
 		table.addCell(cellTotalCost);
 
 		document.add(table);
-
-		// add image
-		// Image image = Image.getInstance("results/events/logomini.png");
-		// image.scaleToFit(25, 25);
-		// document.add(image);
 
 		// close the document
 

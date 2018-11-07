@@ -22,12 +22,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 
+ * @author MAGS
+ *
+ */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name="booking")
 public class Booking implements Serializable {
+	
+	/**
+	 * work with booking details
+	 */
 	@Id
 	@GeneratedValue
 	private int bookingId;
@@ -108,12 +118,22 @@ public class Booking implements Serializable {
 		return result;
 	}
 	
+	/**
+	 * 
+	 * @param court
+	 * @return cost for the court
+	 */
 	public String getCost(Court court) {
 		NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
 		//return currencyFormat.format(this.duration * court.getPrice());
 		return currencyFormat.format(this.payment.getSubTotal());
 	}
 	
+	/**
+	 * 
+	 * @param date
+	 * @return date as a string
+	 */
 	public static String formatDate(LocalDateTime date) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, yyyy-MM-dd HH:mm a");
 		

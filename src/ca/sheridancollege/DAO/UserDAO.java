@@ -11,7 +11,11 @@ import org.hibernate.cfg.Configuration;
 import ca.sheridancollege.beans.Customer;
 import ca.sheridancollege.beans.User;
 import ca.sheridancollege.beans.UserRole;
-
+/**
+ * 
+ * @author MAGS
+ *
+ */
 public class UserDAO {
 
 	SessionFactory sessionFactory = new Configuration().configure("ca/sheridancollege/config/hibernate.cfg.xml")

@@ -18,7 +18,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-//lookup hibernate validation (in the future)
+/**
+ * 
+ * @author MAGS
+ *
+ */
 
 @Getter
 @Setter
@@ -27,6 +31,9 @@ import lombok.Setter;
 @Entity
 @Table(name = "user_roles", uniqueConstraints = @UniqueConstraint(columnNames = {"role", "username" }) )
 public class UserRole implements Serializable {
+	/**
+	 * work with user roles
+	 */
 	@Id
 	@GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
 	@Column(name = "user_role_id", unique = true, nullable = false)

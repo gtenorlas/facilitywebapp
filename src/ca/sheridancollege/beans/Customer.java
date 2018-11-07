@@ -16,7 +16,11 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+/**
+ * 
+ * @author MAGS
+ *
+ */
 @Getter
 @Setter
 @Data
@@ -101,7 +105,10 @@ public class Customer implements Serializable {
 
 		return(password_verified);
 	}
-	
+	/**
+	 * 
+	 * @return token
+	 */
 	public static String generateToken() {
 		UUID id = UUID.randomUUID();
 		return id.toString().substring(0, 8);
