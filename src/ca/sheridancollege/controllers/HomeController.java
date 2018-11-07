@@ -467,6 +467,7 @@ public class HomeController {
 		bookingSaved.setEndDateTime(localenddatetime);
 		bookingSaved.setStartDateTime(localstartdatetime);
 		bookingSaved.setStatus(booking.getStatus());
+		bookingSaved.setComment(booking.getComment());
 		//booking.setBookingDate(LocalDateTime.now());
 		
 		System.out.println("bookingModelEmail "+booking.getCustomerEmail());

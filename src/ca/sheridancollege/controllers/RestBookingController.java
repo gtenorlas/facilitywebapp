@@ -120,8 +120,7 @@ public class RestBookingController {
 						}
 							
 					}
-					address += facility.getCountry() + "\n";
-					address += facility.getContactNumber();
+					address += facility.getCountry();
 					
 					booking.setFaciltyAddress(address);
 					

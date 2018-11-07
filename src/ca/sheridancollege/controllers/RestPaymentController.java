@@ -85,31 +85,31 @@ public class RestPaymentController {
 
 		
 		Email newEmail = new Email(booking.getCustomerEmail(), "Your New Booking",
-				"<font color=black>Congratulation in your recent booking with Book2Ball! <br/>" +
+				"<font color=black>Congratulation in your recent booking with Book2Ball! <br/></font>" +
 
-						"<h3>Facility Details:</h3>"
+						"<font color=black><h3>Facility Details:</h3></font>"
 
-						+ booking.getFacilityName() + "<br/>" 
+						+ "<font color=black>" + booking.getFacilityName() + "<br/>" 
 						+ booking.getFaciltyAddress() + "<br/>"
 						+ "<b>Court Name:</b> " + booking.getCourtName() + "<br/>" 
 						+ "<b>Start Date Time:</b> "+ Booking.formatDate(booking.getStartDateTime()) + "<br/>"
 						+ "<b>End Date Time:</b> "
 						+ Booking.formatDate(booking.getEndDateTime()) + "<br/>"
 						+ "<b>Booking Status:</b> " + booking.getStatus()
-						+ "<br/>"
+						+ "</font><br/>"
 
-						+ "<h3>Payment Details:</h3>"
-						+ "<b>Payment Date:</b> " + Booking.formatDate(payment.getPaymentDateTime())
-						+ "<br/>" + "<b>Court Charge:</b> " + Payment.formatToCurrency(payment.getCourtCharge()) + "<br/>"
+						+ "<font color=black><h3>Payment Details:</h3>"
+						+ "<b>Payment Date:</b> " + Booking.formatDate(payment.getPaymentDateTime())+"<br/>"
+						+ "<font color=black><b>Court Charge:</b> " + Payment.formatToCurrency(payment.getCourtCharge()) + "<br/>"
 						+ "<b>Duration:</b> " + booking.getDuration() + "<br/>"
 						+ "<b>Sub Total:</b> "	+ Payment.formatToCurrency(payment.getSubTotal()) + "<br/>"
 						+ "<b>Tax Percentage:</b> "	+ payment.getTaxPercentage() + "%<br/>"
 						+ "<b>Tax Amount:</b> "	+ Payment.formatToCurrency(payment.getTaxAmount()) + "<br/><hr/>" 
-						+ "<b>Total Amount:</b> " + Payment.formatToCurrency(payment.getTotalAmount()) + "<br/>"
+						+ "<b>Total Amount:</b> " + Payment.formatToCurrency(payment.getTotalAmount()) + "<br/></font>"
 
 						+ "<br/><br/>" +
 
-						"If you have not authorized this booking, please contact Book2ball with the information in this e-mail.<br/>"
+						"<font color=black>If you have not authorized this booking, please contact Book2ball with the information in this e-mail.<br/>"
 						+ "THANK YOU!<br/>" + "<b>MAGS.WEBSITE</b></font>");
 		newEmail.send();
 		
