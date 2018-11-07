@@ -10,7 +10,8 @@
 		<property name="connection.password">Book2ball!</property>
 
 		<!-- Set the database dialect -->
-		<property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
+		<!-- <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>-->
+		<property name="dialect">org.hibernate.dialect.MySQL8Dialect</property>
 
 		<!-- Echo all executed SQL to stdout -->
 		<property name="show_sql">true</property>

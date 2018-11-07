@@ -4,14 +4,9 @@
 	xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
-
-	<security:authentication-manager>
-		
+	<security:authentication-manager>	
 		<security:authentication-provider
 			user-service-ref="myUserDetailsService">
-			
-		
 		<security:password-encoder ref="passwordEncoder" />
 		</security:authentication-provider>
 	</security:authentication-manager>

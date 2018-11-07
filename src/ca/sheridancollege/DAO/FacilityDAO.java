@@ -27,7 +27,6 @@ public class FacilityDAO {
 		session.beginTransaction();
 		try {
 			session.saveOrUpdate(facility);
-			session.flush();
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			System.out.println("Error saveFacility-> " + e);
