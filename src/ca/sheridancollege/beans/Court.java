@@ -1,6 +1,7 @@
 package ca.sheridancollege.beans;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,6 +92,12 @@ public class Court implements Serializable {
 		int result = 1;
 		result = prime * result + courtNumber;
 		return result;
+	}
+	
+	public String getCost() {
+		NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+		//return currencyFormat.format(this.duration * court.getPrice());
+		return currencyFormat.format(this.price);
 	}
 	
 	

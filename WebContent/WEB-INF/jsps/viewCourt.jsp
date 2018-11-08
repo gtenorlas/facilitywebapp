@@ -11,7 +11,7 @@
 	  			<p><strong>Availability:</strong> ${court.availability}</p>
 	  			<p><strong>Max Player:</strong> ${court.maxPlayer}</p>
 	  			<p><strong>Court Type:</strong> ${court.courtType}</p>
-	  			<p><strong>Price:</strong> ${court.price}</p>
+	  			<p><strong>Rental Cost per Hour:</strong> ${court.getCost()}</p>
 	  			<fmt:parseDate value="${court.creationDate }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
 				<fmt:formatDate pattern="E yyyy-MM-dd hh:mm" value="${ parsedDateTime }" var="formattedDate" />
 	  			<p><strong>Creation Date:</strong> ${formattedDate}</p>
