@@ -424,13 +424,16 @@ public class HomeController {
 		
 		court.setCreationDate(LocalDateTime.now());
 		court.setFacility(facilityToSave);
-		courtDAO.saveCourt(court);
+		//courtDAO.saveCourt(court);
+		facilityToSave.getCourts().remove(court);
+		facilityToSave.getCourts().add(court);
 		
+		facilityDao.saveFacility(facilityToSave);
 
 		System.out.println("getcourt ");
 
-		Facility facility = facilityDao.getFacility(facilityId);
-		model.addAttribute("facility", facility);
+		//Facility facility = facilityDao.getFacility(facilityId);
+		model.addAttribute("facility", facilityToSave);
 		System.out.println("load facility page");
 		return "courts";
 	}

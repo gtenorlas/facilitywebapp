@@ -44,7 +44,7 @@ public class Court implements Serializable {
 	 */
 	@Id
 	@GeneratedValue
-	@Column(name = "courtNumber")
+	@Column(name = "courtNumber", updatable = false, nullable = false)
 	private int courtNumber;
 	private String courtName;
 	private String availability;

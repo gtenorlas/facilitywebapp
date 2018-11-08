@@ -1,7 +1,9 @@
 package ca.sheridancollege.DAO;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -31,6 +33,7 @@ public class FacilityDAO {
 		session.beginTransaction();
 		try {
 			session.saveOrUpdate(facility);
+			session.flush();
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			System.out.println("Error saveFacility-> " + e);
@@ -56,6 +59,11 @@ public class FacilityDAO {
 
 		try {
 			facilities = session.createQuery(criteria).getResultList();
+			
+			Set<Facility> hs = new LinkedHashSet<>(facilities); //to remove the stupid duplicates caused by the join.
+			//ArrayList to a HashSet effectively removes duplicates and  preserve insertion order.
+			
+			facilities= new ArrayList<Facility>(hs); //convert it back to list 
 
 			session.getTransaction().commit();
 		} catch (Exception e) {
@@ -191,6 +199,11 @@ public class FacilityDAO {
 		List<Facility> facilityList = new ArrayList<>();
 		try {
 			facilityList = session.createQuery(criteria).getResultList();
+			
+			Set<Facility> hs = new LinkedHashSet<>(facilityList); //to remove the stupid duplicates caused by the join.
+			//ArrayList to a HashSet effectively removes duplicates and  preserve insertion order.
+			
+			facilityList= new ArrayList<Facility>(hs); //convert it back to list 
 
 			session.getTransaction().commit();
 		} catch (Exception e) {
