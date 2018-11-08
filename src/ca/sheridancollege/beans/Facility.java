@@ -43,7 +43,6 @@ public class Facility implements Serializable {
 	 */
 	@Id
 	@GeneratedValue
-	@Column(name = "facilityId", updatable = false, nullable = false)
 	private int facilityId;
 	@NotEmpty(message = "Facility cannot be empty")
 	@Size(min=3, max=255, message="Facility name must be between 3 to 255 characters")
