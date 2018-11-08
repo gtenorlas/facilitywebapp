@@ -16,7 +16,9 @@ import ca.sheridancollege.DAO.CourtDAO;
 //import ca.sheridancollege.DAO.DAO;
 import ca.sheridancollege.beans.Booking;
 import ca.sheridancollege.beans.Court;
+import ca.sheridancollege.beans.Email;
 import ca.sheridancollege.beans.Facility;
+import ca.sheridancollege.beans.Payment;
 
 @RestController // specify that this class is a restful controller
 @CrossOrigin(origins = { "*" }, maxAge = 6000)
@@ -67,8 +69,6 @@ public class RestBookingController {
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy-HH-mm");
 		LocalDateTime startDateTimeLocal = null, endDateTimeLocal = null;
-		
-		
 
 		// try to convert the string date into localdatetime
 		try {
@@ -94,6 +94,7 @@ public class RestBookingController {
 		if (bookingDAO.bookingValidation(courtId, startDateTimeLocal, endDateTimeLocal)) {
 			// Court court = courtDAO.getCourt(courtId);
 			Court court = courtDAO.getCourt(courtId);
+			Payment payment = new Payment();
 			if (court != null) {
 				if (court.getAvailability().toLowerCase().equals("active")) {
 					booking.setCourt(court);
@@ -101,42 +102,82 @@ public class RestBookingController {
 					Facility facility = court.getFacility();
 					String address = facility.getLine_1() + "\n";
 					if (facility.getLine_2() != null) {
-						if(!facility.getLine_2().trim().isEmpty()) {
+						if (!facility.getLine_2().trim().isEmpty()) {
 							address += facility.getLine_2() + "\n";
 						}
-							
+
 					}
 					if (facility.getLine_3() != null) {
-						if(!facility.getLine_3().trim().isEmpty()) {
+						if (!facility.getLine_3().trim().isEmpty()) {
 							address += facility.getLine_3() + "\n";
 						}
-							
+
 					}
 					address += facility.getCity() + ", ";
 					address += facility.getProvince() + "\n";
 					if (facility.getPostalCode() != null) {
-						if(!facility.getPostalCode().trim().isEmpty()) {
+						if (!facility.getPostalCode().trim().isEmpty()) {
 							address += facility.getPostalCode() + "\n";
 						}
-							
+
 					}
 					address += facility.getCountry();
-					
+
 					booking.setFaciltyAddress(address);
-					
-					
-					// court.getBookings().add(booking); // add the booking to the particular court
-					// courtDAO.saveCourt(court);
+
+					payment.setBooking(booking);
+					payment.setCourtCharge(court.getPrice());
+					payment.setAdminFee(0);
+					payment.setSubTotal(court.getPrice() * booking.getDuration());
+					payment.setTaxPercentage(13.00);
+					payment.setTaxAmount(payment.getSubTotal() * (payment.getTaxPercentage() / 100));
+					payment.setTotalAmount(payment.getSubTotal() + payment.getTaxAmount());
+					payment.setPaymentDateTime(bookingDateTime);
+					payment.setConfirmationNumber(null);
+					payment.setPaymentMethod("payPal");
+					payment.setStatus("Paid");
+					booking.setPayment(payment);
+
 					int id = bookingDAO.saveBookingForAPI(booking);
 					if (id != 0) {
+						Email newEmail = new Email(booking.getCustomerEmail(), "Your New Booking",
+								"<font color=black>Congratulation in your recent booking with Book2Ball! <br/></font>" +
+
+										"<font color=black><h3>Facility Details:</h3></font>"
+
+										+ "<font color=black>" + booking.getFacilityName() + "<br/>"
+										+ booking.getFaciltyAddress() + "<br/>" + "<b>Court Name:</b> "
+										+ booking.getCourtName() + "<br/>" + "<b>Start Date Time:</b> "
+										+ Booking.formatDate(booking.getStartDateTime()) + "<br/>"
+										+ "<b>End Date Time:</b> " + Booking.formatDate(booking.getEndDateTime())
+										+ "<br/>" + "<b>Booking Status:</b> " + booking.getStatus() + "</font><br/>"
+
+										+ "<font color=black><h3>Payment Details:</h3>" + "<b>Payment Date:</b> "
+										+ Booking.formatDate(payment.getPaymentDateTime()) + "<br/>"
+										+ "<font color=black><b>Court Charge:</b> "
+										+ Payment.formatToCurrency(payment.getCourtCharge()) + "<br/>"
+										+ "<b>Duration:</b> " + booking.getDuration() + "<br/>" + "<b>Sub Total:</b> "
+										+ Payment.formatToCurrency(payment.getSubTotal()) + "<br/>"
+										+ "<b>Tax Percentage:</b> " + payment.getTaxPercentage() + "%<br/>"
+										+ "<b>Tax Amount:</b> " + Payment.formatToCurrency(payment.getTaxAmount())
+										+ "<br/><hr/>" + "<b>Total Amount:</b> "
+										+ Payment.formatToCurrency(payment.getTotalAmount()) + "<br/></font>"
+
+										+ "<br/><br/>" +
+
+										"<font color=black>If you have not authorized this booking, please contact Book2ball with the information in this e-mail.<br/>"
+										+ "THANK YOU!<br/>" + "<b>MAGS.WEBSITE</b></font>");
+						newEmail.send();
+
 						return id;
 					} else {
 						return "Internal error while booking save";
 					}
-				}else {
+
+				} else {
 					return "Court not available";
 				}
-			}else {
+			} else {
 				return "Court not available";
 			}
 		} else {

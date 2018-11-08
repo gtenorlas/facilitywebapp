@@ -78,68 +78,54 @@ public class RestPaymentController {
 		payment.setPaymentMethod(paymentMethod);
 		payment.setStatus(status);
 
-		int id = paymentDAO.savePayment(payment);
-		if (id == 0) {
-			return "invalid";
+		int id;
+		if (booking.getPayment() == null) {
+			System.out.println("bookingPayment is null");
+			 id = paymentDAO.savePayment(payment);
+			if (id == 0) {
+				return "invalid";
+			}
 		}
-
-		
-		Email newEmail = new Email(booking.getCustomerEmail(), "Your New Booking",
-				"<font color=black>Congratulation in your recent booking with Book2Ball! <br/></font>" +
-
-						"<font color=black><h3>Facility Details:</h3></font>"
-
-						+ "<font color=black>" + booking.getFacilityName() + "<br/>" 
-						+ booking.getFaciltyAddress() + "<br/>"
-						+ "<b>Court Name:</b> " + booking.getCourtName() + "<br/>" 
-						+ "<b>Start Date Time:</b> "+ Booking.formatDate(booking.getStartDateTime()) + "<br/>"
-						+ "<b>End Date Time:</b> "
-						+ Booking.formatDate(booking.getEndDateTime()) + "<br/>"
-						+ "<b>Booking Status:</b> " + booking.getStatus()
-						+ "</font><br/>"
-
-						+ "<font color=black><h3>Payment Details:</h3>"
-						+ "<b>Payment Date:</b> " + Booking.formatDate(payment.getPaymentDateTime())+"<br/>"
-						+ "<font color=black><b>Court Charge:</b> " + Payment.formatToCurrency(payment.getCourtCharge()) + "<br/>"
-						+ "<b>Duration:</b> " + booking.getDuration() + "<br/>"
-						+ "<b>Sub Total:</b> "	+ Payment.formatToCurrency(payment.getSubTotal()) + "<br/>"
-						+ "<b>Tax Percentage:</b> "	+ payment.getTaxPercentage() + "%<br/>"
-						+ "<b>Tax Amount:</b> "	+ Payment.formatToCurrency(payment.getTaxAmount()) + "<br/><hr/>" 
-						+ "<b>Total Amount:</b> " + Payment.formatToCurrency(payment.getTotalAmount()) + "<br/></font>"
-
-						+ "<br/><br/>" +
-
-						"<font color=black>If you have not authorized this booking, please contact Book2ball with the information in this e-mail.<br/>"
-						+ "THANK YOU!<br/>" + "<b>MAGS.WEBSITE</b></font>");
-		newEmail.send();
+		/*
+		else {
+			booking.setPayment(payment);
+			Boolean isSaved = bookingDAO.saveBooking(booking);
+			if (isSaved) {
+				id =  booking.getPayment().getPaymentId();
+			}else {
+				return "invalid";
+			}
+		}
+		*/
+		id =  booking.getPayment().getPaymentId();
 		
 
 		/*
-		Email newEmail = new Email(booking.getCustomerEmail(), "Your Booking",
-				"Congratulation in your recent booking with Book2Ball! \r\n" + "\r\n\n" +
-
-						"<h3>Facility Details:</h3> \n"
-
-						+ booking.getFacilityName() + "\n" + booking.getFaciltyAddress() + "\n" + "Court Name: "
-						+ booking.getCourtName() + "\n\n" + "<b>Start Date Time:</b> "
-						+ Booking.formatDate(booking.getStartDateTime()) + "\n" + "End Date Time: "
-						+ Booking.formatDate(booking.getEndDateTime()) + "\n" + "Booking Status: " + booking.getStatus()
-						+ "\n\n"
-
-						+ "<h3>Payment Details</h3>: \n" + "Payment Date: " + Booking.formatDate(payment.getPaymentDateTime())
-						+ "\n" + "Court Charge: " + Payment.formatToCurrency(payment.getCourtCharge()) + "\n"
-						+ "Duration: " + booking.getDuration() + "\n" + "Sub Total: "
-						+ Payment.formatToCurrency(payment.getSubTotal()) + "\n" + "Tax Percentage: "
-						+ payment.getTaxPercentage() + "%\n" + "Tax Amount: "
-						+ Payment.formatToCurrency(payment.getTaxAmount()) + "\n" + "Total Amount: "
-						+ Payment.formatToCurrency(payment.getTotalAmount()) + "\n"
-
-						+ "\r\n\n\n" +
-
-						"If you have not authorized this booking, please contact Book2ball with the information in this e-mail.\r\n"
-						+ "THANK YOU!\r\n" + "\r\n" + "MAGS.WEBSITE\r\n");
-		newEmail.send();
-		*/
+		 * Email newEmail = new Email(booking.getCustomerEmail(), "Your Booking",
+		 * "Congratulation in your recent booking with Book2Ball! \r\n" + "\r\n\n" +
+		 * 
+		 * "<h3>Facility Details:</h3> \n"
+		 * 
+		 * + booking.getFacilityName() + "\n" + booking.getFaciltyAddress() + "\n" +
+		 * "Court Name: " + booking.getCourtName() + "\n\n" + "<b>Start Date Time:</b> "
+		 * + Booking.formatDate(booking.getStartDateTime()) + "\n" + "End Date Time: " +
+		 * Booking.formatDate(booking.getEndDateTime()) + "\n" + "Booking Status: " +
+		 * booking.getStatus() + "\n\n"
+		 * 
+		 * + "<h3>Payment Details</h3>: \n" + "Payment Date: " +
+		 * Booking.formatDate(payment.getPaymentDateTime()) + "\n" + "Court Charge: " +
+		 * Payment.formatToCurrency(payment.getCourtCharge()) + "\n" + "Duration: " +
+		 * booking.getDuration() + "\n" + "Sub Total: " +
+		 * Payment.formatToCurrency(payment.getSubTotal()) + "\n" + "Tax Percentage: " +
+		 * payment.getTaxPercentage() + "%\n" + "Tax Amount: " +
+		 * Payment.formatToCurrency(payment.getTaxAmount()) + "\n" + "Total Amount: " +
+		 * Payment.formatToCurrency(payment.getTotalAmount()) + "\n"
+		 * 
+		 * + "\r\n\n\n" +
+		 * 
+		 * "If you have not authorized this booking, please contact Book2ball with the information in this e-mail.\r\n"
+		 * + "THANK YOU!\r\n" + "\r\n" + "MAGS.WEBSITE\r\n"); newEmail.send();
+		 */
 
 		return id;
 
