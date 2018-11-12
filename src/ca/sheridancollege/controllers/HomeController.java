@@ -637,6 +637,7 @@ public class HomeController {
 		model.addAttribute("username", username);
 
 		Facility facility = new Facility();
+		facility.setCountry("Canada");
 		facility.setUsername(username); // set facility username to the user
 		model.addAttribute("facility", facility);
 

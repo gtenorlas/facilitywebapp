@@ -59,7 +59,7 @@
 					</div>
 					
 					<div class="form-group">
-				  		<form:label path="province">Province:</form:label>
+				  		<form:label path="province">Province*:</form:label>
 				  		<form:input path="province" class="form-control" type="text" required="true" value="${facility.province}"/>
 				  		<form:errors path="province" cssClass="error" /> 	
 					</div>
