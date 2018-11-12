@@ -356,7 +356,7 @@ public class HomeController {
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		if (!startDT.equals("")) {
-			startDT += " 11:05";
+			startDT += " 00:00";
 			localDateTime = LocalDateTime.parse(startDT, formatter);
 
 		}
@@ -367,7 +367,7 @@ public class HomeController {
 		if (customerName.equals("")) {
 			customerName = null;
 		}
-		List<Booking> bookings = bookingDAO.searchBookings(customerName, status, localDateTime);
+		List<Booking> bookings = bookingDAO.searchBookings(customerName, status, localDateTime, facility);
 		
 		// create the pdf before showing the courts
 		App createPdf = new App(facility, username, (ArrayList)bookings);
@@ -380,7 +380,7 @@ public class HomeController {
 
 
 		
-
+		model.addAttribute("facility", facility);
 		model.addAttribute("bookings", bookings);
 
 		return "bookings";

@@ -38,7 +38,7 @@
 				    </div>
 				    
 				    <div class="form-group row">
-				    	<label  class="col-md-12 col-form-label">Booking Start Date/Time:</label>
+				    	<label  class="col-md-12 col-form-label">Booking Start Date:</label>
 				       <div class="col-md-12">
 				      		<input  type="date"  name = "startDT"  class="form-control"/>    	
 				       </div>

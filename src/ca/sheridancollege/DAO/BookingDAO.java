@@ -15,6 +15,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import ca.sheridancollege.beans.Booking;
+import ca.sheridancollege.beans.Facility;
 /**
  * 
  * @author MAGS
@@ -148,7 +149,7 @@ public class BookingDAO {
 		return booking;
 	}
 
-	public List<Booking> searchBookings(String customerName, String status, LocalDateTime localDateTime) {
+	public List<Booking> searchBookings(String customerName, String status, LocalDateTime localDateTime, Facility facility) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 
@@ -158,7 +159,7 @@ public class BookingDAO {
 		Root<Booking> root = criteria.from(Booking.class);
 		LocalDateTime nextDay = null;
 		try {
-			nextDay = localDateTime.plusDays(1);
+			nextDay = localDateTime.plusHours(23);
 
 		} catch (Exception e) {
 
@@ -168,6 +169,8 @@ public class BookingDAO {
 		Predicate isDateMatchEndOfDay = criteriaBuilder.lessThanOrEqualTo(root.get("startDateTime"), nextDay);
 		Predicate isStatusMatch = criteriaBuilder.equal(root.get("status"), status);
 		Predicate isCustomerMatch = null;
+		Predicate isSameFacilityName = criteriaBuilder.equal(root.get("facilityName"), facility.getFacilityName().trim());
+		Predicate isSamePostalCode = criteriaBuilder.like(root.get("faciltyAddress"), "%" + facility.getPostalCode().trim() + "%");
 
 		if (customerName != null) {
 			if (customerName.contains("%")) {
@@ -183,27 +186,31 @@ public class BookingDAO {
 		if (customerName == null && status != null && localDateTime != null) {
 			System.out.println("option 1 filtering");
 
-			criteria.where(criteriaBuilder.and(isDateMatchStartOfDay, isDateMatchEndOfDay, isStatusMatch));
+			criteria.where(criteriaBuilder.and(isDateMatchStartOfDay, isDateMatchEndOfDay, isStatusMatch, isSameFacilityName, isSamePostalCode));
 		} else if (status == null && customerName != null && localDateTime != null) {
 			System.out.println("option 2 filtering");
 
-			criteria.where(criteriaBuilder.and(isDateMatchStartOfDay, isDateMatchEndOfDay, isCustomerMatch));
+			criteria.where(criteriaBuilder.and(isDateMatchStartOfDay, isDateMatchEndOfDay, isCustomerMatch, isSameFacilityName, isSamePostalCode));
 		} else if (localDateTime == null && customerName != null && status != null) {
 			System.out.println("option 3 filtering");
-			criteria.where(criteriaBuilder.and(isCustomerMatch, isStatusMatch));
+			criteria.where(criteriaBuilder.and(isCustomerMatch, isStatusMatch, isSameFacilityName, isSamePostalCode));
 		} else if (localDateTime == null && status == null && customerName != null) {
 			System.out.println("option 4 filtering");
-			criteria.where(isCustomerMatch);
+			criteria.where(isCustomerMatch, isSameFacilityName, isSamePostalCode);
 		} else if (localDateTime == null && customerName == null && status != null) {
 			System.out.println("option 5 filtering");
-			criteria.where(isStatusMatch);
+			criteria.where(isStatusMatch, isSameFacilityName, isSamePostalCode);
 		} else if (localDateTime != null && customerName == null && status == null) {
 			System.out.println("option 6 filtering");
-			criteria.where(criteriaBuilder.and(isDateMatchStartOfDay, isDateMatchEndOfDay));
+			criteria.where(criteriaBuilder.and(isDateMatchStartOfDay, isDateMatchEndOfDay, isSameFacilityName, isSamePostalCode));
 		} else if (localDateTime != null && customerName != null && status != null) {
 			System.out.println("option 7 filtering");
 			criteria.where(
-					criteriaBuilder.and(isDateMatchStartOfDay, isDateMatchEndOfDay, isStatusMatch, isCustomerMatch));
+					criteriaBuilder.and(isDateMatchStartOfDay, isDateMatchEndOfDay, isStatusMatch, isCustomerMatch, isSameFacilityName, isSamePostalCode));
+		}else {
+			System.out.println("option 8 filtering");
+			criteria.where(
+					criteriaBuilder.and(isSameFacilityName, isSamePostalCode));
 		}
 
 		List<Booking> bookings = new ArrayList<Booking>();
