@@ -29,10 +29,25 @@
 		<nav class="navbar navbar-inverse">
 			  <div class="container-fluid">
 			  
-			    <div class="navbar-header btn-primary">
-			     <c:url value="/" var="homeUrl" />
-			      <a class="navbar-brand" href="${homeUrl }" style="color:#f5f5f0;">Book2Ball</a>
+			   <!-- Brand and toggle get grouped for better mobile display -->
+			    <div class="navbar-header">
+			      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+			        <span class="sr-only">Toggle navigation</span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			      </button>
+	
+			     	<c:url value="/" var="homeUrl" />
+			      	<a class="navbar-brand" href="${homeUrl }" style="color:#f5f5f0;" style="margin-top:0 !important;padding-top:0px !important;"><span><img height='16' width='16' src="<c:url value="/images/logomininew.png" />" alt="Brand"></span>Book2Ball</a>
+
+
 			    </div>
+			  
+			  
+			<!-- Collect the nav links, forms, and other content for toggling -->
+    		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+		
 			    <ul class="nav navbar-nav">
 				   
 			      <li><a href="${homeUrl }">Home</a></li>
@@ -87,6 +102,7 @@
 						</c:otherwise>
 					</c:choose>
 			    </ul>
+			  </div>
 			  </div>
 			</nav>
 		
