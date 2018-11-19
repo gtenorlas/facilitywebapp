@@ -3,32 +3,42 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <t:mainLayout>
 	<jsp:body>
-        <div id="error"></div><br/>
+        <div><h4 id="error"></h4></div><br/>
 		<c:url value="/register" var="url" />
 		
 		
 		<div class="container">
+			  <h1>Sign Up</h1>
 			  <form name="form" method="post" action="${url}"
 				onsubmit="return verify()">
 				    <div class="form-group row">
 				      <label for="username" class="col-md-12 col-form-label">Username*</label>
 				      <div class="col-md-12">
-				        <input type="text" class="form-control" name="username" required="true"
+				      <div class="input-group">
+                          <span class="input-group-addon navbar-inverse"><i class="gly-color glyphicon glyphicon-user"></i></span>
+				        	<input type="text" class="form-control" name="username" required="true"
 							placeholder="Username" maxlength="45">
+				      </div>
 				      </div>
 				    </div>
 				    <div class="form-group row">
 				      <label for="password" class="col-md-12 col-form-label">Password*</label>
 				      <div class="col-md-12">
+				      <div class="input-group">
+                             <span class="input-group-addon navbar-inverse"><i class="gly-color glyphicon glyphicon-lock"></i></span>
 				        <input type="password" class="form-control" name="password" required="true"
 							placeholder="Password" maxlength="60">
+							</div>
 				      </div>
 				    </div>
 				    <div class="form-group row">
 				      <label for="verifyPassword" class="col-md-12 col-form-label">Password*</label>
 				      <div class="col-md-12">
+				      <div class="input-group">
+                             <span class="input-group-addon navbar-inverse"><i class="gly-color glyphicon glyphicon-lock"></i></span>
 				        <input type="password" class="form-control"
 							name="verifyPassword" placeholder="Re-enter Password" required="true"> 
+				      </div>
 				      </div>
 				    </div>
 				    	<input type="hidden" name="${_csrf.parameterName}"

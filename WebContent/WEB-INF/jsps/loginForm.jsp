@@ -12,17 +12,24 @@
 		<c:if test="${accountCreated}"><div><h3>Facility created successfully! Please login to continue.</h3></div></c:if>
 		
 		<div class="container">
+		<h1>Login</h1>
 			  <form method="post" action="${loginUrl}">
 				    <div class="form-group row">
 				      <label for="username" class="col-md-12 col-form-label">Username</label>
 				      <div class="col-md-12">
-				        <input type="text" class="form-control" name="username" placeholder="Username">
+				      	<div class="input-group">
+                             <span class="input-group-addon navbar-inverse"><i class="gly-color glyphicon glyphicon-user"></i></span>
+				       		 <input type="text" class="form-control" name="username" placeholder="Username">
+				        </div>
 				      </div>
 				    </div>
 				    <div class="form-group row">
 				      <label for="password" class="col-md-12 col-form-label">Password</label>
 				      <div class="col-md-12">
+				      <div class="input-group">
+                             <span class="input-group-addon navbar-inverse"><i class="gly-color glyphicon glyphicon-lock"></i></span>
 				        <input type="password" class="form-control" name="password" placeholder="Password">
+				      </div>
 				      </div>
 				    </div>
 				    	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

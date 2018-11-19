@@ -98,9 +98,9 @@
 						<c:otherwise>
 							<!-- Have user to be able to login and create account -->
 					    	<c:url value="/createAccount" var="createUrl" />
-					    	<li><a href="${createUrl}"><span class="glyphicon glyphicon-user" style="color:#ffae42"></span> Sign Up</a></li>
+					    	<li><a href="${createUrl}"><span class="gly-color glyphicon glyphicon-user"></span> Sign Up</a></li>
 					    	<c:url value="/login" var="loginUrl" />
-							<li><a href="${loginUrl}"><span class="glyphicon glyphicon-log-in" style="color:#ffae42"></span> Login</a></li>
+							<li><a href="${loginUrl}"><span class="gly-color glyphicon glyphicon-log-in"></span> Login</a></li>
 						</c:otherwise>
 					</c:choose>
 			    </ul>

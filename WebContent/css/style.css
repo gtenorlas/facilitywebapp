@@ -3,6 +3,7 @@ color:red;
 }
 
 .error {
+text-align:center;
 color:red;
 }
 
@@ -198,4 +199,8 @@ tbody tr:hover{
 .fa-rss {
   background: #ff6600;
   color: white;
+}
+
+.gly-color{
+	color: #ffae42;
 }
