@@ -39,7 +39,7 @@
 			      </button>
 	
 			     	<c:url value="/" var="homeUrl" />
-			      	<a class="navbar-brand" href="${homeUrl }" style="color:#f5f5f0;" style="margin-top:0 !important;padding-top:0px !important;"><span><img height='18' width='20' src="<c:url value="/images/logomini.jpg" />" alt="Brand"></span>Book2Ball</a>
+			      	<a class="navbar-brand" href="${homeUrl }" style="color:#f5f5f0;"><span><img style="margin-top:0 !important;padding-top:0px !important;" height='18' width='20' src="<c:url value="/images/logomini.jpg" />" alt="Brand"></span>Book2Ball</a>
 
 
 			    </div>

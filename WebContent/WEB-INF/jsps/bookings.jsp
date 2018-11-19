@@ -26,7 +26,7 @@
 				    </div>
 				     -->
 				    <div class="form-group row">
-				    	<label class="col-md-12 col-form-label">Status (select one)*:</label>
+				    	<label class="col-md-12 col-form-label">Status:</label>
 				       <div class="col-md-12">
 				      		<select name = "status"  class="form-control">	
 				      		<option value=""></option>
