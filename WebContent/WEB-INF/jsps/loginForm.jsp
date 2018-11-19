@@ -4,8 +4,7 @@
 <t:mainLayout>
     <jsp:body>
         <c:if test="${param.error != null}">
-			<div id="error">No such account exists.
-			Please check your username and password!</div>
+			 <div><h4 id="error">Invalid username/password</h4></div>
 		</c:if>
 		<c:url value="/login" var="loginUrl" />
 		

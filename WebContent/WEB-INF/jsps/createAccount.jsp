@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <t:mainLayout>
 	<jsp:body>
+		<c:if test="${duplicate}"><div><h4 id="error">Username already taken.</h4></div></c:if>
         <div><h4 id="error"></h4></div><br/>
 		<c:url value="/register" var="url" />
 		

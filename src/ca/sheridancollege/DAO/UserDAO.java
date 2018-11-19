@@ -24,8 +24,12 @@ public class UserDAO {
 	public User findByUserName(String username) {
 		System.out.println("dao to retrieve user " + username);
 		
+		try {
 		return (User) sessionFactory.openSession().createNamedQuery("User.getUserByUsername")
 				.setParameter("username", username).getSingleResult();
+		}catch(Exception e) {
+			return null;
+		}
 
 	}
 

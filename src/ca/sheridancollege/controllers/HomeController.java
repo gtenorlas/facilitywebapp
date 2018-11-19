@@ -649,6 +649,10 @@ public class HomeController {
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(Model model, @RequestParam String username, @RequestParam String password,
 			HttpServletRequest request, HttpServletResponse response) {
+		
+		User checkeduser = userDAO.findByUserName(username);
+		if (checkeduser == null ) {
+		
 		String encryptedPassword = new BCryptPasswordEncoder().encode(password);
 		User user = new User(username, encryptedPassword, true);
 
@@ -675,6 +679,10 @@ public class HomeController {
 		model.addAttribute("facility", facility);
 
 		return "/createFacility";
+		}else {
+			model.addAttribute("duplicate",true);
+			return "createAccount";
+		}
 	}
 
 	/*
