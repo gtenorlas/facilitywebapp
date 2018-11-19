@@ -17,9 +17,9 @@
 
       <!-- Page Features -->
       <div class="row text-center">  <!-- /.row -->
-        <div class="col-sm-6 col-md-4">
+        <div class="col-sm-6 col-md-3">
 	       <div class="thumbnail">
-		      <img src="<c:url value="/images/ball2.jpg" />" alt="Basketball 2">
+		      <img src="<c:url value="/images/ball2.jpg" />" alt="Facilities">
 		      <div class="caption">
 		        <h3>Affiliated</h3>
 		        <p>Proven way to grow your business.</p>
@@ -29,25 +29,37 @@
     		</div>
      	 </div>
      	 
-     	 <div class="col-sm-6 col-md-4">
+     	 <div class="col-sm-6 col-md-3">
 	       <div class="thumbnail">
-		      <img src="<c:url value="/images/ball3.jpg" />" alt="Basketball 3">
+		      <img src="<c:url value="/images/ball3.jpg" />" alt="Contact Us">
 		      <div class="caption">
 		        <h3>More Information</h3>
-		        <p>Keep in touch to get more details.</p>
+		        <p>Send us a message with your inquiry.</p>
 		        <c:url value="/contactUs" var="contactUsUrl" />
 		        <p><a href="${contactUsUrl }" class="btn btn-primary" role="button">Contact Us</a></p>
 	     	 </div>
     		</div>
      	 </div>
      	 
-     	 <div class="col-sm-6 col-md-4">
+     	 <div class="col-sm-6 col-md-3">
 	       <div class="thumbnail">
-		      <img src="<c:url value="/images/ball4.jpg" />" alt="Basketball 4">
+		      <img src="<c:url value="/images/ball4.jpg" />" alt="Social Media">
 		      <div class="caption">
 		        <h3>Our Social Media</h3>
-		        <p>See us in social media for up to date information.</p>
+		        <p>Keep in touch to keep up to date.</p>
 		        <p><a href="#socialMedia" class="btn btn-primary" role="button">Follow Us</a></p>
+	     	 </div>
+    		</div>
+     	 </div>
+     	 
+     	  <div class="col-sm-6 col-md-3">
+	       <div class="thumbnail">
+		      <img src="<c:url value="/images/aboutus.jpg" />" alt="About Us">
+		      <div class="caption">
+		        <h3>Who we are</h3>
+		        <p>See why we do it.</p>
+		        <c:url value="/aboutUs" var="aboutUsUrl" />
+		        <p><a href="${aboutUsUrl }" class="btn btn-primary" role="button">About Us</a></p>
 	     	 </div>
     		</div>
      	 </div>

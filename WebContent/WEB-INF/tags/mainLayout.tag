@@ -58,6 +58,8 @@
 			      </c:if>    
 			      <c:url value="/contactUs" var="contactUsUrl" />
 			      <li><a href="${contactUsUrl}">Contact Us</a></li>
+			   	  <c:url value="/aboutUs" var="aboutUsUrl" />
+			      <li><a href="${aboutUsUrl}">About Us</a></li>
 			      
 			       <!-- check if user is logged in -->
 					<c:if test="${not empty pageContext.request.userPrincipal}">

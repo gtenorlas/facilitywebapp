@@ -96,6 +96,23 @@ public class HomeController {
 		System.out.println("in contact us");
 		return "contactUs";
 	}
+	
+	@RequestMapping(value = "/aboutUs", method = RequestMethod.GET)
+	public String aboutUs(Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = null;
+		Facility facility = null;
+		if (!(authentication instanceof AnonymousAuthenticationToken)) {
+			username = authentication.getName(); // grab the user currently authenticated
+
+			facility = facilityDao.getFacility(username);
+			model.addAttribute("facility", facility);
+			System.out.println("load facility page");
+		}
+		
+		System.out.println("in about us");
+		return "aboutUs";
+	}
 
 	@RequestMapping(value = "/pdfs/{file}", method = RequestMethod.GET)
 	public void getLogFile(Model model, @PathVariable String file, HttpSession session, HttpServletResponse response)
