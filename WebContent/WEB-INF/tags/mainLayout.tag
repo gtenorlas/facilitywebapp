@@ -39,7 +39,7 @@
 			      </button>
 	
 			     	<c:url value="/" var="homeUrl" />
-			      	<a class="navbar-brand" href="${homeUrl }" style="color:#f5f5f0;"><span><img style="margin-top:0 !important;padding-top:0px !important;" height='18' width='20' src="<c:url value="/images/logomini.jpg" />" alt="Brand"></span>Book2Ball</a>
+			      	<a class="navbar-brand" href="${homeUrl }" style="color:#008ecc;"><span><img style="margin-top:0 !important;padding-top:0px !important;" height='18' width='20' src="<c:url value="/images/logomini.jpg" />" alt="Brand"></span>Book2Ball</a>
 
 
 			    </div>
@@ -96,9 +96,9 @@
 						<c:otherwise>
 							<!-- Have user to be able to login and create account -->
 					    	<c:url value="/createAccount" var="createUrl" />
-					    	<li><a href="${createUrl}"><span class="glyphicon glyphicon-user" style="color:orange"></span> Sign Up</a></li>
+					    	<li><a href="${createUrl}"><span class="glyphicon glyphicon-user" style="color:#ffae42"></span> Sign Up</a></li>
 					    	<c:url value="/login" var="loginUrl" />
-							<li><a href="${loginUrl}"><span class="glyphicon glyphicon-log-in" style="color:orange"></span> Login</a></li>
+							<li><a href="${loginUrl}"><span class="glyphicon glyphicon-log-in" style="color:#ffae42"></span> Login</a></li>
 						</c:otherwise>
 					</c:choose>
 			    </ul>

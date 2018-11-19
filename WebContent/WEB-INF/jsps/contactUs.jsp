@@ -10,7 +10,7 @@
                     <label for="Name" class="col-md-12 col-form-label">Name</label>
                     <div class="col-md-12">
                         <div class="input-group">
-                            <span class="input-group-addon navbar-inverse"><i class="glyphicon glyphicon-user" style="color:orange"></i></span>
+                            <span class="input-group-addon navbar-inverse"><i class="glyphicon glyphicon-user" style="color:#ffae42"></i></span>
                             <input type="text" id="Name" name="Name" class="form-control" placeholder="* Enter Name" required/>
                         </div>
                     </div>
@@ -20,7 +20,7 @@
                     <label for="Name" class="col-md-12 col-form-label">Email</label>
                     <div class="col-md-12">
                         <div class="input-group">
-                            <span class="input-group-addon navbar-inverse"><i class="glyphicon glyphicon-envelope" style="color:orange"></i></span>
+                            <span class="input-group-addon navbar-inverse"><i class="glyphicon glyphicon-envelope" style="color:#ffae42"></i></span>
                             <input type="text" id="Email" name="Email" class="form-control" placeholder="* Enter Email" required/>
                         </div>
                     </div>

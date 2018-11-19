@@ -26,6 +26,7 @@ body {
     height: 100%;
 }
 
+ul.nav a:hover { color: orange !important; }
 
 .jumbotron {
     background-color:rgb(113, 151, 214) !important; 
