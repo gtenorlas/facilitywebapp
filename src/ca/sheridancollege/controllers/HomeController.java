@@ -18,14 +18,15 @@ import javax.validation.Valid;
 
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,7 +44,7 @@ import ca.sheridancollege.beans.Booking;
 import ca.sheridancollege.beans.Court;
 import ca.sheridancollege.beans.Email;
 import ca.sheridancollege.beans.Facility;
-import ca.sheridancollege.beans.Payment;
+import ca.sheridancollege.beans.MyUserDetailsService;
 import ca.sheridancollege.beans.User;
 import ca.sheridancollege.beans.UserRole;
 
@@ -553,7 +554,7 @@ public class HomeController {
 	 * Method to handle when creating a new facility or updating a facility
 	 */
 	@RequestMapping(value = "/saveFacility", method = RequestMethod.POST)
-	public String saveFacility(Model model, @ModelAttribute("facility") @Valid Facility facilityToSave,
+	public String saveFacility(Model model, @ModelAttribute("facility") @Valid Facility facilityToSave, @ModelAttribute("password") String password,
 			BindingResult result) {
 		Map<String, Double> coords;
 		
@@ -604,9 +605,20 @@ public class HomeController {
 				System.out.println("logged in after saveFAcility");
 				return "courts";
 			} else {
+				//load the user to be logged in right after the registration
+				UserDetails userDetails = new MyUserDetailsService().loadUserByUsername(facility.getUsername());
+				UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails,
+				password, userDetails.getAuthorities());
+				SecurityContextHolder.getContext().setAuthentication(auth);
+				model.addAttribute("accountCreated", true);
+				return "courts";
+				
+/*		
+				
 				System.out.println("NOt logged in after saveFAcility");
 				model.addAttribute("accountCreated", true);
 				return "loginForm";
+				*/
 			}
 		}else {
 			result.rejectValue("line_1", "error.facility", "Please validate the address.");
@@ -635,10 +647,14 @@ public class HomeController {
 
 		model.addAttribute("accountCreated", true);
 		model.addAttribute("username", username);
+		
+		
+
 
 		Facility facility = new Facility();
 		facility.setCountry("Canada");
-		facility.setUsername(username); // set facility username to the user
+		facility.setUsername(username); // set facility; username to the user
+		model.addAttribute("password",encryptedPassword);
 		model.addAttribute("facility", facility);
 
 		return "/createFacility";

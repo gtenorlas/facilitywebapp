@@ -39,7 +39,7 @@
 			      </button>
 	
 			     	<c:url value="/" var="homeUrl" />
-			      	<a class="navbar-brand" href="${homeUrl }" style="color:#008ecc;"><span><img style="margin-top:0 !important;padding-top:0px !important;" height='18' width='20' src="<c:url value="/images/logomini.jpg" />" alt="Brand"></span>Book2Ball</a>
+			      	<a class="navbar-brand" href="${homeUrl }" style="color:#008ecc;"><span><img style="margin-top:0 !important;padding-top:0px !important;" height='18' width='20' src="<c:url value="/images/smalllogo.gif" />" alt="Brand"></span>Book2Ball</a>
 
 
 			    </div>
@@ -90,7 +90,7 @@
 						 <c:when test="${not empty pageContext.request.userPrincipal}">
 					    	<!-- Have user to be able to logout -->
 					    	<c:url value="/logout" var="logoutUrl" />
-					    	<li class="navbar-text" >       ${facility.facilityName}     /      ${pageContext.request.userPrincipal.name}</li>
+					    	<li class="navbar-text" >   <c:if test="${facility!=null}"> ${facility.facilityName} / </c:if>        ${pageContext.request.userPrincipal.name}</li>
 							<li><a href="${logoutUrl}"><span class="glyphicon glyphicon-log-out" style="color:orange"></span> Logout</a></li>
 						</c:when>    
 						<c:otherwise>
@@ -147,7 +147,7 @@
  		<br/>
     	<div>
 	        © 2018 Copyright:
-	        <a href="${homeUrl}">Book2Ball</a> Created By: Gene Tenorlas, Moghid Saad, Chathu Anthony, Shanu Shanu
+	        <a href="${homeUrl}" style="color:#008ecc;">Book2Ball</a> Created By: Gene Tenorlas, Moghid Saad, Chathu Anthony, Shanu Shanu
         </div>
         <br/>
            <a href="#" class="fa fa-facebook"></a>

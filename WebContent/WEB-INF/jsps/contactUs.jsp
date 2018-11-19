@@ -30,7 +30,7 @@
                     <label for="Phone" class="col-md-12 col-form-label">Phone Number</label>
                     <div class="col-md-12">
                         <div class="input-group">
-                            <span class="input-group-addon navbar-inverse"><i class="glyphicon glyphicon-earphone" style="color:orange"></i></span>
+                            <span class="input-group-addon navbar-inverse"><i class="glyphicon glyphicon-earphone" style="color:#ffae42"></i></span>
                             <input type="tel" id="Phone" name="Phone" class="form-control" placeholder="* Enter Phone Number" required/>
                         </div>
                     </div>
@@ -40,7 +40,7 @@
                     <label for="Message" class="col-md-12 col-form-label">Message</label>
                     <div class="col-md-12">
                         <div class="input-group">
-                            <span class="input-group-addon navbar-inverse"><i class="glyphicon glyphicon-comment" style="color:orange"></i></span>
+                            <span class="input-group-addon navbar-inverse"><i class="glyphicon glyphicon-comment" style="color:#ffae42"></i></span>
                             <textarea id="Message" name="Message" class="form-control" rows="5"></textarea>
                         </div>
                     </div>

@@ -4,7 +4,7 @@
 <t:mainLayout>
     <jsp:body> 	
 
-
+ 				<c:if test="${accountCreated}"><h3>Registration successful! Please add the courts for rental.</h3></c:if>
 	
 		
 					 <div class="row">
@@ -25,7 +25,7 @@
 		<div class="row">
 	  			<div class="col-md-12">
 		  		<h3><c:url value="/createCourt/${facility.facilityId}" var="createCourtUrl" />
-		    	<a href="${createCourtUrl }">Create a New Court</a></h3>
+		    	<a href="${createCourtUrl }">Add New Court</a></h3>
 	    		</div>
 
 	     	</div>
