@@ -21,7 +21,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 <!-- Add icon library -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
 
 </head>
 <body>
@@ -39,7 +39,7 @@
 			      </button>
 	
 			     	<c:url value="/" var="homeUrl" />
-			      	<a class="navbar-brand" href="${homeUrl }" style="color:#f5f5f0;" style="margin-top:0 !important;padding-top:0px !important;"><span><img height='16' width='16' src="<c:url value="/images/logomininew.png" />" alt="Brand"></span>Book2Ball</a>
+			      	<a class="navbar-brand" href="${homeUrl }" style="color:#f5f5f0;" style="margin-top:0 !important;padding-top:0px !important;"><span><img height='18' width='20' src="<c:url value="/images/logomini.jpg" />" alt="Brand"></span>Book2Ball</a>
 
 
 			    </div>
@@ -91,14 +91,14 @@
 					    	<!-- Have user to be able to logout -->
 					    	<c:url value="/logout" var="logoutUrl" />
 					    	<li class="navbar-text" >       ${facility.facilityName}     /      ${pageContext.request.userPrincipal.name}</li>
-							<li><a href="${logoutUrl}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+							<li><a href="${logoutUrl}"><span class="glyphicon glyphicon-log-out" style="color:orange"></span> Logout</a></li>
 						</c:when>    
 						<c:otherwise>
 							<!-- Have user to be able to login and create account -->
 					    	<c:url value="/createAccount" var="createUrl" />
-					    	<li><a href="${createUrl}"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+					    	<li><a href="${createUrl}"><span class="glyphicon glyphicon-user" style="color:orange"></span> Sign Up</a></li>
 					    	<c:url value="/login" var="loginUrl" />
-							<li><a href="${loginUrl}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+							<li><a href="${loginUrl}"><span class="glyphicon glyphicon-log-in" style="color:orange"></span> Login</a></li>
 						</c:otherwise>
 					</c:choose>
 			    </ul>
@@ -144,20 +144,19 @@
     <!--Copyright-->
     <c:url value="/" var="homeUrl" />
     <div class="footer-copyright py-3 text-center">
+ 		<br/>
     	<div>
 	        © 2018 Copyright:
 	        <a href="${homeUrl}">Book2Ball</a> Created By: Gene Tenorlas, Moghid Saad, Chathu Anthony, Shanu Shanu
         </div>
         <br/>
-        <div id="socialMedia" style="text-align:center;">
-	        <!-- Add font awesome icons -->
-			<a href="#" class="fa fa-facebook"></a>
-			<a href="#" class="fa fa-twitter"></a>
+           <a href="#" class="fa fa-facebook"></a>
+           	<a href="#" class="fa fa-twitter"></a>
 			<a href="#" class="fa fa-google"></a>
 			<a href="#" class="fa fa-linkedin"></a>
 			<a href="#" class="fa fa-youtube"></a>
 			<a href="#" class="fa fa-instagram"></a>
-        </div>
+
     </div>
     <!--/.Copyright-->
 

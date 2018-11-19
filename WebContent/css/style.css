@@ -33,7 +33,7 @@ body {
 
 
 .footer, .footerSpace {
-    height: 150px;
+    height: 180px;
     width: 100%;
 }
 
@@ -64,7 +64,7 @@ h1,h2,h3,h4,h5 {
 }
 
 tbody tr:nth-of-type(odd){
-    background: rgb(212, 212, 214) !important;
+    background: #CDCDC0 !important;
 }
 tbody tr:nth-of-type(even){
     background: $body-bg !important;
@@ -81,7 +81,7 @@ tbody tr:hover{
 .fa {
   padding: 20px;
   font-size: 30px;
-  width: 50px;
+  width: 55px;
   text-align: center !important;
   text-decoration: none;
   margin: 5px 2px;
