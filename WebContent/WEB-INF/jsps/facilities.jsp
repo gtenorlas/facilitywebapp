@@ -14,8 +14,8 @@
 		  <table class="table table-striped">
 		 <thead>
 		  <tr>
-		     <th>Facility Name</th>
-		     <th>Facility Description</th>
+		     <th>Name</th>
+		     <th>Description</th>
 		  </tr>
 		 </thead>
 		 <tbody>
@@ -25,8 +25,8 @@
 			
 		
 			<tr>
-				<td>${item.facilityName}</td>
-				<td>${item.facilityDescription}</td>
+				<td class="td-facility">${item.facilityName}</td>
+				<td class="td-facility">${item.facilityDescription}</td>
 		
 			</tr>
 			</c:forEach>
