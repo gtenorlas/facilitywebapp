@@ -4,7 +4,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="shortcut icon" href="#" />
+<meta name="msapplication-TileColor" content="#00aba9">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" type="image/png" sizes="32x32" href="<c:url value="/images/favicon/favicon-32x32.png"/> ">
+<!-- <link rel="shortcut icon" href="#" />-->
 <!-- <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> -->
 <link rel="stylesheet" href="<c:url value="/css/style.css" />">
 <title><jsp:invoke fragment="title"/></title>
