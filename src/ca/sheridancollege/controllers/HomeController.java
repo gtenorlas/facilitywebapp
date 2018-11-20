@@ -622,6 +622,7 @@ public class HomeController {
 				System.out.println("logged in after saveFAcility");
 				return "courts";
 			} else {
+				/*
 				//load the user to be logged in right after the registration
 				UserDetails userDetails = new MyUserDetailsService().loadUserByUsername(facility.getUsername());
 				UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userDetails,
@@ -629,13 +630,13 @@ public class HomeController {
 				SecurityContextHolder.getContext().setAuthentication(auth);
 				model.addAttribute("accountCreated", true);
 				return "courts";
-				
-/*		
+				*/
+	
 				
 				System.out.println("NOt logged in after saveFAcility");
 				model.addAttribute("accountCreated", true);
 				return "loginForm";
-				*/
+				
 			}
 		}else {
 			result.rejectValue("line_1", "error.facility", "Please validate the address.");
