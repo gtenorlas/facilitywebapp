@@ -397,7 +397,7 @@ public class HomeController {
 		}
 
 
-		
+		model.addAttribute("isFiltered",true);
 		model.addAttribute("facility", facility);
 		model.addAttribute("bookings", bookings);
 

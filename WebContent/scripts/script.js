@@ -1,3 +1,6 @@
+/*
+ * To validate username and passwords during the account registration
+ */
 function verify() {
 	var username = document.forms['form']['username'].value;
 	var password1 = document.forms['form']['password'].value;
@@ -11,33 +14,16 @@ function verify() {
 	} 
 }
 
-
-
-function verifyWikiForm()
-{
-	//alert("im checking");
-	//try to parse Date
-	//try {
-		var publishedDate = document.forms['wikiForm']['publishedDate'].value.toString(); //convert to string for checking
-		//alert("Date " + publishedDate);
-	//}catch(err) {
-		//document.getElementById("error").innerHTML = "Invalid date format must be yyyy-mm-dd";
-	    //alert("incorrect date");
-	    //return false;
-	//}
-	
-	//alert("validating now");
-	
-  // regular expression for date format yyyy-mm-dd
-	var regEx = /^\d{4}-\d{2}-\d{2}$/;
-
-  if(!publishedDate.match(regEx)) {
-	document.getElementById("error").innerHTML = "Invalid date format must be yyyy-mm-dd";
-    //alert("incorrect date");
-    return false;
-  }
-  
-  return true;
+/*
+ * Show filter section in the Bookings.jsp page 
+ */
+function showFilter(){
+    var x = document.getElementById("searchBookings");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
 }
 
 /*

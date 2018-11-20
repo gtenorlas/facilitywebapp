@@ -5,8 +5,17 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <t:mainLayout>
     <jsp:body> 	
-		<div class="container">    
-		<h1>Find a Booking</h1>
+		<div class="container">
+		<c:choose>
+  			<c:when test="${isFiltered eq true}"> 
+				<div id="searchBookings">
+			</c:when>
+ 		 	<c:otherwise>
+ 		 	 	<div id="searchBookings" style="display:none;">
+ 		 	</c:otherwise>
+ 		 </c:choose>
+ 		 
+ 		 <h1>Filter Bookings</h1>
 			
 			<c:url value="/searchBooking" var="url" />
 				<form:form method="GET" action="${url}" name="bookingForm"> 
@@ -17,7 +26,7 @@
 				      		<input name = "customerName" type="text"   class="form-control"/>    	
 				       </div>
 				    </div>
-			<!-- 
+					<!-- 
 				    <div class="form-group row">
 				    	<label  class="col-md-12 col-form-label">Court Name:</label>
 				       <div class="col-md-12">
@@ -50,15 +59,26 @@
 					      </div>
 				      </div>
 			  </form:form>
-			  <hr style="height:3px;"/>
-			  	  	  <div class="form-group row">
-					      <div class="offset-md-6 col-md-12">
-					        	<c:url value="/pdfs/report" var="urlPdf" />
-	<a href="${urlPdf}" class="btn btn-primary">Download Report</a>
-					      </div>
-				      </div>
+			  <hr/>
+		</div>
+		
+	
 		  
-		<h1>All Bookings</h1> 
+		 
+			<h1 >All Bookings</h1>
+			 <div class="dropdown">
+			  <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+			   Action
+			    <span class="caret"></span>
+			  </button>
+			  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+			    <li><a href="#" onclick="showFilter()">Filter Bookings</a></li>
+			    <c:url value="/pdfs/report" var="urlPdf" />
+			    <li><a href="${urlPdf}" >Download Report</a></li>
+			
+			  </ul>
+			</div>
+		
 		  <table class="table table-striped">
 		 <thead>
 		  <tr>
@@ -107,5 +127,6 @@
 
 		</table>
 		</div>
+		<script src="<c:url value="/scripts/script.js" />"></script>
     </jsp:body>
 </t:mainLayout>

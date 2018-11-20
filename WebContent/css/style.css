@@ -223,6 +223,13 @@ tbody tr:hover{
     line-height: 1.1875em !important;
 }
 
+.dropdown-left-manual {
+  right: 0;
+  left: auto;
+  padding-left: 1px;
+  padding-right: 1px;
+}
+
 /* 
 Max width before this PARTICULAR table gets nasty
 This query will take effect for any screen smaller than 760px
