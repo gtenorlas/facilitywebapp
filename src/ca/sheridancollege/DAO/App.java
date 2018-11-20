@@ -49,13 +49,13 @@ public class App {
 	
 	public App(Facility facility, String username, ArrayList<Booking> bookings) {
 		 this.facility=facility;
-		 this.username=username;
+		 this.username=username.toUpperCase().trim();
 		 this.bookings = bookings;
 		 DEST = "/images/Report.pdf";
 		 REPORTFINAL = "/images/Report.pdf";
 		 String image ="<c:url value=\"/images/logomini.jpg\" />";
-		 HEADER = "<%@tag description=\"Shared Template\" pageEncoding=\"UTF-8\"%><%@ taglib uri=\"http://java.sun.com/jsp/jstl/core\" prefix=\"c\"%><%@attribute name=\"title\" fragment=\"true\" %><table width=\"100%\" border=\"0\"><tr><td><img src='images/logomini.jpg' alt='Book2Ball' width=25 height=25/></td><td align=\"right\">"+facility.getFacilityName()+"</td></tr></table>";
-		 FOOTER = "<table width=\"100%\" border=\"0\"><tr><td>Printed on October 2, 2018 by "+username+"</td><td align=\"right\">Page 1 of 4</td></tr></table>";
+		 HEADER = "<table width=\"100%\" border=\"0\"><tr><td style=\"color:#008ecc;\"><img src=\"http://mags.website/images/logomini.jpg\" alt='Book2Ball' width=\"25\" height=\"25\"/>Book2Ball</td><td align=\"right\" style=\"padding-right:-20;\">"+facility.getFacilityName().trim()+"</td></tr></table>";
+		 FOOTER = "<table width=\"100%\" border=\"0\"><tr><td>Printed on October 2, 2018 by "+ username.toUpperCase() +"</td><td align=\"right\" style=\"padding-right:-20;\">Page 1 of 4</td></tr></table>";
 
 
 	}
@@ -85,7 +85,7 @@ public class App {
 				ct.setSimpleColumn(new Rectangle(36, 10, 559, 32));
 				// change the footer
 				LocalDateTime currentDate = LocalDateTime.now();
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMMM dd, yyyy 'at' hh:mm a");
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E, MMMM dd, yyyy 'at' h:mm a");
 				String formatCurrentDateTime = currentDate.format(formatter);
 				FOOTER = "<table width=\"100%\" border=\"0\"><tr><td>Printed on " + formatCurrentDateTime + " by "
 						+ username + "</td>";
@@ -158,9 +158,9 @@ public class App {
 
 		// add table
 		PdfPTable table = new PdfPTable(6);
-		table.setTotalWidth(45);
-		;
-		table.setWidths(new int[] { 7, 6, 4, 7, 7,  6});
+	    table.setTotalWidth(PageSize.LETTER.getWidth()-80);
+	    table.setLockedWidth(true);
+		table.setWidths(new int[] { 8, 8, 4, 8, 8,  6});
 
 		PdfPCell c1 = new PdfPCell(new Phrase("Court", headerFont));
 		c1.setHorizontalAlignment(1);
@@ -174,11 +174,11 @@ public class App {
 		c1.setHorizontalAlignment(1);
 		table.addCell(c1);
 
-		c1 = new PdfPCell(new Phrase("Start Date/Time", headerFont));
+		c1 = new PdfPCell(new Phrase("Start", headerFont));
 		c1.setHorizontalAlignment(1);
 		table.addCell(c1);
 
-		c1 = new PdfPCell(new Phrase("End Date/Time", headerFont));
+		c1 = new PdfPCell(new Phrase("End", headerFont));
 		c1.setHorizontalAlignment(1);
 		table.addCell(c1);
 
@@ -189,7 +189,7 @@ public class App {
 		table.setHeaderRows(1); // specify the number of rows relative to header
 
 		System.out.println("before datetimeformatter");
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm a");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E yyyy-MM-dd h:mm a");
 		NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
 		double totalCost=0;
 		System.out.println("before the court loop");
@@ -219,7 +219,7 @@ public class App {
 		
 		Phrase cost = (new Phrase(currencyFormat.format(totalCost), headerFont));
 		PdfPCell cellTotalCost = new PdfPCell(cost);
-		cell.setHorizontalAlignment(2);
+		cellTotalCost.setHorizontalAlignment(2);
 		table.addCell(cellTotalCost);
 
 		document.add(table);
