@@ -40,10 +40,11 @@ public class RestCustomerController {
 		if (originate.toLowerCase().trim().equals("standard")) {
 			return customerDAO.getCustomer(username, password);
 		} else {
-			Object customer = customerDAO.getCustomer(username);
-			if (customer == null) {
-				customer = customerDAO.getCustomerByEmail(username);
-			}
+			Object customer = customerDAO.getCustomerByEmail(username);
+			//Object customer = customerDAO.getCustomer(username);
+			//if (customer == null) {
+			//	customer = customerDAO.getCustomerByEmail(username);
+			//}
 			return customer;
 		}
 	}
