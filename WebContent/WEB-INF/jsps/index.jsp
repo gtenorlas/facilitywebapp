@@ -57,7 +57,7 @@
 		      <img src="<c:url value="/images/aboutus.jpg" />" alt="About Us">
 		      <div class="caption">
 		        <h3>Who we are</h3>
-		        <p>See why we do it.</p>
+		        <p>See why we do what we do.</p>
 		        <c:url value="/aboutUs" var="aboutUsUrl" />
 		        <p><a href="${aboutUsUrl }" class="btn btn-primary" role="button">About Us</a></p>
 	     	 </div>
