@@ -84,12 +84,12 @@
 						<td>${booking.customerName}</td>
 						<td>${booking.status}</td>
 						<fmt:parseDate value="${booking.startDateTime }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
-						<fmt:formatDate pattern="E yyyy-MM-dd hh:mm" value="${ parsedDateTime }" var="formattedDate" />
+						<fmt:formatDate pattern="E yyyy-MM-dd h:mm a" value="${ parsedDateTime }" var="formattedDate" />
 					
 	  					<td> ${ formattedDate }</td>
 	  				
 	  					<fmt:parseDate value="${booking.endDateTime }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
-						<fmt:formatDate pattern="E yyyy-MM-dd hh:mm" value="${ parsedDateTime }" var="formattedDate" />
+						<fmt:formatDate pattern="E yyyy-MM-dd h:mm a" value="${ parsedDateTime }" var="formattedDate" />
 					
 	  					<td> ${ formattedDate }</td>
 	  					

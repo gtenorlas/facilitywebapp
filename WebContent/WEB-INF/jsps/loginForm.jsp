@@ -14,7 +14,7 @@
 		<h1>Login</h1>
 			  <form method="post" action="${loginUrl}">
 				    <div class="form-group row">
-				      <label for="username" class="col-md-12 col-form-label">Username</label>
+				      <label for="username" class="col-md-12 col-form-label">Username*:</label>
 				      <div class="col-md-12">
 				      	<div class="input-group">
                              <span class="input-group-addon navbar-inverse"><i class="gly-color glyphicon glyphicon-user"></i></span>
@@ -23,7 +23,7 @@
 				      </div>
 				    </div>
 				    <div class="form-group row">
-				      <label for="password" class="col-md-12 col-form-label">Password</label>
+				      <label for="password" class="col-md-12 col-form-label">Password*:</label>
 				      <div class="col-md-12">
 				      <div class="input-group">
                              <span class="input-group-addon navbar-inverse"><i class="gly-color glyphicon glyphicon-lock"></i></span>
