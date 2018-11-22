@@ -571,7 +571,7 @@ public class HomeController {
 	 * Method to handle when creating a new facility or updating a facility
 	 */
 	@RequestMapping(value = "/saveFacility", method = RequestMethod.POST)
-	public String saveFacility(Model model, @ModelAttribute("facility") @Valid Facility facilityToSave, @ModelAttribute("password") String password,
+	public String saveFacility(Model model, @ModelAttribute("facility") @Valid Facility facilityToSave,
 			BindingResult result) {
 		Map<String, Double> coords;
 		
@@ -582,8 +582,8 @@ public class HomeController {
 		System.out.println("Trying to save facility : " + facilityToSave.getFacilityName());
 
 		String address = "";
-		address += facilityToSave.getLine_1().trim() + ", " + facilityToSave.getLine_2().trim() + ", " + facilityToSave.getLine_3().trim() + ", "
-		+ facilityToSave.getCity().trim() + ", " + facilityToSave.getProvince().trim();
+		address += facilityToSave.getLine_1().trim() + ", ";
+		address +=  facilityToSave.getCity().trim() + ", " + facilityToSave.getProvince().trim();
 		address = address.replaceAll(",", "%2C");
 		address = address.replaceAll(" ", "+");
 
@@ -676,7 +676,7 @@ public class HomeController {
 		Facility facility = new Facility();
 		facility.setCountry("Canada");
 		facility.setUsername(username); // set facility; username to the user
-		model.addAttribute("password",encryptedPassword);
+		//model.addAttribute("password",encryptedPassword);
 		model.addAttribute("facility", facility);
 
 		return "/createFacility";
