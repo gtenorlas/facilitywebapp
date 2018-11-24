@@ -78,7 +78,7 @@
 			    <c:url value="/search" var="searchUrl" />
 			    <form class="navbar-form navbar-left" action="${searchUrl}" method="get" >
 				  <div class="input-group">
-				    <input type="text" class="form-control" placeholder="Search" name="keyword" size="10">
+				    <input type="text" class="form-control" placeholder="Search" name="keyword" size="14">
 				    <div class="input-group-btn">
 				      <button class="btn btn-primary btn-md" type="submit">
 				        <i class="glyphicon glyphicon-search" style="font-size:21px;"></i>
