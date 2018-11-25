@@ -23,7 +23,7 @@
 
 		<!-- Drop and re-create the database schema on startup -->
 		<!-- Use update for production instead of create -->
-		<property name="hbm2ddl.auto">create</property>
+		<property name="hbm2ddl.auto">update</property>
 
 		<!-- dbcp connection pool configuration -->
 		<property name="dbcp.initialSize">5</property>

@@ -79,21 +79,19 @@ public class CustomerDAO {
 				customer = session.createQuery(criteria).getSingleResult();
 				System.out.println("query created ");
 				session.getTransaction().commit();
-				session.close();
-				
-				
 				//check if password are the same
 				if (Customer.checkPassword(password, customer.getPassword())) {
 					return customer;
 				}else {
 					return "invalid";
 				}
-			}
-
-			catch (NoResultException nre) {
-				session.close();
-
+			}catch (NoResultException nre) {
 				return customer;
+			}catch (Exception e) {
+				System.out.println ("Error getCustomer -> " + e.getStackTrace());
+				return customer;
+			}finally {
+				session.close();
 			}
 
 
@@ -122,16 +120,20 @@ public class CustomerDAO {
 				customer = session.createQuery(criteria).getSingleResult();
 				System.out.println("query created ");
 				session.getTransaction().commit();
-				session.close();
-				
+			
 				return customer;
 			}
 
 			catch (NoResultException nre) {
-				session.close();
 
 				return customer;
+			}catch (Exception e) {
+				System.out.println ("Error getCustomer -> " + e.getStackTrace());
+				return customer;
+			}finally {
+				session.close();
 			}
+
 
 
 	}
@@ -158,15 +160,17 @@ public class CustomerDAO {
 				customer = session.createQuery(criteria).getSingleResult();
 				System.out.println("query created ");
 				session.getTransaction().commit();
-				session.close();
-				
+					
 				return customer;
 			}
 
 			catch (NoResultException nre) {
-				session.close();
-
 				return customer;
+			}catch (Exception e) {
+				System.out.println ("Error getCustomer -> " + e.getStackTrace());
+				return customer;
+			}finally {
+				session.close();
 			}
 
 
@@ -196,7 +200,6 @@ public class CustomerDAO {
 				customer = session.createQuery(criteria).getSingleResult();
 				System.out.println("query created ");
 				session.getTransaction().commit();
-				session.close();
 				
 				if (customer==null) {
 					return false;
@@ -206,9 +209,12 @@ public class CustomerDAO {
 			}
 
 			catch (NoResultException nre) {
-				session.close();
-
 				return false;
+			}catch (Exception e) {
+				System.out.println ("Error getCustomer -> " + e.getStackTrace());
+				return true;
+			}finally {
+				session.close();
 			}
 
 
