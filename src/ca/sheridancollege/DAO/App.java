@@ -203,7 +203,7 @@ public class App {
 				table.addCell(new Phrase(eachBooking.getStatus(), cellFont));
 				table.addCell(new Phrase(eachBooking.getStartDateTime().format(formatter), cellFont));
 				table.addCell(new Phrase(eachBooking.getEndDateTime().format(formatter), cellFont));
-				Phrase cost = (new Phrase(currencyFormat.format(eachBooking.getPayment().getCourtCharge()), cellFont));
+				Phrase cost = (new Phrase(currencyFormat.format(eachBooking.getPayment().getTotalAmount()), cellFont));
 				totalCost+=eachBooking.getPayment().getCourtCharge();
 				PdfPCell cell = new PdfPCell(cost);
 				cell.setHorizontalAlignment(2);
