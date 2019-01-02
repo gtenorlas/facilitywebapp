@@ -5,14 +5,15 @@
 	<session-factory>
 		<!-- Database connection settings -->
 		<property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-		<property name="connection.url">jdbc:mysql://localhost:3306/hibernatedbex91?serverTimezone=America/Toronto&amp;interactiveClient=true&amp;useCompression=true&amp;initialTimeout=3600&amp;maxReconnects=10&amp;useSSL=false</property>
+		<property name="connection.url">jdbc:mysql://localhost:3306/hibernatedbex91?serverTimezone=America/Toronto&amp;useSSL=false</property>
+		<!--<property name="connection.url">jdbc:mysql://localhost:3306/hibernatedbex91?serverTimezone=America/Toronto&amp;interactiveClient=true&amp;useCompression=true&amp;initialTimeout=3600&amp;maxReconnects=10&amp;useSSL=false</property> -->
 		<property name="connection.username">book2ball</property>
 		<property name="connection.password">Book2ball!</property>
 
-		<property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property>
+		<!-- <property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property> -->
 		<property name="hibernate.c3p0.min_size">5</property>
 		<property name="hibernate.c3p0.max_size">20</property>
-		<property name="hibernate.c3p0.timeout">300</property>
+		<property name="hibernate.c3p0.timeout">120</property>
 
 		<!-- <property name="connection.provider_class">org.hibernate.connection.C3P0ConnectionProvider</property> 
 			<property name="hibernate.c3p0.acquire_increment">5</property> <property 
